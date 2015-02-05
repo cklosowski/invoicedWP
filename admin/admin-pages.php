@@ -65,16 +65,14 @@ function iwp_get_settings() {
 
 		// Update old settings with new single option
 
-		$general_settings = is_array( get_option( 'iwp_settings_general' ) )    ? get_option( 'iwp_settings_general' )  	: array();
-		$gateway_settings = is_array( get_option( 'iwp_settings_gateways' ) )   ? get_option( 'iwp_settings_gateways' ) 	: array();
-		$email_settings   = is_array( get_option( 'iwp_settings_emails' ) )     ? get_option( 'iwp_settings_emails' )   	: array();
-		$style_settings   = is_array( get_option( 'iwp_settings_styles' ) )     ? get_option( 'iwp_settings_styles' )   	: array();
-		$tax_settings     = is_array( get_option( 'iwp_settings_taxes' ) )      ? get_option( 'iwp_settings_taxes' )    	: array();
-		$ext_settings     = is_array( get_option( 'iwp_settings_extensions' ) ) ? get_option( 'iwp_settings_extensions' )	: array();
-		$license_settings = is_array( get_option( 'iwp_settings_licenses' ) )   ? get_option( 'iwp_settings_licenses' )		: array();
-		$misc_settings    = is_array( get_option( 'iwp_settings_misc' ) )       ? get_option( 'iwp_settings_misc' )			: array();
+		$general_settings 	= is_array( get_option( 'iwp_settings_general' ) )    ? get_option( 'iwp_settings_general' )  	: array();
+		$business_settings 	= is_array( get_option( 'iwp_settings_business' ) )   ? get_option( 'iwp_settings_buisness' ) 	: array();
+		$email_settings   	= is_array( get_option( 'iwp_settings_emails' ) )     ? get_option( 'iwp_settings_emails' )   	: array();
+		$ext_settings     	= is_array( get_option( 'iwp_settings_extensions' ) ) ? get_option( 'iwp_settings_extensions' )	: array();
+		$license_settings 	= is_array( get_option( 'iwp_settings_licenses' ) )   ? get_option( 'iwp_settings_licenses' )	: array();
+		$misc_settings    	= is_array( get_option( 'iwp_settings_misc' ) )       ? get_option( 'iwp_settings_misc' )		: array();
 
-		$settings = array_merge( $general_settings, $gateway_settings, $email_settings, $style_settings, $tax_settings, $ext_settings, $license_settings, $misc_settings );
+		$settings = array_merge( $general_settings, $business_settings, $email_settings, $ext_settings, $license_settings, $misc_settings );
 
 		update_option( 'iwp_settings', $settings );
 
@@ -164,10 +162,8 @@ function iwp_get_settings_tabs() {
 
 	$tabs             = array();
 	$tabs['general']  = __( 'General', 'iwp' );
-	$tabs['gateways'] = __( 'Payment Gateways', 'iwp' );
+	$tabs['business'] = __( 'Business Info', 'iwp' );
 	$tabs['emails']   = __( 'Emails', 'iwp' );
-	$tabs['styles']   = __( 'Styles', 'iwp' );
-	$tabs['taxes']    = __( 'Taxes', 'iwp' );
 
 	if( ! empty( $settings['extensions'] ) ) {
 		$tabs['extensions'] = __( 'Extensions', 'iwp' );
@@ -194,67 +190,40 @@ function iwp_get_registered_settings() {
 	 * section to allow extensions and other plugins to add their own settings
 	 */
 	$iwp_settings = array(
-		/** General Settings */
+		//* General Settings */
 		'general' => apply_filters( 'iwp_settings_general',
 			array(
-				'test_mode' => array(
-					'id' => 'test_mode',
-					'name' => __( 'Test Mode', 'iwp' ),
-					'desc' => __( 'While in test mode no live transactions are processed. To fully use test mode, you must have a sandbox (test) account for the payment gateway you are testing.', 'iwp' ),
+
+				'partial_payments' => array(
+					'id' => 'partial_payments',
+					'name' => __( 'Allow partial payments', 'iwp' ),
+					'desc' => __( '', 'iwp' ),
 					'type' => 'checkbox'
 				),
-				'purchase_page' => array(
-					'id' => 'purchase_page',
-					'name' => __( 'Checkout Page', 'iwp' ),
-					'desc' => __( 'This is the checkout page where buyers will complete their purchases. The [download_checkout] short code must be on this page.', 'iwp' ),
-					'type' => 'select',
-                    'options' => iwp_get_pages(),
-                    'select2' => true,
-                    'placeholder' => __( 'Select a page', 'iwp' )
+				'partial_payment_default' => array(
+					'id' => 'partial_payment_default',
+					'name' => __( 'Partial payments allowed by default', 'iwp' ),
+					'desc' => __( '', 'iwp' ),
+					'type' => 'checkbox'
 				),
-				'success_page' => array(
-					'id' => 'success_page',
-					'name' => __( 'Success Page', 'iwp' ),
-					'desc' => __( 'This is the page buyers are sent to after completing their purchases. The [iwp_receipt] short code should be on this page.', 'iwp' ),
-					'type' => 'select',
-					'options' => iwp_get_pages(),
-                    'select2' => true,
-                    'placeholder' => __( 'Select a page', 'iwp' )
+				'show_recurring_billing' => array(
+					'id' => 'show_recurring_billing',
+					'name' => __( 'Show recurring billing options', 'iwp' ),
+					'desc' => __( '', 'iwp' ),
+					'type' => 'checkbox'
 				),
-				'failure_page' => array(
-					'id' => 'failure_page',
-					'name' => __( 'Failed Transaction Page', 'iwp' ),
-					'desc' => __( 'This is the page buyers are sent to if their transaction is cancelled or fails', 'iwp' ),
-					'type' => 'select',
-					'options' => iwp_get_pages(),
-                    'select2' => true,
-                    'placeholder' => __( 'Select a page', 'iwp' )
+				'enforce_https' => array(
+					'id' => 'enforce_https',
+					'name' => __( 'Enforce HTTPS on invoice pages', 'iwp' ),
+					'desc' => __( '', 'iwp' ),
+					'type' => 'checkbox'
 				),
-				'purchase_history_page' => array(
-					'id' => 'purchase_history_page',
-					'name' => __( 'Purchase History Page', 'iwp' ),
-					'desc' => __( 'This page shows a complete purchase history for the current user, including download links', 'iwp' ),
+				'minimum_level' => array(
+					'id' => 'minimum_level',
+					'name' => __( 'Minimum user level to manage Invoices', 'iwp' ),
+					'desc' => __( '', 'iwp' ),
 					'type' => 'select',
-					'options' => iwp_get_pages(),
-                    'select2' => true,
-                    'placeholder' => __( 'Select a page', 'iwp' )
-				),
-				/*'base_country' => array(
-					'id' => 'base_country',
-					'name' => __( 'Base Country', 'iwp' ),
-					'desc' => __( 'Where does your store operate from?', 'iwp' ),
-					'type' => 'select',
-                    'options' => iwp_get_country_list(),
-                    'select2' => true,
-                    'placeholder' => __( 'Select a country', 'iwp' )
-				),*/
-				'base_state' => array(
-					'id' => 'base_state',
-					'name' => __( 'Base State / Province', 'iwp' ),
-					'desc' => __( 'What state / province does your store operate from?', 'iwp' ),
-					'type' => 'shop_states',
-                    'select2' => true,
-                    'placeholder' => __( 'Select a state', 'iwp' )
+					'options' => iwp_get_roles()
 				),
 				'currency_settings' => array(
 					'id' => 'currency_settings',
@@ -262,14 +231,14 @@ function iwp_get_registered_settings() {
 					'desc' => __( 'Configure the currency options', 'iwp' ),
 					'type' => 'header'
 				),
-				/*'currency' => array(
+				'currency' => array(
 					'id' => 'currency',
 					'name' => __( 'Currency', 'iwp' ),
 					'desc' => __( 'Choose your currency. Note that some payment gateways have currency restrictions.', 'iwp' ),
 					'type' => 'select',
                     'options' => iwp_get_currencies(),
                     'select2' => true
-				),*/
+				),
 				'currency_position' => array(
 					'id' => 'currency_position',
 					'name' => __( 'Currency Position', 'iwp' ),
@@ -296,107 +265,76 @@ function iwp_get_registered_settings() {
 					'size' => 'small',
 					'std' => '.'
 				),
-				'api_settings' => array(
-					'id' => 'api_settings',
-					'name' => '<strong>' . __( 'API Settings', 'iwp' ) . '</strong>',
-					'desc' => '',
-					'type' => 'header'
-				),
-				'api_allow_user_keys' => array(
-					'id' => 'api_allow_user_keys',
-					'name' => __( 'Allow User Keys', 'iwp' ),
-					'desc' => __( 'Check this box to allow all users to generate API keys. Users with the \'manage_shop_settings\' capability are always allowed to generate keys.', 'iwp' ),
-					'type' => 'checkbox'
-				),
-				'tracking_settings' => array(
-					'id' => 'tracking_settings',
-					'name' => '<strong>' . __( 'Tracking Settings', 'iwp' ) . '</strong>',
-					'desc' => '',
-					'type' => 'header'
-				),
-				'allow_tracking' => array(
-					'id' => 'allow_tracking',
-					'name' => __( 'Allow Usage Tracking?', 'iwp' ),
-					'desc' => __( 'Allow Easy Digital Downloads to anonymously track how this plugin is used and help us make the plugin better. Opt-in and receive a 20% discount code for any purchase from the <a href="https://easydigitaldownloads.com/extensions" target="_blank">Easy Digital Downloads store</a>. Your discount code will be emailed to you.', 'iwp' ),
-					'type' => 'checkbox'
-				),
-				'uninstall_on_delete' => array(
-					'id' => 'uninstall_on_delete',
-					'name' => __( 'Remove Data on Uninstall?', 'iwp' ),
-					'desc' => __( 'Check this box if you would like EDD to completely remove all of its data when the plugin is deleted.', 'iwp' ),
-					'type' => 'checkbox'
-				)
+
 			)
 		),
-		/** Payment Gateways Settings */
-		'gateways' => apply_filters('iwp_settings_gateways',
+		//* Business Settings */
+		'business' => apply_filters('iwp_settings_business',
 			array(
-				/*'gateways' => array(
-					'id' => 'gateways',
-					'name' => __( 'Payment Gateways', 'iwp' ),
-					'desc' => __( 'Choose the payment gateways you want to enable.', 'iwp' ),
-					'type' => 'gateways',
-					'options' => iwp_get_payment_gateways()
-				),
-				'default_gateway' => array(
-					'id' => 'default_gateway',
-					'name' => __( 'Default Gateway', 'iwp' ),
-					'desc' => __( 'This gateway will be loaded automatically with the checkout page.', 'iwp' ),
-					'type' => 'gateway_select',
-					'options' => iwp_get_payment_gateways()
-				),*/
-				'accepted_cards' => array(
-					'id' => 'accepted_cards',
-					'name' => __( 'Accepted Payment Method Icons', 'iwp' ),
-					'desc' => __( 'Display icons for the selected payment methods', 'iwp' ) . '<br/>' . __( 'You will also need to configure your gateway settings if you are accepting credit cards', 'iwp' ),
-					'type' => 'payment_icons',
-					'options' => apply_filters('iwp_accepted_payment_icons', array(
-							'mastercard' => 'Mastercard',
-							'visa' => 'Visa',
-							'americanexpress' => 'American Express',
-							'discover' => 'Discover',
-							'paypal' => 'PayPal'
-						)
-					)
-				),
-				'paypal' => array(
-					'id' => 'paypal',
-					'name' => '<strong>' . __( 'PayPal Settings', 'iwp' ) . '</strong>',
-					'desc' => __( 'Configure the PayPal settings', 'iwp' ),
+				'business_info' => array(
+					'id' => 'business_info',
+					'name' => '<strong>' . __( 'Business Information', 'iwp' ) . '</strong>',
+					'desc' => __( 'Enter your businesses information below', 'iwp' ),
 					'type' => 'header'
 				),
-				'paypal_email' => array(
-					'id' => 'paypal_email',
-					'name' => __( 'PayPal Email', 'iwp' ),
-					'desc' => __( 'Enter your PayPal account\'s email', 'iwp' ),
+				'business_name' => array(
+					'id' => 'business_name',
+					'name' => __( 'Business Name', 'iwp' ),
 					'type' => 'text',
-					'size' => 'regular'
 				),
-				'paypal_page_style' => array(
-					'id' => 'paypal_page_style',
-					'name' => __( 'PayPal Page Style', 'iwp' ),
-					'desc' => __( 'Enter the name of the page style to use, or leave blank for default', 'iwp' ),
+				'business_address1' => array(
+					'id' => 'address1',
+					'name' => __( 'Address Line 1', 'iwp' ),
 					'type' => 'text',
-					'size' => 'regular'
 				),
-				'disable_paypal_verification' => array(
-					'id' => 'disable_paypal_verification',
-					'name' => __( 'Disable PayPal IPN Verification', 'iwp' ),
-					'desc' => __( 'If payments are not getting marked as complete, then check this box. This forces the site to use a slightly less secure method of verifying purchases.', 'iwp' ),
-					'type' => 'checkbox'
-				)
-			)
-		),
-		/** Emails Settings */
-		'emails' => apply_filters('iwp_settings_emails',
-			array(
-				/*'email_template' => array(
-					'id' => 'email_template',
-					'name' => __( 'Email Template', 'iwp' ),
-					'desc' => __( 'Choose a template. Click "Save Changes" then "Preview Purchase Receipt" to see the new template.', 'iwp' ),
+				'business_address2' => array(
+					'id' => 'address2',
+					'name' => __( 'Address Line 2', 'iwp' ),
+					'type' => 'text',
+				),
+				'business_city' => array(
+					'id' => 'business_city',
+					'name' => __( 'City', 'iwp' ),
+					'type' => 'text',
+				),
+				'business_country' => array(
+					'id' => 'business_country',
+					'name' => __( 'Country', 'iwp' ),
+					'desc' => __( 'Where does you operate from?', 'iwp' ),
 					'type' => 'select',
-					'options' => iwp_get_email_templates()
-				),*/
+                    'options' => iwp_get_country_list(),
+                    'select2' => true,
+                    'placeholder' => __( 'Select a country', 'iwp' )
+				),
+				'business_state' => array(
+					'id' => 'business_state',
+					'name' => __( 'State / Province', 'iwp' ),
+					'desc' => __( 'What state / province does your store operate from?', 'iwp' ),
+					'type' => 'shop_states',
+                    'select2' => true,
+                    'placeholder' => __( 'Select a state', 'iwp' )
+				),
+				'business_zip_code' => array(
+					'id' => 'zip_code',
+					'name' => __( 'Zip / Postal Code', 'iwp' ),
+					'type' => 'number',
+					'size' => 'small'
+				),
+				'registration_number' => array(
+					'id' => 'registration_number',
+					'name' => __( 'Registration Number', 'iwp' ),
+					'type' => 'text',
+				),
+				'taxvat_number' => array(
+					'id' => 'taxvat_number',
+					'name' => __( 'Tax/VAT Number', 'iwp' ),
+					'type' => 'text',
+				),
+			)
+		),
+		/** Email Settings */
+		'emails' => apply_filters('iwp_settings_email',
+			array(
 				'email_logo' => array(
 					'id' => 'email_logo',
 					'name' => __( 'Logo', 'iwp' ),
@@ -423,47 +361,89 @@ function iwp_get_registered_settings() {
 					'type' => 'text',
 					'std'  => get_bloginfo( 'admin_email' )
 				),
-				'purchase_subject' => array(
-					'id' => 'purchase_subject',
-					'name' => __( 'Purchase Email Subject', 'iwp' ),
-					'desc' => __( 'Enter the subject line for the purchase receipt email', 'iwp' ),
-					'type' => 'text',
-					'std'  => __( 'Purchase Receipt', 'iwp' )
-				),
-				/*'purchase_receipt' => array(
-					'id' => 'purchase_receipt',
-					'name' => __( 'Purchase Receipt', 'iwp' ),
-					'desc' => __('Enter the email that is sent to users after completing a successful purchase. HTML is accepted. Available template tags:', 'iwp') . '<br/>' . iwp_get_emails_tags_list(),
-					'type' => 'rich_editor',
-					'std'  => __( "Dear", "iwp" ) . " {name},\n\n" . __( "Thank you for your purchase. Please click on the link(s) below to download your files.", "iwp" ) . "\n\n{download_list}\n\n{sitename}"
-				),*/
-				'sale_notification_header' => array(
-					'id' => 'sale_notification_header',
-					'name' => '<strong>' . __('New Sale Notifications', 'iwp') . '</strong>',
-					'desc' => __('Configure new sale notification emails', 'iwp'),
+
+				'new_invoice_header' => array(
+					'id' => 'new_invoice_header',
+					'name' => '<strong>' . __('New Invoice Email Template', 'iwp') . '</strong>',
+					'desc' => __('Configure new invoice notification emails', 'iwp'),
 					'type' => 'header'
 				),
-				'sale_notification_subject' => array(
-					'id' => 'sale_notification_subject',
-					'name' => __( 'Sale Notification Subject', 'iwp' ),
-					'desc' => __( 'Enter the subject line for the sale notification email', 'iwp' ),
+				'new_invoice_subject' => array(
+					'id' => 'new_invoice_subject',
+					'name' => __( 'New Invoice Subject', 'iwp' ),
+					'desc' => __( 'Enter the subject line for the new invoice email', 'iwp' ),
 					'type' => 'text',
-					'std' => 'New download purchase - Order #{payment_id}'
+					'std'  => __( '[New Invoice] {subject}', 'iwp' )
 				),
-				/*'sale_notification' => array(
-					'id' => 'sale_notification',
-					'name' => __( 'Sale Notification', 'iwp' ),
-					'desc' => __( 'Enter the email that is sent to sale notification emails after completion of a purchase. HTML is accepted. Available template tags:', 'iwp' ) . '<br/>' . iwp_get_emails_tags_list(),
+				'new_invoice' => array(
+					'id' => 'new_invoice',
+					'name' => __( 'New Invoice', 'iwp' ),
+					'desc' => __('Enter the email that is sent to users after completing an invoice is created. HTML is accepted. Available template tags:', 'iwp') . '<br/>' . iwp_get_emails_tags_list(),
+					'type' => 'rich_editor',
+					'std'  => __( "Dear", "iwp" ) . " {name},\n\n" . __( "Thank you for your purchase. Please click on the link(s) below to download your files.", "iwp" ) . "\n\n{download_list}\n\n{sitename}"
+				),
+				'reminder_email_header' => array(
+					'id' => 'reminder_email_header',
+					'name' => '<strong>' . __('Reminder Email Template', 'iwp') . '</strong>',
+					'desc' => __('Configure reminder email', 'iwp'),
+					'type' => 'header'
+				),
+				'reminder_notification_subject' => array(
+					'id' => 'reminder_notification_subject',
+					'name' => __( 'Reminder Notification Subject', 'iwp' ),
+					'desc' => __( 'Enter the subject line for the reminder notification email', 'iwp' ),
+					'type' => 'text',
+					'std' => '[Reminder] {subject}'
+				),
+				'reminder_notification' => array(
+					'id' => 'reminder_notification',
+					'name' => __( 'Reminder Notification', 'iwp' ),
+					'desc' => __( 'Enter the email that is sent to reminder notification emails after completion of a purchase. HTML is accepted. Available template tags:', 'iwp' ) . '<br/>' . iwp_get_emails_tags_list(),
 					'type' => 'rich_editor',
 					'std' => iwp_get_default_sale_notification_email()
-				),*/
-				'admin_notice_emails' => array(
-					'id' => 'admin_notice_emails',
-					'name' => __( 'Sale Notification Emails', 'iwp' ),
-					'desc' => __( 'Enter the email address(es) that should receive a notification anytime a sale is made, one per line', 'iwp' ),
-					'type' => 'textarea',
-					'std'  => get_bloginfo( 'admin_email' )
 				),
+
+				'receipt_email_header' => array(
+					'id' => 'receipt_email_header',
+					'name' => '<strong>' . __('Receipt Template', 'iwp') . '</strong>',
+					'desc' => __('Configure receipt email', 'iwp'),
+					'type' => 'header'
+				),
+				'receipt_email_subject' => array(
+					'id' => 'receipt_email_subject',
+					'name' => __( 'Receipt Email Subject', 'iwp' ),
+					'desc' => __( 'Enter the subject line for the receipt email', 'iwp' ),
+					'type' => 'text',
+					'std' => '[Payment Received] {subject}'
+				),
+				'receipt_notification' => array(
+					'id' => 'receipt_notification',
+					'name' => __( 'Receipt Notification', 'iwp' ),
+					'desc' => __( 'Enter the email that is sent to receipt notification emails after completion of a payment. HTML is accepted. Available template tags:', 'iwp' ) . '<br/>' . iwp_get_emails_tags_list(),
+					'type' => 'rich_editor',
+					'std' => iwp_get_default_sale_notification_email()
+				),
+				'quote_email_header' => array(
+					'id' => 'quote_email_header',
+					'name' => '<strong>' . __('Quote Template', 'iwp') . '</strong>',
+					'desc' => __('Configure quote email', 'iwp'),
+					'type' => 'header'
+				),
+				'quote_email_subject' => array(
+					'id' => 'quote_email_subject',
+					'name' => __( 'Quote Email Subject', 'iwp' ),
+					'desc' => __( 'Enter the subject line for the quote email', 'iwp' ),
+					'type' => 'text',
+					'std' => '[Quote] {subject}'
+				),
+				'quote_notification' => array(
+					'id' => 'quote_notification',
+					'name' => __( 'Quote', 'iwp' ),
+					'desc' => __( 'Enter the email that is sent to quote notification emails. HTML is accepted. Available template tags:', 'iwp' ) . '<br/>' . iwp_get_emails_tags_list(),
+					'type' => 'rich_editor',
+					'std' => iwp_get_default_sale_notification_email()
+				),
+				
 				'disable_admin_notices' => array(
 					'id' => 'disable_admin_notices',
 					'name' => __( 'Disable Admin Notifications', 'iwp' ),
@@ -471,277 +451,19 @@ function iwp_get_registered_settings() {
 					'type' => 'checkbox'
 				)
 			)
-		),
-		/** Styles Settings */
-		'styles' => apply_filters('iwp_settings_styles',
-			array(
-				'disable_styles' => array(
-					'id' => 'disable_styles',
-					'name' => __( 'Disable Styles', 'iwp' ),
-					'desc' => __( 'Check this to disable all included styling of buttons, checkout fields, and all other elements.', 'iwp' ),
-					'type' => 'checkbox'
-				),
-				'button_header' => array(
-					'id' => 'button_header',
-					'name' => '<strong>' . __( 'Buttons', 'iwp' ) . '</strong>',
-					'desc' => __( 'Options for add to cart and purchase buttons', 'iwp' ),
-					'type' => 'header'
-				),
-				/*'button_style' => array(
-					'id' => 'button_style',
-					'name' => __( 'Default Button Style', 'iwp' ),
-					'desc' => __( 'Choose the style you want to use for the buttons.', 'iwp' ),
-					'type' => 'select',
-					'options' => iwp_get_button_styles()
-				),
-				'checkout_color' => array(
-					'id' => 'checkout_color',
-					'name' => __( 'Default Button Color', 'iwp' ),
-					'desc' => __( 'Choose the color you want to use for the buttons.', 'iwp' ),
-					'type' => 'color_select',
-					'options' => iwp_get_button_colors()
-				)*/
-			)
-		),
-		/** Taxes Settings */
-		'taxes' => apply_filters('iwp_settings_taxes',
-			array(
-				'enable_taxes' => array(
-					'id' => 'enable_taxes',
-					'name' => __( 'Enable Taxes', 'iwp' ),
-					'desc' => __( 'Check this to enable taxes on purchases.', 'iwp' ),
-					'type' => 'checkbox',
-				),
-				'tax_rates' => array(
-					'id' => 'tax_rates',
-					'name' => '<strong>' . __( 'Tax Rates', 'iwp' ) . '</strong>',
-					'desc' => __( 'Enter tax rates for specific regions.', 'iwp' ),
-					'type' => 'tax_rates'
-				),
-				'tax_rate' => array(
-					'id' => 'tax_rate',
-					'name' => __( 'Fallback Tax Rate', 'iwp' ),
-					'desc' => __( 'Enter a percentage, such as 6.5. Customers not in a specific rate will be charged this rate.', 'iwp' ),
-					'type' => 'text',
-					'size' => 'small'
-				),
-				'prices_include_tax' => array(
-					'id' => 'prices_include_tax',
-					'name' => __( 'Prices entered with tax', 'iwp' ),
-					'desc' => __( 'This option affects how you enter prices.', 'iwp' ),
-					'type' => 'radio',
-					'std' => 'no',
-					'options' => array(
-						'yes' => __( 'Yes, I will enter prices inclusive of tax', 'iwp' ),
-						'no'  => __( 'No, I will enter prices exclusive of tax', 'iwp' )
-					)
-				),
-				'display_tax_rate' => array(
-					'id' => 'display_tax_rate',
-					'name' => __( 'Display Tax Rate on Prices', 'iwp' ),
-					'desc' => __( 'Some countries require a notice when product prices include tax.', 'iwp' ),
-					'type' => 'checkbox',
-				),
-				'checkout_include_tax' => array(
-					'id' => 'checkout_include_tax',
-					'name' => __( 'Display during checkout', 'iwp' ),
-					'desc' => __( 'Should prices on the checkout page be shown with or without tax?', 'iwp' ),
-					'type' => 'select',
-					'std' => 'no',
-					'options' => array(
-						'yes' => __( 'Including tax', 'iwp' ),
-						'no'  => __( 'Excluding tax', 'iwp' )
-					)
-				)
-			)
-		),
+		),		
 		/** Extension Settings */
 		'extensions' => apply_filters('iwp_settings_extensions',
 			array()
 		),
+		/** License Settings */
 		'licenses' => apply_filters('iwp_settings_licenses',
 			array()
 		),
 		/** Misc Settings */
 		'misc' => apply_filters('iwp_settings_misc',
 			array(
-				'enable_ajax_cart' => array(
-					'id' => 'enable_ajax_cart',
-					'name' => __( 'Enable Ajax', 'iwp' ),
-					'desc' => __( 'Check this to enable AJAX for the shopping cart.', 'iwp' ),
-					'type' => 'checkbox',
-					'std'  => '1'
-				),
-				'redirect_on_add' => array(
-					'id' => 'redirect_on_add',
-					'name' => __( 'Redirect to Checkout', 'iwp' ),
-					'desc' => __( 'Immediately redirect to checkout after adding an item to the cart?', 'iwp' ),
-					'type' => 'checkbox'
-				),
-				'enforce_ssl' => array(
-					'id' => 'enforce_ssl',
-					'name' => __( 'Enforce SSL on Checkout', 'iwp' ),
-					'desc' => __( 'Check this to force users to be redirected to the secure checkout page. You must have an SSL certificate installed to use this option.', 'iwp' ),
-					'type' => 'checkbox'
-				),
-				'logged_in_only' => array(
-					'id' => 'logged_in_only',
-					'name' => __( 'Disable Guest Checkout', 'iwp' ),
-					'desc' => __( 'Require that users be logged-in to purchase files.', 'iwp' ),
-					'type' => 'checkbox'
-				),
-				'show_register_form' => array(
-					'id' => 'show_register_form',
-					'name' => __( 'Show Register / Login Form?', 'iwp' ),
-					'desc' => __( 'Display the registration and login forms on the checkout page for non-logged-in users.', 'iwp' ),
-					'type' => 'select',
-					'options' => array(
-						'both' => __( 'Registration and Login Forms', 'iwp' ),
-						'registration' => __( 'Registration Form Only', 'iwp' ),
-						'login' => __( 'Login Form Only', 'iwp' ),
-						'none' => __( 'None', 'iwp' )
-					),
-					'std' => 'none'
-				),
-				'item_quantities' => array(
-					'id' => 'item_quantities',
-					'name' => __('Item Quantities', 'iwp'),
-					'desc' => __('Allow item quantities to be changed.', 'iwp'),
-					'type' => 'checkbox'
-				),
-				'allow_multiple_discounts' => array(
-					'id' => 'allow_multiple_discounts',
-					'name' => __('Multiple Discounts', 'iwp'),
-					'desc' => __('Allow customers to use multiple discounts on the same purchase?', 'iwp'),
-					'type' => 'checkbox'
-				),
-				'enable_cart_saving' => array(
-					'id' => 'enable_cart_saving',
-					'name' => __( 'Enable Cart Saving', 'iwp' ),
-					'desc' => __( 'Check this to enable cart saving on the checkout.', 'iwp' ),
-					'type' => 'checkbox'
-				),
-				'field_downloads' => array(
-					'id' => 'field_downloads',
-					'name' => '<strong>' . __( 'File Downloads', 'iwp' ) . '</strong>',
-					'desc' => '',
-					'type' => 'header'
-				),
-				/*'download_method' => array(
-					'id' => 'download_method',
-					'name' => __( 'Download Method', 'iwp' ),
-					'desc' => sprintf( __( 'Select the file download method. Note, not all methods work on all servers.', 'iwp' ), iwp_get_label_singular() ),
-					'type' => 'select',
-					'options' => array(
-						'direct' => __( 'Forced', 'iwp' ),
-						'redirect' => __( 'Redirect', 'iwp' )
-					)
-				),
-				'symlink_file_downloads' => array(
-					'id' => 'symlink_file_downloads',
-					'name' => __( 'Symlink File Downloads?', 'iwp' ),
-					'desc' => __( 'Check this if you are delivering really large files or having problems with file downloads completing.', 'iwp' ),
-					'type' => 'checkbox'
-				),
-				'file_download_limit' => array(
-					'id' => 'file_download_limit',
-					'name' => __( 'File Download Limit', 'iwp' ),
-					'desc' => sprintf( __( 'The maximum number of times files can be downloaded for purchases. Can be overwritten for each %s.', 'iwp' ), iwp_get_label_singular() ),
-					'type' => 'number',
-					'size' => 'small'
-				),*/
-				'download_link_expiration' => array(
-					'id' => 'download_link_expiration',
-					'name' => __( 'Download Link Expiration', 'iwp' ),
-					'desc' => __( 'How long should download links be valid for? Default is 24 hours from the time they are generated. Enter a time in hours.', 'iwp' ),
-					'type' => 'number',
-					'size' => 'small',
-					'std'  => '24',
-					'min'  => '0'
-				),
-				'disable_redownload' => array(
-					'id' => 'disable_redownload',
-					'name' => __( 'Disable Redownload?', 'iwp' ),
-					'desc' => __( 'Check this if you do not want to allow users to redownload items from their purchase history.', 'iwp' ),
-					'type' => 'checkbox'
-				),
-				'accounting_settings' => array(
-					'id' => 'accounting_settings',
-					'name' => '<strong>' . __( 'Accounting Settings', 'iwp' ) . '</strong>',
-					'desc' => '',
-					'type' => 'header'
-				),
-				'enable_skus' => array(
-					'id' => 'enable_skus',
-					'name' => __( 'Enable SKU Entry', 'iwp' ),
-					'desc' => __( 'Check this box to allow entry of product SKUs. SKUs will be shown on purchase receipt and exported purchase histories.', 'iwp' ),
-					'type' => 'checkbox'
-				),
-				'enable_sequential' => array(
-					'id' => 'enable_sequential',
-					'name' => __( 'Sequential Order Numbers', 'iwp' ),
-					'desc' => __( 'Check this box to sequential order numbers.', 'iwp' ),
-					'type' => 'checkbox'
-				),
-				'sequential_start' => array(
-					'id' => 'sequential_start',
-					'name' => __( 'Sequential Starting Number', 'iwp' ),
-					'desc' => __( 'The number that sequential order numbers should start at.', 'iwp' ),
-					'type' => 'number',
-					'size' => 'small',
-					'std'  => '1'
-				),
-				'sequential_prefix' => array(
-					'id' => 'sequential_prefix',
-					'name' => __( 'Sequential Number Prefix', 'iwp' ),
-					'desc' => __( 'A prefix to prepend to all sequential order numbers.', 'iwp' ),
-					'type' => 'text'
-				),
-				'sequential_postfix' => array(
-					'id' => 'sequential_postfix',
-					'name' => __( 'Sequential Number Postfix', 'iwp' ),
-					'desc' => __( 'A postfix to append to all sequential order numbers.', 'iwp' ),
-					'type' => 'text',
-				),
-				'terms' => array(
-					'id' => 'terms',
-					'name' => '<strong>' . __( 'Terms of Agreement', 'iwp' ) . '</strong>',
-					'desc' => '',
-					'type' => 'header'
-				),
-				'show_agree_to_terms' => array(
-					'id' => 'show_agree_to_terms',
-					'name' => __( 'Agree to Terms', 'iwp' ),
-					'desc' => __( 'Check this to show an agree to terms on the checkout that users must agree to before purchasing.', 'iwp' ),
-					'type' => 'checkbox'
-				),
-				'agree_label' => array(
-					'id' => 'agree_label',
-					'name' => __( 'Agree to Terms Label', 'iwp' ),
-					'desc' => __( 'Label shown next to the agree to terms check box.', 'iwp' ),
-					'type' => 'text',
-					'size' => 'regular'
-				),
-				'agree_text' => array(
-					'id' => 'agree_text',
-					'name' => __( 'Agreement Text', 'iwp' ),
-					'desc' => __( 'If Agree to Terms is checked, enter the agreement terms here.', 'iwp' ),
-					'type' => 'rich_editor'
-				),
-				'checkout_label' => array(
-					'id' => 'checkout_label',
-					'name' => __( 'Complete Purchase Text', 'iwp' ),
-					'desc' => __( 'The button label for completing a purchase.', 'iwp' ),
-					'type' => 'text',
-					'std' => __( 'Purchase', 'iwp' )
-				),
-				'add_to_cart_text' => array(
-					'id' => 'add_to_cart_text',
-					'name' => __( 'Add to Cart Text', 'iwp' ),
-					'desc' => __( 'Text shown on the Add to Cart Buttons.', 'iwp' ),
-					'type' => 'text',
-					'std'  => __( 'Add to Cart', 'iwp' )
-				)
+
 			)
 		)
 	);

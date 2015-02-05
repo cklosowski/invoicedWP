@@ -37,13 +37,13 @@ if( !defined( 'ABSPATH' ) ) exit;
 			$args = array(
 				'labels' 				=> $labels,
 				'public' 				=> true,
-				'publicly_queryable' 	=> true,
+				'publicly_queryable' 	=> false,
 				'show_ui' 				=> true,
 				'show_in_menu' 			=> true,
 				'query_var' 			=> true,
 				'rewrite' 				=> true,
 				'capability_type' 		=> 'page',
-				'has_archive' 			=> true,
+				'has_archive' 			=> false,
 				'hierarchical' 			=> false,
 				'menu_position' 		=> 20,
 				'rewrite' 				=> array('slug'=>'invoiced','with_front'=>false),
@@ -63,9 +63,9 @@ if( !defined( 'ABSPATH' ) ) exit;
 			$cols = array(
 				'cb'			=> '<input type="checkbox" />',
 				'title'			=> __( 'Name' ),
-				'paid'			=> __('Amount Paid' ),
-				'recipient'		=> __('Recipient' ),
-				'invoiceID'		=> __('Invoice ID')
+				'paid'			=> __( 'Amount Paid' ),
+				'recipient'		=> __( 'Recipient' ),
+				'invoiceID'		=> __( 'Invoice ID')
 
 			);
 			return $cols;
@@ -149,3 +149,14 @@ function save_myInvoiceSettings($post_id) {
 
 }
 
+
+function iwp_get_roles() {
+    global $wp_roles;
+
+	$list = array();
+    $all_roles = $wp_roles->roles;
+	foreach($all_roles as $role)
+		$list[] = $role["name"];
+
+    return apply_filters('iwp_get_roles', $list);
+}

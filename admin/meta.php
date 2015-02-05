@@ -3,7 +3,7 @@
  * Helper Functions
  *
  * @package     InvoicedWP
- * @since       1.0.0
+ * @since 1.0.0
  */
 
 
@@ -13,9 +13,52 @@ if( !defined( 'ABSPATH' ) ) exit;
 
 
 function iwp_client($invoice_id) {
+?>
+
+<table class="form-table wp_invoice_new_user">
+	<tbody>
+
+		<tr>
+			<th>First Name</th>
+			<td><input title="" value="" name="iwp_invoice[user_data][first_name]" class="input_field  iwp_first_name" type="text" id=""></td>
+		</tr>
+		<tr>
+			<th>Last Name</th>
+			<td><input title="" value="" name="iwp_invoice[user_data][last_name]" class="input_field  iwp_last_name" type="text" id=""></td>
+		</tr>
+		<tr>
+			<th>Company Name</th>
+			<td><input title="" value="" name="iwp_invoice[user_data][company_name]" class="input_field  iwp_company_name" type="text" id=""></td>
+		</tr>
+		<tr>
+			<th>Phone Number</th>
+			<td><input title="" value="" name="iwp_invoice[user_data][phonenumber]" class="input_field  iwp_phonenumber" type="text" id=""></td>
+		</tr>
+		<tr>
+			<th>Street Address</th>
+			<td><input title="" value="" name="iwp_invoice[user_data][streetaddress]" class="input_field  iwp_streetaddress" type="text" id=""></td>
+		</tr>
+		<tr>
+			<th>Street Address 2</th>
+			<td><input title="" value="" name="iwp_invoice[user_data][streetaddress2]" class="input_field  iwp_streetaddress2" type="text" id=""></td>
+		</tr>
+		<tr>
+			<th>City</th>
+			<td><input title="" value="" name="iwp_invoice[user_data][city]" class="input_field  iwp_city" type="text" id=""></td>
+		</tr>
+		<tr>
+			<th>State</th>
+			<td><input title="" value="" name="iwp_invoice[user_data][state]" class="input_field  iwp_state" type="text" id=""></td>
+		</tr>
+		<tr>
+			<th>ZIP</th>
+			<td><input title="" value="" name="iwp_invoice[user_data][zip]" class="input_field  iwp_zip" type="text" id=""></td>
+		</tr>
+	</tbody>
+</table>
 
 
-
+<?php
 }
 
 
@@ -140,6 +183,8 @@ function iwp_details($invoice_id) {
 	</script>
 
 <?php
+
+
 }
 
 
