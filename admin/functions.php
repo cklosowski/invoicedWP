@@ -51,6 +51,15 @@ if( !defined( 'ABSPATH' ) ) exit;
 			);
 
 			register_post_type( 'invoicedwp', $args );
+
+			register_post_status( 'quote', array(
+				'label'                     => __( 'Quotes', 'invoicedwp' ),
+				'public'                    => false,
+				'exclude_from_search'       => false,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true,
+				'label_count'               => _n_noop( 'Quote <span class="count">(%s)</span>', 'Quote <span class="count">(%s)</span>' )
+			) );
 		}
 
 		/**
