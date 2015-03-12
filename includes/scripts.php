@@ -29,7 +29,7 @@ function iwp_admin_scripts( $hook ) {
      * @todo		This block loads styles or scripts explicitly on the
      *				iwp settings page.
      */
-    if( $hook == $iwp_settings_page ) {
+    //if( $hook == $iwp_settings_page ) {
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'jquery-ui-core' );
         wp_enqueue_script( 'jquery-ui-datepicker' );
@@ -40,7 +40,11 @@ function iwp_admin_scripts( $hook ) {
 
         wp_enqueue_script( 'iwp_admin_js', IWP_URL . '/assets/js/admin' . $suffix . '.js', array( 'jquery' ) );
         wp_enqueue_style( 'iwp_admin_css', IWP_URL . '/assets/css/admin' . $suffix . '.css' );
-    }
+
+
+        wp_register_script( 'wpi_select2_js', IWP_URL . '/assets/select2/select2.js', array( 'jquery' ) );
+        wp_register_style( 'wpi_select2_css', IWP_URL . '/assets/select2/select2.css', array() );
+    //}
 }
 add_action( 'admin_enqueue_scripts', 'iwp_admin_scripts', 100 );
 

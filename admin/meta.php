@@ -12,180 +12,181 @@ if( !defined( 'ABSPATH' ) ) exit;
 
 
 
-function iwp_client($invoice_id) {
-?>
+function iwp_details($post_id) {
+		wp_enqueue_script( 'wc_invoiced_writepanel_js' );
+		wp_nonce_field( 'bookable_resource_details_meta_box', 'bookable_resource_details_meta_box_nonce' );
+		?>
+		<style type="text/css">
+			#minor-publishing-actions, #visibility { display:none }
+		</style>
 
-<table class="form-table wp_invoice_new_user">
-	<tbody>
-
-		<tr>
-			<th>First Name</th>
-			<td><input title="" value="" name="iwp_invoice[user_data][first_name]" class="input_field  iwp_first_name" type="text" id=""></td>
-		</tr>
-		<tr>
-			<th>Last Name</th>
-			<td><input title="" value="" name="iwp_invoice[user_data][last_name]" class="input_field  iwp_last_name" type="text" id=""></td>
-		</tr>
-		<tr>
-			<th>Company Name</th>
-			<td><input title="" value="" name="iwp_invoice[user_data][company_name]" class="input_field  iwp_company_name" type="text" id=""></td>
-		</tr>
-		<tr>
-			<th>Phone Number</th>
-			<td><input title="" value="" name="iwp_invoice[user_data][phonenumber]" class="input_field  iwp_phonenumber" type="text" id=""></td>
-		</tr>
-		<tr>
-			<th>Street Address</th>
-			<td><input title="" value="" name="iwp_invoice[user_data][streetaddress]" class="input_field  iwp_streetaddress" type="text" id=""></td>
-		</tr>
-		<tr>
-			<th>Street Address 2</th>
-			<td><input title="" value="" name="iwp_invoice[user_data][streetaddress2]" class="input_field  iwp_streetaddress2" type="text" id=""></td>
-		</tr>
-		<tr>
-			<th>City</th>
-			<td><input title="" value="" name="iwp_invoice[user_data][city]" class="input_field  iwp_city" type="text" id=""></td>
-		</tr>
-		<tr>
-			<th>State</th>
-			<td><input title="" value="" name="iwp_invoice[user_data][state]" class="input_field  iwp_state" type="text" id=""></td>
-		</tr>
-		<tr>
-			<th>ZIP</th>
-			<td><input title="" value="" name="iwp_invoice[user_data][zip]" class="input_field  iwp_zip" type="text" id=""></td>
-		</tr>
-	</tbody>
-</table>
-
-
-<?php
-}
-
-
-
-
-
-
-
-
-
-
-
-function iwp_details($invoice_id) {
-	?>
-
-	<table id="invoice" class="widefat" cellspacing="0">
-		<thead>
-			<tr>
-				<th class="check-column"><input type="checkbox"></th>
-				<th style="width:50%"><?php _e( 'Name', 'iwp' ); ?></th>
-				<th><?php _e( 'Price', 'iwp' ); ?></th>
-				<th><?php _e( 'Qty', 'iwp' ); ?></th>
-				<th><?php _e( 'Total', 'iwp' ); ?></th>
-			</tr>
-		</thead>
-		<tfoot>
-			<tr>
-				<td colspan="5">Balance: here</td>
-			</tr>
-			<tr>
-				<th colspan="5"><a href="#" class="add button" style="margin-left: 24px"><?php _e( '+ Add Rate', 'iwp' ); ?></a> <a href="#" class="remove button"><?php _e( 'Delete selected rates', 'iwp' ); ?></a> <a href="#" class="discount button"><?php _e( 'Discount?', 'iwp' ); ?></a></th>
-			</tr>
-		</tfoot>
-		<tbody class="invoicedItems">
-
+		<div class="iwp_options_panel iwp">
+			<div class="panel-wrap" id="invoiced_availability">
+				<div class="options_group">
+					<div class="table_grid">
+						<table class="widefat">
+							<thead>
+								<tr>
+									<th class="sort" width="1%">&nbsp;</th>
+									<th><?php _e( 'Name', 'iwp-invoiced' ); ?></th>
+									<th style="width: 70px;" ><?php _e( 'Qty', 'iwp-invoiced' ); ?></th>
+									<th style="width: 70px;" ><?php _e( 'Price', 'iwp-invoiced' ); ?></th>
+									<th style="width: 70px;" ><?php _e( 'Total', 'iwp-invoiced' ); ?></th>
+									<th class="remove" width="1%">&nbsp;</th>
+								</tr>
+							</thead>
+							<tfoot>
+								<tr>
+									<th colspan="6">
+										<a href="#" class="button button-primary add_row" data-row="<?php
+											ob_start();
+											include( 'meta-content.php' );
+											$html = ob_get_clean();
+											echo esc_attr( $html );
+										?>"><?php _e( 'Add Range', 'iwp-invoiced' ); ?></a>
+									</th>
+								</tr>
+							</tfoot>
+							<tbody id="availability_rows">
+								<?php
+									$values = get_post_meta( $post_id, '_wc_booking_availability', true );
+									if ( ! empty( $values ) && is_array( $values ) ) {
+										foreach ( $values as $availability ) {
+											include( 'meta-content.php' );
+										}
+									}
+								?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
 		<?php
 
 
-		$custom = get_post_custom();
-    	if( !empty( $custom['_invoicedwp'] ) ){
-			$iwp = maybe_unserialize( $custom['_invoicedwp'][0] );
-/*
-
-
-			$i = -1;
-			if ( $this->table_rates ) {
-				foreach ( $this->table_rates as $class => $rate ) {
-					$i++;
-					echo '<tr class="table_rate">
-							<th class="check-column"><input type="checkbox" name="select" /></th>
-							<td><input type="text" step="any" min="0" value="' . esc_attr( $rate['minO'] ) . '" name="' . esc_attr( $this->id .'_minO[' . $i . ']' ) . '" style="width: 90%" class="' . esc_attr( $this->id .'field[' . $i . ']' ) . '" placeholder="'.__( '0.00', 'iwp' ).'" size="10" /></td>
-							<td><input type="number" step="any" min="0" value="' . esc_attr( $rate['maxO'] ) . '" name="' . esc_attr( $this->id .'_maxO[' . $i . ']' ) . '" style="width: 90%" class="' . esc_attr( $this->id .'field[' . $i . ']' ) . '" placeholder="'.__( '0.00', 'iwp' ).'" size="2" /></td>
-							<td><input type="number" step="any" min="0" value="' . esc_attr( $rate['shippingO'] ) . '" name="' . esc_attr( $this->id .'_shippingO[' . $i . ']' ) . '" style="width: 90%" class="' . esc_attr( $this->id .'field[' . $i . ']' ) . '" placeholder="'.__( '0.00', 'iwp' ).'" size="2" /></td>
-							<td><input type="number" step="any" min="0" value="' . esc_attr( $rate['totalO'] ) . '" name="' . esc_attr( $this->id .'_total0[' . $i . ']' ) . '" style="width: 90%" class="' . esc_attr( $this->id .'field[' . $i . ']' ) . '" placeholder="'.__( '0.00', 'iwp' ).'" size="4" /></td>
-					</tr>';
-				}
-			}
-
-*/
-
-		} else {
-			echo '<tr class="invoiceItem">
-						<th class="check-column"><input type="checkbox" name="select" /></th>
-						<td><input type="text" value="" name="itemName0" style="width: 90%" class="" placeholder="Item" size="10" /></td>
-						<td><input type="number" step="any" min="0" value="" name="_itemPrice[0]" style="width: 90%" class="" placeholder="'.__( '0.00', 'iwp' ).'" size="2" /></td>
-						<td><input type="number" step="any" min="0" value="" name="_itemQTY[0]" style="width: 90%" class="" placeholder="'.__( '0', 'iwp' ).'" size="2" /></td>
-						<td class="lineTotal"></td>
-			</tr>';
+	/**
+	 * Save handler
+	 */
+function meta_box_save( $post_id ) {
+		if ( ! isset( $_POST['bookable_resource_details_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['bookable_resource_details_meta_box_nonce'], 'bookable_resource_details_meta_box' ) ) {
+			return $post_id;
 		}
-			
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return $post_id;
+		}
+		if ( ! in_array( $_POST['post_type'], $this->post_types ) ) {
+			return $post_id;
+		}
 
+		// Qty field
+		update_post_meta( $post_id, 'qty', wc_clean( $_POST['_wc_booking_qty'] ) );
 
-		?>
-		</tbody>
-	</table>
+		// Availability
+		$availability = array();
+		$row_size     = isset( $_POST[ "wc_booking_availability_type" ] ) ? sizeof( $_POST[ "wc_booking_availability_type" ] ) : 0;
+		for ( $i = 0; $i < $row_size; $i ++ ) {
+			$availability[ $i ]['type']     = wc_clean( $_POST[ "wc_booking_availability_type" ][ $i ] );
+			$availability[ $i ]['bookable'] = wc_clean( $_POST[ "wc_booking_availability_bookable" ][ $i ] );
 
-
-	<script type="text/javascript">
-		// Add a row
-		jQuery( document ).ready(function( $ ) {
-			$('#invoice').on( 'click', 'a.add', function( event ){
-				var size = $( this ).closest( '#invoice' ).find('tbody.invoicedItems tr').size();						
-				jQuery( '#invoice .invoicedItems tr:last').after('<tr class="invoiceItem">\
-					<th class="check-column"><input type="checkbox" name="select" /></th>\
-					<td><input type="text" value="" name="itemName[' + size + ']" style="width: 90%" class="" placeholder="Item" size="10" /></td>\
-					<td><input type="number" step="any" min="0" name="_itemPrice[' + size + ']" style="width: 90%" class="" placeholder="0.00" size="4" /></td>\
-					<td><input type="number" step="any" min="0" name="_itemQTY[' + size + ']" style="width: 90%" class="" placeholder="0.00" size="4" /></td>\
-					<td class="lineTotal"></td>\
-				</tr>');
-
-				event.preventDefault();
-
-			});
-		// Remove a row
-		jQuery('#invoice').on( 'click', 'a.remove', function(){
-				var answer = confirm("<?php _e( 'Delete the selected rates?', 'iwp' ); ?>")
-					if (answer) {
-						jQuery('#invoice .invoicedItems tr th.check-column input:checked').each(function(i, el){
-						jQuery(el).closest('tr').remove();
-					});
-				}
-				return false;
-			});
-
-		//Add Discount
-			$('#invoice').on( 'click', 'a.discount', function( event ){
-				var size = $( this ).closest( '#invoice' ).find('tfoot tr:first').size();						
-				jQuery( '#invoice tfoot tr:first').before('<tr class="invoiceItem">\
-					<th class="check-column" style="border-top: solid 0px #fff;"><input type="checkbox" name="select" /></th>\
-					<td><input type="text" value="" name="itemName[' + size + ']" style="width: 90%" class="" placeholder="Item" size="10" /></td>\
-					<td colspan="2"><input type="number" step="any" min="0" name="_itemPrice[' + size + ']" style="width: 90%" class="" placeholder="0.00" size="4" /></td>\
-					<td class="lineTotal"><input type="number" step="any" min="0" name="_discountTotatl" style="width: 90%" class="" placeholder="0.00" size="4" /></td>\
-				</tr>');
-				jQuery( 'a.discount' ).hide();
-
-				event.preventDefault();
-
-			});
-
-
-		});
-	</script>
-
-<?php
+			switch ( $availability[ $i ]['type'] ) {
+				case 'custom' :
+					$availability[ $i ]['from'] = wc_clean( $_POST[ "wc_booking_availability_from_date" ][ $i ] );
+					$availability[ $i ]['to']   = wc_clean( $_POST[ "wc_booking_availability_to_date" ][ $i ] );
+				break;
+				case 'months' :
+					$availability[ $i ]['from'] = wc_clean( $_POST[ "wc_booking_availability_from_month" ][ $i ] );
+					$availability[ $i ]['to']   = wc_clean( $_POST[ "wc_booking_availability_to_month" ][ $i ] );
+				break;
+				case 'weeks' :
+					$availability[ $i ]['from'] = wc_clean( $_POST[ "wc_booking_availability_from_week" ][ $i ] );
+					$availability[ $i ]['to']   = wc_clean( $_POST[ "wc_booking_availability_to_week" ][ $i ] );
+				break;
+				case 'days' :
+					$availability[ $i ]['from'] = wc_clean( $_POST[ "wc_booking_availability_from_day_of_week" ][ $i ] );
+					$availability[ $i ]['to']   = wc_clean( $_POST[ "wc_booking_availability_to_day_of_week" ][ $i ] );
+				break;
+				case 'time' :
+				case 'time:1' :
+				case 'time:2' :
+				case 'time:3' :
+				case 'time:4' :
+				case 'time:5' :
+				case 'time:6' :
+				case 'time:7' :
+					$availability[ $i ]['from'] = wc_booking_sanitize_time( $_POST[ "wc_booking_availability_from_time" ][ $i ] );
+					$availability[ $i ]['to']   = wc_booking_sanitize_time( $_POST[ "wc_booking_availability_to_time" ][ $i ] );
+				break;
+			}
+		}
+		update_post_meta( $post_id, '_wc_booking_availability', $availability );
+	}
 
 
 }
 
 
+
+
+function iwp_client($invoice_id) {
+  wp_enqueue_script('wpi_select2_js');
+  wp_enqueue_style('wpi_select2_css');
+
+  ?>
+
+  <script type="text/javascript">
+    jQuery( document ).ready(function(){
+      jQuery(".wpi_user_email_selection").select2({
+        placeholder: 'Select User',
+        multiple: false,
+        width: '100%',
+        minimumInputLength: 3,
+        ajax: {
+          url: ajaxurl,
+          dataType: 'json',
+          type: 'POST',
+          data: function (term, page) {
+            return {
+              action: 'wpi_search_email',
+              s: term
+            };
+          },
+          results: function (data, page) {
+            return {results: data};
+          }
+        },
+        initSelection: function(element, callback) {
+          callback(<?php echo json_encode(array('id'=>$user_email, 'title'=>$user_email)); ?>);
+        },
+        formatResult: function(o) {
+          return o.title;
+        },
+        formatSelection: function(o) {
+          return o.title;
+        },
+        escapeMarkup: function (m) { return m; }
+      });
+    });
+  </script>
+
+  <div class="wpi_user_email_selection_wrapper" style="margin: 10px 0;" >
+    <input type="text" value="<?php echo esc_attr($user_email); ?>" name="wpi_invoice[user_data][user_email]" class="wpi_user_email_selection" />
+  </div>
+
+
+		<input title="" value="" placeholder="First Name" name="iwp_invoice[user_data][first_name]" class="input_field  iwp_first_name" type="text" id="" style="width: 100%;">
+		<input title="" value="" placeholder="Last Name" name="iwp_invoice[user_data][last_name]" class="input_field  iwp_last_name" type="text" id="" style="width: 100%;">
+		<input title="" value="" placeholder="Company Name" name="iwp_invoice[user_data][company_name]" class="input_field  iwp_company_name" type="text" id="" style="width: 100%;">
+		<input title="" value="" placeholder="Phone Number" name="iwp_invoice[user_data][phonenumber]" class="input_field  iwp_phonenumber" type="text" id="" style="width: 100%;">
+		<input title="" value="" placeholder="Street Address" name="iwp_invoice[user_data][streetaddress]" class="input_field  iwp_streetaddress" type="text" id="" style="width: 100%;">
+		<input title="" value="" placeholder="Street Address 2" name="iwp_invoice[user_data][streetaddress2]" class="input_field  iwp_streetaddress2" type="text" id="" style="width: 100%;">
+		<input title="" value="" placeholder="City" name="iwp_invoice[user_data][city]" class="input_field  iwp_city" type="text" id="" style="width: 100%;">
+		<input title="" value="" placeholder="State" name="iwp_invoice[user_data][state]" class="input_field  iwp_state" type="text" id="" style="width: 100%;">
+		<input title="" value="" placeholder="ZIP" name="iwp_invoice[user_data][zip]" class="input_field  iwp_zip" type="text" id="" style="width: 100%;">
+
+
+
+<?php
+}
 

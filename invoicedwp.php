@@ -96,7 +96,7 @@ if( !class_exists( 'IWP' ) ) {
             define( 'IWP_PATH', plugin_dir_path( __FILE__ ) );
             define( 'IWP_VERSION', '1.0.0' );
             define( 'IWP_FILE', plugin_basename( __FILE__ ) );
-            define( 'IWP_URL', plugins_url( '/', IWP_FILE ) );
+            define( 'IWP_URL', plugins_url( '', IWP_FILE ) );
 
         }
 
@@ -111,20 +111,20 @@ if( !class_exists( 'IWP' ) ) {
         private function includes() {
             global $iwp_options;
 
-            
-
+            require_once IWP_PATH . 'admin/settings.php';
+            //$iwp_options = iwp_get_settings();
 
             // Include scripts
             require_once IWP_PATH . 'includes/scripts.php';
             require_once IWP_PATH . 'includes/functions.php';
 
             require_once IWP_PATH . 'admin/functions.php';
-            require_once IWP_PATH . 'admin/settings.php';
+            
             require_once IWP_PATH . 'admin/admin-pages.php';
             require_once IWP_PATH . 'admin/form-callbacks.php';
             require_once IWP_PATH . 'admin/meta.php';
 
-            $iwp_options = iwp_get_settings();
+            
 
             /**
              * @todo        The following files are not included in the boilerplate, but
