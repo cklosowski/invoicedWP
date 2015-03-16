@@ -204,8 +204,17 @@ if( !class_exists( 'IWP' ) ) {
              */
             public function iwp_setup_admin_meta() {
 
-                add_meta_box( 'iwp_client', __( 'Client Information' ), 'iwp_client', 'invoicedwp', 'side', 'low' );
-                add_meta_box( 'iwp_details', __( 'Billing Details' ), 'iwp_details', 'invoicedwp', 'normal', 'low' );
+                // Meta Boxes for the Invoice Page
+                add_meta_box( 'iwp_payment', __( 'Payment Information', 'iwp-txt' ), 'iwp_payment', 'invoicedwp', 'side' );
+                add_meta_box( 'iwp_client', __( 'Client Information', 'iwp-txt' ), 'iwp_client', 'invoicedwp', 'side', 'low' );
+                add_meta_box( 'iwp_details', __( 'Billing Details', 'iwp-txt' ), 'iwp_details', 'invoicedwp', 'normal', 'low' );
+
+                // Meta Boxes for the Line Item Page
+                add_meta_box( 'iwp_line_details', __( 'Line Item Details', 'iwp-txt' ), 'iwp_details', 'invoicedwp_template', 'normal', 'low' );                
+
+                remove_meta_box( 'commentstatusdiv', 'invoicedwp_template' , 'normal' );
+                remove_meta_box( 'commentsdiv', 'invoicedwp_template' , 'normal' );
+                remove_meta_box( 'slugdiv', 'invoicedwp_template' , 'normal' );
                 
             }
 

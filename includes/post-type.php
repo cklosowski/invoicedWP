@@ -49,6 +49,39 @@ function iwp_setup_init() {
 
 	register_post_type( 'invoicedwp', $args );
 
+
+	$show_in_menu = 'invoicedwp';
+
+	register_post_type( 'invoicedWP_template',
+		array(
+			'labels' => array(
+				'name'      			=> __( 'Line Items', 'invoicedwp' ),
+				'singular_name'			=> __( 'Line Item', 'invoicedwp' ),
+				'menu_name'    			=> _x( 'Line Items', 'Admin menu name', 'invoicedwp' ),
+				'add_new'     			=> __( 'Add Line Items', 'invoicedwp' ),
+				'add_new_item'    		=> __( 'Add New Line Items', 'invoicedwp' ),
+				'edit'      			=> __( 'Edit', 'invoicedwp' ),
+				'edit_item'    			=> __( 'Edit Line Items', 'invoicedwp' ),
+				'new_item'     			=> __( 'New Line Items', 'invoicedwp' ),
+				'view'      			=> __( 'View Line Itemss', 'invoicedwp' ),
+				'view_item'    			=> __( 'View Line Items', 'invoicedwp' ),
+				'search_items'    		=> __( 'Search Line Itemss', 'invoicedwp' ),
+				'not_found'    			=> __( 'No Line Itemss found', 'invoicedwp' ),
+				'not_found_in_trash'	=> __( 'No Line Itemss found in trash', 'invoicedwp' ),
+				'parent'     			=> __( 'Parent Line Items', 'invoicedwp' )
+				),
+
+			'public'  				=> true,
+			'has_archive' 			=> true,
+			'publicly_queryable'	=> false,
+			'exclude_from_search'	=> true,
+			'show_in_menu' 	 		=> 'edit.php?post_type=invoicedwp',
+			'hierarchical' 			=> false,
+			'supports'   			=> array( 'title', 'comments' )
+		)
+	);
+
+
 	register_post_status( 'quote', array(
 		'label'                     => __( 'Quotes', 'invoicedwp' ),
 		'public'                    => false,

@@ -61,6 +61,7 @@ function iwp_details($post_id) {
 								</tr>
 							</thead>
 							<tfoot>
+							<?php if( $_REQUEST['post_type'] <> 'invoicedwp_template' ) { ?>
 								<tr>
 									<td colspan="6" style="background-color: #f9f9f9;">
 										<dl style="width: 300px; float: right;">
@@ -77,20 +78,30 @@ function iwp_details($post_id) {
 										</dl>
 						            </td>
 								</tr>
+							<?php } ?>
 								<tr>
 									<th colspan="6">
+									<?php if( $_REQUEST['post_type'] <> 'invoicedwp_template' ) { ?>
 										<a href="#" class="button button-primary add_discount" data-row="<?php
 											ob_start();
 											include( 'templates/meta-discount.php' );
 											$html = ob_get_clean();
 											echo esc_attr( $html );
 										?>" style="margin-left: 10px;"><?php _e( 'Add Discount', 'iwp-invoiced' ); ?></a>
+									<?php } ?>
 										<a href="#" class="button button-primary add_row" data-row="<?php
 											ob_start();
 											include( 'templates/meta-content.php' );
 											$html = ob_get_clean();
 											echo esc_attr( $html );
 										?>" style="margin-left: 10px;"><?php _e( 'Add Line', 'iwp-invoiced' ); ?></a>
+									<?php if( $_REQUEST['post_type'] <> 'invoicedwp_template' ) { ?>
+										<select style="float: right;">
+											<option value=""></option>
+											<option value="">Test Value to make sure it fits the value on the page.</option>
+										</select>
+									<?php } ?>
+
 									</th>
 								</tr>
 							</tfoot>
@@ -191,7 +202,10 @@ function meta_box_save( $post_id ) {
 
 }
 
+function iwp_payment( $invoice_id ) {
 
+
+}
 
 
 function iwp_client($invoice_id) {
