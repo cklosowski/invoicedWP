@@ -11,100 +11,6 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 
-
-		/**
-		 * [ryno_setup_staff_init description]
-		 * @return [type] [description]
-		 */
-		function iwp_setup_init() {
-			$labels = array(
-				'name' 					=> _x('Invoices', 'post type general name'),
-				'singular_name' 		=> _x('Invoice', 'post type singular name'),
-				'add_new' 				=> _x('Add Invoice', 'Invoice'),
-				'add_new_item' 			=> __('Add Invoice'),
-				'edit_item' 			=> __('Edit Invoice'),
-				'new_item' 				=> __('New Invoice'),
-				'view_item' 			=> __('View Invoice'),
-				'search_items' 			=> __('Search Invoices'),
-				'exclude_from_search' 	=> true,
-				'not_found' 			=>  __('No invoices found'),
-				'not_found_in_trash' 	=> __('No invoices found in Trash'),
-				'parent_item_colon' 	=> '',
-				'all_items' 			=> 'Invoiced WP',
-				'menu_name' 			=> 'Invoiced WP'
-			);
-
-			$args = array(
-				'labels' 				=> $labels,
-				'public' 				=> true,
-				'publicly_queryable' 	=> false,
-				'show_ui' 				=> true,
-				'show_in_menu' 			=> true,
-				'query_var' 			=> true,
-				'rewrite' 				=> true,
-				'capability_type' 		=> 'page',
-				'has_archive' 			=> false,
-				'hierarchical' 			=> false,
-				'menu_position' 		=> 20,
-				'rewrite' 				=> array('slug'=>'invoiced','with_front'=>false),
-				'supports' 				=> array( 'title', 'editor' )
-			);
-
-			register_post_type( 'invoicedwp', $args );
-
-			register_post_status( 'quote', array(
-				'label'                     => __( 'Quotes', 'invoicedwp' ),
-				'public'                    => false,
-				'exclude_from_search'       => false,
-				'show_in_admin_all_list'    => true,
-				'show_in_admin_status_list' => true,
-				'label_count'               => _n_noop( 'Quote <span class="count">(%s)</span>', 'Quote <span class="count">(%s)</span>' )
-			) );
-		}
-
-		/**
-		 * Adds custom columns for staff-member CPT admin display
-		 *
-		 * @param    array    $cols    New column titles
-		 * @return   array             Column titles
-		 */
-		function iwp_custom_columns( $cols ) {
-			$cols = array(
-				'cb'			=> '<input type="checkbox" />',
-				'title'			=> __( 'Name' ),
-				'paid'			=> __( 'Amount Paid' ),
-				'recipient'		=> __( 'Recipient' ),
-				'invoiceID'		=> __( 'Invoice ID')
-
-			);
-			return $cols;
-		}
-
-		/**
-		 * [ryno_staff_display_custom_columns description]
-		 * @param  [type] $column [description]
-		 * @return [type]         [description]
-		 */
-		function iwp_display_custom_columns( $column ) {
-			global $post;
-
-			$custom = get_post_custom();
-			$iwp_columns = unserialize( $custom['_invoicedwp'][0] );
-
-			//$_staff_title 	= $iwp_columns[""];
-			
-			/*switch ( $column ) {
-				case "photo":
-					if( has_post_thumbnail() ){
-						echo get_the_post_thumbnail( $post->ID, array( 75, 75 ) );
-					}
-				break;
-
-			}*/
-		}
-
-add_action( 'post_submitbox_misc_actions', 'myInvoiceSettings' );
-add_action( 'save_post', 'save_myInvoiceSettings' );
 function myInvoiceSettings() {
     global $post;
 
@@ -117,15 +23,24 @@ function myInvoiceSettings() {
     		$iwp = array( 'isQuote' => 0 );
 
     	}
+    	wp_nonce_field( plugin_basename(__FILE__), 'iwp_extra_nonce' );
+
+    	$display = '<input type="checkbox" name="isQuote" id="isQuote" value="' . $iwp['isQuote'] . '" ' . checked( $iwp['isQuote'], 1, false ) .' /> <label for="isQuote" class="">Quote</label><br />';
+		$display .= '<input type="checkbox" name="reoccuringPayment" id="reoccuringPayment" value="' . $iwp['reoccuringPayment'] . '" ' . checked( $iwp['reoccuringPayment'], 1, false ) .' /> <label for="reoccuringPayment" class="">Reoccuring Bill</label><br />';
+    	// Need to add jQuery to update this section to slide open when the box is checked.    	
+
+    	$display .= '<input type="checkbox" name="minPayment" id="minPayment" value="' . $iwp['minPayment'] . '" ' . checked( $iwp['minPayment'], 1, false ) .' /> <label for="minPayment" class="">Minimum Payment</label><br />';
+    	$display .= '<div style="display: none;"><input type="text" name="minPaymentText" id="minPaymentText" value="' . $iwp['minPaymentText'] . '" placeholder="Total On Invoice" /><br /></div>'; // Need to add jQuery to update the place holder to be the invoice total.
+    	
 
         echo '<div class="misc-pub-section misc-pub-section-last" style="border-top: 1px solid #eee;">';
-    
-        wp_nonce_field( plugin_basename(__FILE__), 'isQuote_nonce' );
-    
-        echo '<input type="checkbox" name="isQuote" id="isQuote" value="' . $iwp['isQuote'] . '" ' . checked( $iwp['isQuote'], 1, false ) .' /> <label for="isQuote" class="">Quote</label><br />';
+    	echo apply_filters( 'iwp_extra_options', $display );
         echo '</div>';
     }
 }
+add_action( 'post_submitbox_misc_actions', 'myInvoiceSettings' );
+
+
 
 function save_myInvoiceSettings($post_id) {
 	
@@ -138,7 +53,7 @@ function save_myInvoiceSettings($post_id) {
     if (!isset($_POST['post_type']) )
         return;
 
-    if ( !wp_verify_nonce( $_POST['isQuote_nonce'], plugin_basename(__FILE__) ) )
+    if ( !wp_verify_nonce( $_POST['iwp_extra_nonce'], plugin_basename(__FILE__) ) )
         return;
 
     if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) 
@@ -153,10 +68,13 @@ function save_myInvoiceSettings($post_id) {
     	$iwp['isQuote'] = 0;
     }
 
+    var_dump( $_POST );
+
     update_post_meta( $post_id, '_invoicedwp', $iwp );
 
 
 }
+add_action( 'save_post', 'save_myInvoiceSettings' );
 
 
 function iwp_get_roles() {

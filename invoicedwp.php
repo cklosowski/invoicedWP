@@ -116,6 +116,8 @@ if( !class_exists( 'IWP' ) ) {
 
             // Include scripts
             require_once IWP_PATH . 'includes/scripts.php';
+            require_once IWP_PATH . 'includes/post-type.php';
+            require_once IWP_PATH . 'admin/ajax-functions.php';
             require_once IWP_PATH . 'includes/functions.php';
 
             require_once IWP_PATH . 'admin/functions.php';
@@ -172,7 +174,10 @@ if( !class_exists( 'IWP' ) ) {
                 add_filter( 'manage_invoicedwp_posts_columns', 'iwp_custom_columns' );
                 add_action( 'manage_posts_custom_column', 'iwp_display_custom_columns' );
 
+                add_action( 'wp_ajax_iwp_search_email', array( 'IWP_Ajax', 'search_email' ) );
+                add_action( 'wp_ajax_iwp_search_recipient', array( 'IWP_Ajax', 'search_recipient' ) );
 
+                add_action( 'wp_ajax_iwp_get_user_data', create_function( '', ' die(IWP_Ajax::get_user_data($_REQUEST["user_email"]));' ) );
             }
         }
 
@@ -274,9 +279,7 @@ if( !class_exists( 'IWP' ) ) {
         do_action( 'iwp_register_additional_settings' );
     }
 
-        
-        
-    }
+}
 
 
 /**
@@ -284,7 +287,7 @@ if( !class_exists( 'IWP' ) ) {
  * instance to functions everywhere
  *
  * @since       1.0.0
- * @return      \IWP The one true IWP
+ * @return      IWP The one true IWP
  *
  * @todo        Inclusion of the activation code below isn't mandatory, but
  *              can prevent any number of errors, including fatal errors, in

@@ -18,13 +18,38 @@ function iwp_details($post_id) {
 		?>
 		<style type="text/css">
 			#minor-publishing-actions, #visibility { display:none }
+
+			dt {
+				clear: left;
+				float: left;
+				text-align: left;
+
+			}
+
+			dd {
+				clear: right;
+			    float: right;
+			    font-weight: bold;
+			    margin-left: 0;
+			    margin-right: 15px;
+			    text-align: right;
+			    width: 130px;
+
+			}
+
+			input.iwp_flatten_input {
+				background: none repeat scroll 0 0 transparent !important;
+				border: 0 none !important;
+				color: #000 !important;
+				box-shadow: none !important;
+			}
 		</style>
 
 		<div class="iwp_options_panel iwp">
 			<div class="panel-wrap" id="invoiced_availability">
 				<div class="options_group">
 					<div class="table_grid">
-						<table class="widefat">
+						<table id="invoicedDisplay" class="widefat">
 							<thead>
 								<tr>
 									<th class="sort" width="1%">&nbsp;</th>
@@ -32,27 +57,67 @@ function iwp_details($post_id) {
 									<th style="width: 70px;" ><?php _e( 'Qty', 'iwp-invoiced' ); ?></th>
 									<th style="width: 70px;" ><?php _e( 'Price', 'iwp-invoiced' ); ?></th>
 									<th style="width: 70px;" ><?php _e( 'Total', 'iwp-invoiced' ); ?></th>
-									<th class="remove" width="1%">&nbsp;</th>
+									<th class="remove" style="width:20px !important;">&nbsp;</th>
 								</tr>
 							</thead>
 							<tfoot>
 								<tr>
+									<td colspan="6" style="background-color: #f9f9f9;">
+										<dl style="width: 300px; float: right;">
+											<dt class="hidden column-invoice-details-subtotal">Subtotal Excluding Tax:</dt>
+											<dd class="hidden column-invoice-details-subtotal"><input value="" disabled="true" class="calculate_invoice_subtotal iwp_flatten_input"></dd>
+											<dt class="hidden column-invoice-details-adjustments" style="display: none;">Adjustments:</dt>
+											<dd class="hidden column-invoice-details-adjustments" style="display: none;"><input value="" disabled="true" class="calculate_invoice_adjustments iwp_flatten_input"></dd>
+											<dt class="hidden column-invoice-details-discounts" style="display: none;">Discount:</dt>
+											<dd class="hidden column-invoice-details-discounts" style="display: none;"><input value="" disabled="true" class="iwp_flatten_input calculate_discount_total"></dd>
+											<dt class="hidden column-invoice-details-tax" style="display: none;">Sales Tax:</dt>
+											<dd class="hidden column-invoice-details-tax" style="display: none;"><input value="" disabled="true" class="calculate_invoice_tax iwp_flatten_input"></dd>
+											<dt><b>Balance:</b></dt>
+											<dd><input value="0.00" disabled="true" class="calculate_invoice_total iwp_flatten_input"></dd>
+										</dl>
+						            </td>
+								</tr>
+								<tr>
 									<th colspan="6">
-										<a href="#" class="button button-primary add_row" data-row="<?php
+										<a href="#" class="button button-primary add_discount" data-row="<?php
 											ob_start();
-											include( 'meta-content.php' );
+											include( 'templates/meta-discount.php' );
 											$html = ob_get_clean();
 											echo esc_attr( $html );
-										?>"><?php _e( 'Add Range', 'iwp-invoiced' ); ?></a>
+										?>" style="margin-left: 10px;"><?php _e( 'Add Discount', 'iwp-invoiced' ); ?></a>
+										<a href="#" class="button button-primary add_row" data-row="<?php
+											ob_start();
+											include( 'templates/meta-content.php' );
+											$html = ob_get_clean();
+											echo esc_attr( $html );
+										?>" style="margin-left: 10px;"><?php _e( 'Add Line', 'iwp-invoiced' ); ?></a>
 									</th>
 								</tr>
 							</tfoot>
 							<tbody id="availability_rows">
+								<tr data-row="1">
+									<td class="sort">&nbsp;</td>
+									<td style="border-right: 0 none !important;"> <?php // Name ?>
+										<input class="item_name input_field" value="" name="iwp_invoice_name[0]">
+										<span style="text-size 9px;"><a class="toggleDescription"  href="#" >Add Description</a></span>
+										<textarea class="item_name input_field iwp_invoice_description" value="" name="iwp_invoice_description[0]" style="display: none; width: 100%; margin-top: 5px; font-size= 0.88em;" placeholder="Description"></textarea>
+									</td>
+									<td style="border-right: 0 none !important;"> <?php // Qty ?>
+										<input class="item_name input_field" value="" name="iwp_invoice_qty[0]">
+									</td>
+									<td style="border-right: 0 none !important;"> <?php // price ?>
+										<input class="item_name input_field" value="" name="iwp_invoice_price[0]">
+									</td>
+									<td> <?php // Total ?>
+										<div class="price">$0.00</div>
+									</td>
+									<td class="remove">&nbsp;</td>
+								</tr>
 								<?php
 									$values = get_post_meta( $post_id, '_wc_booking_availability', true );
 									if ( ! empty( $values ) && is_array( $values ) ) {
 										foreach ( $values as $availability ) {
-											include( 'meta-content.php' );
+											include( 'templates/meta-content.php' );
 										}
 									}
 								?>
@@ -137,7 +202,7 @@ function iwp_client($invoice_id) {
 
   <script type="text/javascript">
     jQuery( document ).ready(function(){
-      jQuery(".wpi_user_email_selection").select2({
+      jQuery(".iwp_email_selection").select2({
         placeholder: 'Select User',
         multiple: false,
         width: '100%',
@@ -148,7 +213,7 @@ function iwp_client($invoice_id) {
           type: 'POST',
           data: function (term, page) {
             return {
-              action: 'wpi_search_email',
+              action: 'iwp_search_email',
               s: term
             };
           },
@@ -168,11 +233,11 @@ function iwp_client($invoice_id) {
         escapeMarkup: function (m) { return m; }
       });
     });
-  </script>
-
-  <div class="wpi_user_email_selection_wrapper" style="margin: 10px 0;" >
-    <input type="text" value="<?php echo esc_attr($user_email); ?>" name="wpi_invoice[user_data][user_email]" class="wpi_user_email_selection" />
-  </div>
+	</script>
+	<div class="iwp_newUser">
+		<div class="iwp_email_selection_wrapper" style="margin: 10px 0;" >
+			<input type="text" value="<?php echo esc_attr($user_email); ?>" name="iwp_invoice[user_data][user_email]" class="iwp_email_selection" />
+		</div>
 
 
 		<input title="" value="" placeholder="First Name" name="iwp_invoice[user_data][first_name]" class="input_field  iwp_first_name" type="text" id="" style="width: 100%;">
@@ -184,7 +249,7 @@ function iwp_client($invoice_id) {
 		<input title="" value="" placeholder="City" name="iwp_invoice[user_data][city]" class="input_field  iwp_city" type="text" id="" style="width: 100%;">
 		<input title="" value="" placeholder="State" name="iwp_invoice[user_data][state]" class="input_field  iwp_state" type="text" id="" style="width: 100%;">
 		<input title="" value="" placeholder="ZIP" name="iwp_invoice[user_data][zip]" class="input_field  iwp_zip" type="text" id="" style="width: 100%;">
-
+	</div>
 
 
 <?php
