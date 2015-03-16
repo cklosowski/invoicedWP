@@ -1,6 +1,4 @@
-
-
-jQuery(document).ready(function($) {
+jQuery(document).ready(function( $ ) {
 
 	if ( ! window.console ) {
 		window.console = {
@@ -79,6 +77,7 @@ jQuery(document).ready(function($) {
 			button.attr('disabled', 'disabled');
 		});
 
+
 	$('.wc-invoiced-booking-form, .wc-invoiced-booking-form-button').show();
 
 	$( '.add_row' ).click(function(){
@@ -92,8 +91,21 @@ jQuery(document).ready(function($) {
 		return false;
 	});
 
-	$('body').on('click', 'td.toggleDescription', function(){
-		$(this).closest('a.iwp_invoice_description').toggleClass('showElement');;
+	$('body').on('click', 'td.remove_discount', function(){
+		$( '.add_discount' ).show();
+		return false;
+	});
+
+	$( '.add_discount' ).click(function(){
+		$(this).closest('table').find('tfoot').prepend( $( this ).data( 'row' ) );
+		$('body').trigger('row_added');
+		$(this).hide();
+		return false;
+	});
+
+	$('body').on('click', '.toggleDescription', function(){
+		$(this).closest('td').find('.iwp_invoice_description').show();
+		$(this).hide();
 		return false;
 	});
 
@@ -122,4 +134,25 @@ jQuery(document).ready(function($) {
 		showOn: 'button',
 		buttonImageOnly: true
 	});
+
+	$( ".iwp_email_selection" ).change( function () {
+
+	    //** Clear out current values just in case */
+	    $( '.iwp_newUser input' ).val( '' );
+
+	    $.post( ajaxurl, {
+	      action: 'iwp_get_user_data',
+	      user_email: jQuery( this ).val()
+	    }, function ( result ) {
+	      if ( result ) {
+	        user_data = result.user_data;
+
+	        for ( var field in user_data ) {
+	          jQuery( '.iwp_newUser .iwp_' + field ).val( user_data[field] );
+
+	        }
+	      }
+	    }, 'json' );
+
+	  } );
 });
