@@ -25,11 +25,13 @@ function myInvoiceSettings() {
     	}
     	wp_nonce_field( plugin_basename(__FILE__), 'iwp_extra_nonce' );
 
+        
     	$display = '<input type="checkbox" name="isQuote" id="isQuote" value="' . $iwp['isQuote'] . '" ' . checked( $iwp['isQuote'], 1, false ) .' /> <label for="isQuote" class="">Quote</label><br />';
+
 		$display .= '<input type="checkbox" name="reoccuringPayment" id="reoccuringPayment" value="' . $iwp['reoccuringPayment'] . '" ' . checked( $iwp['reoccuringPayment'], 1, false ) .' /> <label for="reoccuringPayment" class="">Reoccuring Bill</label><br />';
     	// Need to add jQuery to update this section to slide open when the box is checked.    	
-
-    	$display .= '<input type="checkbox" name="minPayment" id="minPayment" value="' . $iwp['minPayment'] . '" ' . checked( $iwp['minPayment'], 1, false ) .' /> <label for="minPayment" class="">Minimum Payment</label><br />';
+    	
+        $display .= '<input type="checkbox" name="minPayment" id="minPayment" value="' . $iwp['minPayment'] . '" ' . checked( $iwp['minPayment'], 1, false ) .' /> <label for="minPayment" class="">Minimum Payment</label><br />';    
     	$display .= '<div style="display: none;"><input type="text" name="minPaymentText" id="minPaymentText" value="' . $iwp['minPaymentText'] . '" placeholder="Total On Invoice" /><br /></div>'; // Need to add jQuery to update the place holder to be the invoice total.
     	
 
@@ -46,9 +48,7 @@ function save_myInvoiceSettings($post_id) {
 	
 	$custom = get_post_custom( $post_id );
 	if( !empty($custom['_invoicedwp']) )
-		$iwp = maybe_unserialize( $custom['_invoicedwp'][0] );
-
-	//var_dump($_POST);
+		$iwp = maybe_unserialize( $custom );
 	
     if (!isset($_POST['post_type']) )
         return;
@@ -68,10 +68,24 @@ function save_myInvoiceSettings($post_id) {
     	$iwp['isQuote'] = 0;
     }
 
-    var_dump( $_POST );
 
-    update_post_meta( $post_id, '_invoicedwp', $iwp );
+    $count = 0;
+    $i = 0;
+    $reportOptions = array();
 
+    $totalLines = count( $_POST["iwp_invoice_price"] );
+
+    $invoicePost["iwp_invoice_name"]            = $_POST["iwp_invoice_name"];
+    $invoicePost["iwp_invoice_description"]     = $_POST["iwp_invoice_description"];
+    $invoicePost["iwp_invoice_qty"]             = $_POST["iwp_invoice_qty"];
+    $invoicePost["iwp_invoice_price"]           = $_POST["iwp_invoice_price"];
+
+    foreach ( $invoicePost as $key => $value)
+        foreach( $value as $lines )
+            $reportOptions[$key][] = $lines;
+
+    update_post_meta( $post_id, '_invoicedLineItems', $reportOptions ); // Main Line items for the invoice
+    update_post_meta( $post_id, '_invoicedwp', $iwp ); // Saves if the invoice is only a quote
 
 }
 add_action( 'save_post', 'save_myInvoiceSettings' );

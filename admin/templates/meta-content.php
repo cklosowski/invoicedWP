@@ -1,18 +1,26 @@
-<tr data-row=''>
+<?php
+if ( isset( $_POST['version'] ) ) {
+  $post_data = $_POST['version'];
+}
+
+?>
+
+
+<tr>
 	<td class="sort">&nbsp;</td>
 	<td style="border-right: 0 none !important;"> <?php // Name ?>
-		<input class="item_name input_field" value="" name="iwp_invoice_name[<?php echo $value; ?>]">
+		<input class="item_name input_field iwp_invoice_name[<?php echo $post_data; ?>]" value="<?php echo $values["iwp_invoice_name"][$i]; ?>" name="iwp_invoice_name[<?php echo $post_data; ?>]">
 		<span style="text-size 10px;"><a class="toggleDescription"  href="#" >Add Description</a></span>
-		<textarea class="item_name input_field iwp_invoice_description" value="" name="iwp_invoice_description[<?php echo $value; ?>]" style="display: none; width: 100%; margin-top: 5px; font-size= 0.88em;" placeholder="Description"></textarea>
+		<textarea class="item_name input_field iwp_invoice_description iwp_invoice_description[<?php echo $post_data; ?>]" value="" name="iwp_invoice_description[<?php echo $post_data; ?>]" style="display: none; width: 100%; margin-top: 5px; font-size= 0.88em;" placeholder="Description"></textarea>
 	</td>
 	<td style="border-right: 0 none !important;"> <?php // Qty ?>
-		<input class="item_name input_field" value="" name="iwp_invoice_qty[<?php echo $value; ?>]">
+		<input class="item_name input_field iwp_invoice_qty[<?php echo $post_data; ?>]" value="" name="iwp_invoice_qty[<?php echo $post_data; ?>]">
 	</td>
 	<td style="border-right: 0 none !important;"> <?php // price ?>
-		<input class="item_name input_field" value="" name="iwp_invoice_price[<?php echo $value; ?>]">
+		<input class="item_name input_field iwp_invoice_price[<?php echo $post_data; ?>]" value="" name="iwp_invoice_price[<?php echo $post_data; ?>]">
 	</td>
-	<td> <?php // Total ?>
-		<div class="price">$0.00</div>
+	<td>
+		<input class="calculate_invoice_total iwp_flatten_input iwp_invoice_total[<?php echo $i; ?>]" disabled="true" value="<?php echo $values["iwp_invoice_total"][$i]; ?>" name="iwp_invoice_total[<?php echo $i; ?>]" placeholder="$ 0.00">
 	</td>
 	<td class="remove">&nbsp;</td>
 </tr>

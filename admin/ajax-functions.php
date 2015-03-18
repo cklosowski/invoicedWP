@@ -77,4 +77,14 @@ class IWP_Ajax {
     }
 
   }
+
+
+  public function add_row() {
+    $post_data = $_POST['version'];
+    ob_start();
+    include( IWP_DIR . 'admin/templates/meta-content.php' );
+    echo ob_get_clean();
+    wp_die( );
+  }
+
 }

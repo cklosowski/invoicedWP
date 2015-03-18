@@ -14,7 +14,10 @@ if( !defined( 'ABSPATH' ) ) exit;
 
 function iwp_details($post_id) {
 		wp_enqueue_script( 'wc_invoiced_writepanel_js' );
-		wp_nonce_field( 'bookable_resource_details_meta_box', 'bookable_resource_details_meta_box_nonce' );
+
+		$values = get_post_meta( $post_id->ID, '_invoicedLineItems', true );
+		$count = count( $values["iwp_invoice_name"] );
+
 		?>
 		<style type="text/css">
 			#minor-publishing-actions, #visibility { display:none }
@@ -61,7 +64,10 @@ function iwp_details($post_id) {
 								</tr>
 							</thead>
 							<tfoot>
-							<?php if( $_REQUEST['post_type'] <> 'invoicedwp_template' ) { ?>
+							
+							<?php 
+							if( isset( $_REQUEST['post_type'] ) ) {
+								if( $_REQUEST['post_type'] <> 'invoicedwp_template' ) { ?>
 								<tr>
 									<td colspan="6" style="background-color: #f9f9f9;">
 										<dl style="width: 300px; float: right;">
@@ -78,7 +84,10 @@ function iwp_details($post_id) {
 										</dl>
 						            </td>
 								</tr>
-							<?php } ?>
+
+							<?php
+								}
+							} ?>
 								<tr>
 									<th colspan="6">
 									<?php if( $_REQUEST['post_type'] <> 'invoicedwp_template' ) { ?>
@@ -89,12 +98,7 @@ function iwp_details($post_id) {
 											echo esc_attr( $html );
 										?>" style="margin-left: 10px;"><?php _e( 'Add Discount', 'iwp-invoiced' ); ?></a>
 									<?php } ?>
-										<a href="#" class="button button-primary add_row" data-row="<?php
-											ob_start();
-											include( 'templates/meta-content.php' );
-											$html = ob_get_clean();
-											echo esc_attr( $html );
-										?>" style="margin-left: 10px;"><?php _e( 'Add Line', 'iwp-invoiced' ); ?></a>
+										<a href="#" class="button button-primary add_row" style="margin-left: 10px;"><?php _e( 'Add Line', 'iwp-invoiced' ); ?></a>
 									<?php if( $_REQUEST['post_type'] <> 'invoicedwp_template' ) { ?>
 										<select style="float: right;">
 											<option value=""></option>
@@ -105,8 +109,12 @@ function iwp_details($post_id) {
 									</th>
 								</tr>
 							</tfoot>
+
+
+
 							<tbody id="availability_rows">
-								<tr data-row="1">
+							<?php if( $count == 1 ) { ?>
+								<tr>
 									<td class="sort">&nbsp;</td>
 									<td style="border-right: 0 none !important;"> <?php // Name ?>
 										<input class="item_name input_field" value="" name="iwp_invoice_name[0]">
@@ -124,16 +132,68 @@ function iwp_details($post_id) {
 									</td>
 									<td class="remove">&nbsp;</td>
 								</tr>
-								<?php
-									$values = get_post_meta( $post_id, '_wc_booking_availability', true );
-									if ( ! empty( $values ) && is_array( $values ) ) {
-										foreach ( $values as $availability ) {
-											include( 'templates/meta-content.php' );
+
+							<?php
+							}
+									$i = 0;
+
+									
+
+									if( $count != 1 ) {
+										for( $i = 0; $i < $count; $i++ ) {
+											?>
+											<tr>
+												<td class="sort">&nbsp;</td>
+												<td style="border-right: 0 none !important;"> <?php // Name ?>
+													<input class="item_name input_field" value="<?php echo $values["iwp_invoice_name"][$i]; ?>" name="iwp_invoice_name[<?php echo $i; ?>]">
+													<?php if( empty( $values["iwp_invoice_description"][$i] ) ) {  ?> <span style="text-size 10px;"><a class="toggleDescription"  href="#" >Add Description</a></span> <?php } ?>
+													<textarea class="item_name input_field iwp_invoice_description" value="" name="iwp_invoice_description[<?php echo $i; ?>]" style="<?php if( empty( $values["iwp_invoice_description"][$i] ) ) { echo 'display: none;'; } ?> width: 100%; margin-top: 5px; font-size= 0.88em;" placeholder="Description"><?php echo $values["iwp_invoice_description"][$i]; ?></textarea>
+												</td>
+												<td style="border-right: 0 none !important;"> <?php // Qty ?>
+													<input class="item_name input_field" value="<?php echo $values["iwp_invoice_qty"][$i]; ?>" name="iwp_invoice_qty[<?php echo $i; ?>]">
+												</td>
+												<td style="border-right: 0 none !important;"> <?php // price ?>
+													<input class="item_name input_field" value="<?php echo $values["iwp_invoice_price"][$i]; ?>" name="iwp_invoice_price[<?php echo $i; ?>]">
+												</td>
+												<td>
+													<input class="calculate_invoice_total iwp_flatten_input" disabled="true" value="<?php echo $values["iwp_invoice_total"][$i]; ?>" name="iwp_invoice_total[<?php echo $i; ?>]" placeholder="$ 0.00">
+												</td>
+												<td class="remove">&nbsp;</td>
+											</tr>
+
+											<?php
 										}
 									}
 								?>
 							</tbody>
 						</table>
+						<script>
+						jQuery(document).ready(function( $ ) {
+
+							var rowNumber = <?php echo $count - 1; ?>;
+							
+				 			$( ".add_row" ).click(function( e ) {
+				 				e.preventDefault();
+						 		
+						 		rowNumber = rowNumber + 1;
+							    var data = {
+									'action': 'iwp_add_row',
+									'version': rowNumber
+								};
+
+								$.post(ajaxurl, data, function(response) {
+									$("tbody#availability_rows").append( response );
+								});
+						    });
+
+
+
+
+
+
+
+			 			});
+			 			</script>
 					</div>
 				</div>
 				<div class="clear"></div>
