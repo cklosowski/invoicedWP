@@ -668,6 +668,18 @@ table.wp-list-table span.product-type.booking::before {
 
  }
 
+ .input_total {
+    text-align: right;
+    margin-top: -3px !important;
+    float: right !important;
+    width: 85% !important;
+
+ }
+
+ .hidden_total{
+    display: none !important;
+ }
+
 
 #post-body {
   margin-bottom: 80px;

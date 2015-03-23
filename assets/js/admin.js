@@ -90,6 +90,13 @@ jQuery(document).ready(function( $ ) {
 	//	$('body').trigger('row_added');
 	//	return false;
 	//});
+	
+
+
+
+
+
+
 
 	$('body').on('click', 'td.remove', function(){
 		$(this).closest('tr').remove();
@@ -114,7 +121,7 @@ jQuery(document).ready(function( $ ) {
 		return false;
 	});
 
-	$('#availability_rows, #pricing_rows').sortable({
+	$('#invoiced_rows, #pricing_rows').sortable({
 		items:'tr',
 		cursor:'move',
 		axis:'y',

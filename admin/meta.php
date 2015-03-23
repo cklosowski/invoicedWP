@@ -59,15 +59,11 @@ function iwp_details($post_id) {
 									<th><?php _e( 'Name', 'iwp-invoiced' ); ?></th>
 									<th style="width: 70px;" ><?php _e( 'Qty', 'iwp-invoiced' ); ?></th>
 									<th style="width: 70px;" ><?php _e( 'Price', 'iwp-invoiced' ); ?></th>
-									<th style="width: 70px;" ><?php _e( 'Total', 'iwp-invoiced' ); ?></th>
+									<th style="width: 90px;" ><?php _e( 'Total', 'iwp-invoiced' ); ?></th>
 									<th class="remove" style="width:20px !important;">&nbsp;</th>
 								</tr>
 							</thead>
 							<tfoot>
-							
-							<?php 
-							if( isset( $_REQUEST['post_type'] ) ) {
-								if( $_REQUEST['post_type'] <> 'invoicedwp_template' ) { ?>
 								<tr>
 									<td colspan="6" style="background-color: #f9f9f9;">
 										<dl style="width: 300px; float: right;">
@@ -85,19 +81,15 @@ function iwp_details($post_id) {
 						            </td>
 								</tr>
 
-							<?php
-								}
-							} ?>
+
 								<tr>
 									<th colspan="6">
-									<?php if( $_REQUEST['post_type'] <> 'invoicedwp_template' ) { ?>
 										<a href="#" class="button button-primary add_discount" data-row="<?php
 											ob_start();
 											include( 'templates/meta-discount.php' );
 											$html = ob_get_clean();
 											echo esc_attr( $html );
 										?>" style="margin-left: 10px;"><?php _e( 'Add Discount', 'iwp-invoiced' ); ?></a>
-									<?php } ?>
 										<a href="#" class="button button-primary add_row" style="margin-left: 10px;"><?php _e( 'Add Line', 'iwp-invoiced' ); ?></a>
 									<?php if( $_REQUEST['post_type'] <> 'invoicedwp_template' ) { ?>
 										<select style="float: right;">
@@ -112,33 +104,30 @@ function iwp_details($post_id) {
 
 
 
-							<tbody id="availability_rows">
+							<tbody id="invoiced_rows">
 							<?php if( $count == 1 ) { ?>
 								<tr>
 									<td class="sort">&nbsp;</td>
 									<td style="border-right: 0 none !important;"> <?php // Name ?>
 										<input class="item_name input_field" value="" name="iwp_invoice_name[0]">
 										<span style="text-size 9px;"><a class="toggleDescription"  href="#" >Add Description</a></span>
-										<textarea class="item_name input_field iwp_invoice_description" value="" name="iwp_invoice_description[0]" style="display: none; width: 100%; margin-top: 5px; font-size= 0.88em;" placeholder="Description"></textarea>
+										<textarea class="item_name input_field iwp_invoice_description" value="" name="iwp_invoice_description[0]" id="iwp_invoice_description[0]" style="display: none; width: 100%; margin-top: 5px; font-size= 0.88em;" placeholder="Description"></textarea>
 									</td>
 									<td style="border-right: 0 none !important;"> <?php // Qty ?>
-										<input class="item_name input_field" value="" name="iwp_invoice_qty[0]">
+										<input class="changesNo item_name input_field input_qty" value="" name="iwp_invoice_qty[0]" id="iwp_invoice_qty[0]">
 									</td>
 									<td style="border-right: 0 none !important;"> <?php // price ?>
-										<input class="item_name input_field" value="" name="iwp_invoice_price[0]">
+										<input class="changesNo item_name input_field input_price" value="" name="iwp_invoice_price[0]" id="iwp_invoice_price[0]">
 									</td>
 									<td> <?php // Total ?>
-										<div class="price">$0.00</div>
+										$ <input class="calculate_invoice_total input_total iwp_flatten_input" disabled="true" value="<?php echo $values["iwp_invoice_total"][0]; ?>" placeholder="0.00">
+										<input class="hidden_total input_total" name="iwp_invoice_total[0]" id="iwp_invoice_total[0]" value="<?php echo $values["iwp_invoice_total"][0]; ?>"  style="display: none !important;">
 									</td>
 									<td class="remove">&nbsp;</td>
 								</tr>
 
-							<?php
-							}
+							<?php }
 									$i = 0;
-
-									
-
 									if( $count != 1 ) {
 										for( $i = 0; $i < $count; $i++ ) {
 											?>
@@ -150,13 +139,14 @@ function iwp_details($post_id) {
 													<textarea class="item_name input_field iwp_invoice_description" value="" name="iwp_invoice_description[<?php echo $i; ?>]" style="<?php if( empty( $values["iwp_invoice_description"][$i] ) ) { echo 'display: none;'; } ?> width: 100%; margin-top: 5px; font-size= 0.88em;" placeholder="Description"><?php echo $values["iwp_invoice_description"][$i]; ?></textarea>
 												</td>
 												<td style="border-right: 0 none !important;"> <?php // Qty ?>
-													<input class="item_name input_field" value="<?php echo $values["iwp_invoice_qty"][$i]; ?>" name="iwp_invoice_qty[<?php echo $i; ?>]">
+													<input class="changesNo item_name input_field input_qty" value="<?php echo $values["iwp_invoice_qty"][$i]; ?>" name="iwp_invoice_qty[<?php echo $i; ?>]" id="iwp_invoice_qty[<?php echo $i; ?>]">
 												</td>
 												<td style="border-right: 0 none !important;"> <?php // price ?>
-													<input class="item_name input_field" value="<?php echo $values["iwp_invoice_price"][$i]; ?>" name="iwp_invoice_price[<?php echo $i; ?>]">
+													<input class="changesNo item_name input_field input_price" value="<?php echo $values["iwp_invoice_price"][$i]; ?>" name="iwp_invoice_price[<?php echo $i; ?>]" id="iwp_invoice_price[<?php echo $i; ?>]">
 												</td>
 												<td>
-													<input class="calculate_invoice_total iwp_flatten_input" disabled="true" value="<?php echo $values["iwp_invoice_total"][$i]; ?>" name="iwp_invoice_total[<?php echo $i; ?>]" placeholder="$ 0.00">
+													$ <input class="calculate_invoice_total input_total iwp_flatten_input" disabled="true" value="<?php echo $values["iwp_invoice_total"][$i]; ?>" placeholder="0.00">
+													<input class="hidden_total input_total" name="iwp_invoice_total[<?php echo $i; ?>]" id="iwp_invoice_total[<?php echo $i; ?>]" value="<?php echo $values["iwp_invoice_total"][$i]; ?>" style="display: none !important;">
 												</td>
 												<td class="remove">&nbsp;</td>
 											</tr>
@@ -182,17 +172,45 @@ function iwp_details($post_id) {
 								};
 
 								$.post(ajaxurl, data, function(response) {
-									$("tbody#availability_rows").append( response );
+									$("tbody#invoiced_rows").append( response );
 								});
 						    });
+				 		});
 
 
+				 		jQuery(document).ready(function( $ ) {
+				 			//price change
+							$(".changesNo").on('change keyup blur', function( ){
+								var regExp = /\[(\d+)\]/;
 
+								id_arr = $(this).attr('id');
+								id = regExp.exec( id_arr );
 
+								var quantity = "";
+								var price = "";
+								
+								if( $(this).hasClass( "input_price" ) == true ) {
+									quantity = $(this).closest('tr').find(".input_qty").val();
+									price = $(this).val();
+								} else if( $(this).hasClass( "input_qty" ) == true ) {
+									price = $(this).closest('tr').find(".input_price").val();
+									quantity = $(this).val();
+								}
+								
+								if( quantity !='' && price !='' ) {
+									$(this).closest('tr').find(".input_total").val( (parseFloat(price)*parseFloat(quantity)).toFixed(2) );	
+									$(this).closest('tr').find(".hidden_total").val( (parseFloat(price)*parseFloat(quantity)).toFixed(2) );	
+								} 
+
+								//calculateTotal();
+								
+							});
 
 
 
 			 			});
+
+
 			 			</script>
 					</div>
 				</div>

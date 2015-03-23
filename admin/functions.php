@@ -20,12 +20,12 @@ function myInvoiceSettings() {
     	if( !empty($custom['_invoicedwp']) ){
 			$iwp = maybe_unserialize( $custom['_invoicedwp'][0] );
     	} else {
-    		$iwp = array( 'isQuote' => 0 );
+    		$iwp = array( 'isQuote' => 0, 'reoccuringPayment' => 0, 'minPayment' => 0, 'minPaymentText' => '' );
 
     	}
+
     	wp_nonce_field( plugin_basename(__FILE__), 'iwp_extra_nonce' );
 
-        
     	$display = '<input type="checkbox" name="isQuote" id="isQuote" value="' . $iwp['isQuote'] . '" ' . checked( $iwp['isQuote'], 1, false ) .' /> <label for="isQuote" class="">Quote</label><br />';
 
 		$display .= '<input type="checkbox" name="reoccuringPayment" id="reoccuringPayment" value="' . $iwp['reoccuringPayment'] . '" ' . checked( $iwp['reoccuringPayment'], 1, false ) .' /> <label for="reoccuringPayment" class="">Reoccuring Bill</label><br />';
@@ -68,6 +68,19 @@ function save_myInvoiceSettings($post_id) {
     	$iwp['isQuote'] = 0;
     }
 
+    if (isset($_POST['reoccuringPayment'])) {
+        $iwp['reoccuringPayment'] = 1;
+    } else {
+        $iwp['reoccuringPayment'] = 0;
+    }
+
+    if (isset($_POST['minPayment'])) {
+        $iwp['minPayment'] = 1;
+    } else {
+        $iwp['minPayment'] = 0;
+    }    
+
+
 
     $count = 0;
     $i = 0;
@@ -79,6 +92,8 @@ function save_myInvoiceSettings($post_id) {
     $invoicePost["iwp_invoice_description"]     = $_POST["iwp_invoice_description"];
     $invoicePost["iwp_invoice_qty"]             = $_POST["iwp_invoice_qty"];
     $invoicePost["iwp_invoice_price"]           = $_POST["iwp_invoice_price"];
+    $invoicePost["iwp_invoice_total"]           = $_POST["iwp_invoice_total"];
+
 
     foreach ( $invoicePost as $key => $value)
         foreach( $value as $lines )

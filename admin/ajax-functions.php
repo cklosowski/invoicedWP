@@ -75,7 +75,7 @@ class IWP_Ajax {
     if ( $user_data ) {
       echo json_encode( array( 'success' => 'true', 'user_data' => $user_data ) );
     }
-
+    wp_die( );
   }
 
 
