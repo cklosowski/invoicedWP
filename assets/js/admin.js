@@ -80,24 +80,6 @@ jQuery(document).ready(function( $ ) {
 
 	$('.wc-invoiced-booking-form, .wc-invoiced-booking-form-button').show();
 
-	//$( '.add_row' ).click(function(){
-		//var dataRow = $(this).closest('table').find('tbody').find('tr').last().data('row');
-		//alert( dataRow);
-		//$(this).closest('table').find('tbody').find('tr').data("row", dataRow + 1 );
-
-	//	$(this).closest('table').find('tbody').append( $( this ).data( 'row' ) );
-
-	//	$('body').trigger('row_added');
-	//	return false;
-	//});
-	
-
-
-
-
-
-
-
 	$('body').on('click', 'td.remove', function(){
 		$(this).closest('tr').remove();
 		return false;
@@ -150,7 +132,7 @@ jQuery(document).ready(function( $ ) {
 	$( ".iwp_email_selection" ).change( function () {
 
 	    //** Clear out current values just in case */
-	    $( '.iwp_newUser input' ).val( '' );
+	    //$( '.iwp_newUser input' ).val( '' );
 
 	    $.post( ajaxurl, {
 	      action: 'iwp_get_user_data',
@@ -167,4 +149,6 @@ jQuery(document).ready(function( $ ) {
 	    }, 'json' );
 
 	  } );
+
+	
 });

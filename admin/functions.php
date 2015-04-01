@@ -17,11 +17,11 @@ function myInvoiceSettings() {
     if (get_post_type($post) == 'invoicedwp') {
     	$custom = get_post_custom();
     	
-    	if( !empty($custom['_invoicedwp']) ){
-			$iwp = maybe_unserialize( $custom['_invoicedwp'][0] );
-    	} else {
-    		$iwp = array( 'isQuote' => 0, 'reoccuringPayment' => 0, 'minPayment' => 0, 'minPaymentText' => '' );
+        $iwp = array( 'isQuote' => 0, 'reoccuringPayment' => 0, 'minPayment' => 0, 'minPaymentText' => '' );
 
+    	if( ! empty($custom['_invoicedwp']) ){
+			$newiwp = maybe_unserialize( $custom['_invoicedwp'][0] );
+            $iwp = array_merge( $iwp, $newiwp );
     	}
 
     	wp_nonce_field( plugin_basename(__FILE__), 'iwp_extra_nonce' );
@@ -94,12 +94,12 @@ function save_myInvoiceSettings($post_id) {
     $invoicePost["iwp_invoice_price"]           = $_POST["iwp_invoice_price"];
     $invoicePost["iwp_invoice_total"]           = $_POST["iwp_invoice_total"];
 
-
     foreach ( $invoicePost as $key => $value)
         foreach( $value as $lines )
             $reportOptions[$key][] = $lines;
 
     update_post_meta( $post_id, '_invoicedLineItems', $reportOptions ); // Main Line items for the invoice
+    update_post_meta( $post_id, '_invoicedClientInfo', $_POST["iwp_invoice"]["user_data"] );
     update_post_meta( $post_id, '_invoicedwp', $iwp ); // Saves if the invoice is only a quote
 
 }

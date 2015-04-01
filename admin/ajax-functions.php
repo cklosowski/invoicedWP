@@ -20,6 +20,7 @@ class IWP_Ajax {
                 AND `m`.`meta_key` = '{$wpdb->get_blog_prefix( $blog_id )}capabilities'
                 GROUP BY `u`.`ID`
                 LIMIT 10" );
+
             die( json_encode( $users_found ) );
     }
 
@@ -50,8 +51,7 @@ class IWP_Ajax {
    *
    */
   static function get_user_data( $user_email = false ) {
-
-    if ( !$user_email ) {
+    if ( ! $user_email ) {
       return;
     }
 

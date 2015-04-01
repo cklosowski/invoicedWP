@@ -16,6 +16,7 @@ function iwp_details($post_id) {
 		wp_enqueue_script( 'wc_invoiced_writepanel_js' );
 
 		$values = get_post_meta( $post_id->ID, '_invoicedLineItems', true );
+
 		$count = count( $values["iwp_invoice_name"] );
 
 		?>
@@ -91,12 +92,16 @@ function iwp_details($post_id) {
 											echo esc_attr( $html );
 										?>" style="margin-left: 10px;"><?php _e( 'Add Discount', 'iwp-invoiced' ); ?></a>
 										<a href="#" class="button button-primary add_row" style="margin-left: 10px;"><?php _e( 'Add Line', 'iwp-invoiced' ); ?></a>
-									<?php if( $_REQUEST['post_type'] <> 'invoicedwp_template' ) { ?>
-										<select style="float: right;">
-											<option value=""></option>
-											<option value="">Test Value to make sure it fits the value on the page.</option>
-										</select>
-									<?php } ?>
+									<?php 
+										if( isset( $_REQUEST['post_type'] ) ) {
+											if( $_REQUEST['post_type'] <> 'invoicedwp_template' ) { ?>
+												<select style="float: right;">
+													<option value=""></option>
+													<option value="">Test Value to make sure it fits the value on the page.</option>
+												</select>
+											<?php } 
+										}
+									?>
 
 									</th>
 								</tr>
@@ -286,9 +291,18 @@ function iwp_payment( $invoice_id ) {
 }
 
 
-function iwp_client($invoice_id) {
+function iwp_client($post_id) {
+  $iwp_invoice = get_post_meta($post_id->ID, '_invoicedClientInfo', true );
+
   wp_enqueue_script('wpi_select2_js');
   wp_enqueue_style('wpi_select2_css');
+
+  $user_email = '';
+  if ( isset( $iwp_invoice['user_email'] ) ) {
+  	$userEmail = $iwp_invoice['user_email'];
+  } else {
+  	$userEmail = 'Select User';
+  }
 
   ?>
 
@@ -317,33 +331,50 @@ function iwp_client($invoice_id) {
           callback(<?php echo json_encode(array('id'=>$user_email, 'title'=>$user_email)); ?>);
         },
         formatResult: function(o) {
+
+
           return o.title;
         },
         formatSelection: function(o) {
           return o.title;
         },
         escapeMarkup: function (m) { return m; }
+
       });
     });
 	</script>
+
 	<div class="iwp_newUser">
 		<div class="iwp_email_selection_wrapper" style="margin: 10px 0;" >
-			<input type="text" value="<?php echo esc_attr($user_email); ?>" name="iwp_invoice[user_data][user_email]" class="iwp_email_selection" />
+			<input type="text" value="<?php echo $userEmail; ?>" name="iwp_invoice[user_data][user_email]" class="iwp_email_selection" />
 		</div>
 
 
-		<input title="" value="" placeholder="First Name" name="iwp_invoice[user_data][first_name]" class="input_field  iwp_first_name" type="text" id="" style="width: 100%;">
-		<input title="" value="" placeholder="Last Name" name="iwp_invoice[user_data][last_name]" class="input_field  iwp_last_name" type="text" id="" style="width: 100%;">
-		<input title="" value="" placeholder="Company Name" name="iwp_invoice[user_data][company_name]" class="input_field  iwp_company_name" type="text" id="" style="width: 100%;">
-		<input title="" value="" placeholder="Phone Number" name="iwp_invoice[user_data][phonenumber]" class="input_field  iwp_phonenumber" type="text" id="" style="width: 100%;">
-		<input title="" value="" placeholder="Street Address" name="iwp_invoice[user_data][streetaddress]" class="input_field  iwp_streetaddress" type="text" id="" style="width: 100%;">
-		<input title="" value="" placeholder="Street Address 2" name="iwp_invoice[user_data][streetaddress2]" class="input_field  iwp_streetaddress2" type="text" id="" style="width: 100%;">
-		<input title="" value="" placeholder="City" name="iwp_invoice[user_data][city]" class="input_field  iwp_city" type="text" id="" style="width: 100%;">
-		<input title="" value="" placeholder="State" name="iwp_invoice[user_data][state]" class="input_field  iwp_state" type="text" id="" style="width: 100%;">
-		<input title="" value="" placeholder="ZIP" name="iwp_invoice[user_data][zip]" class="input_field  iwp_zip" type="text" id="" style="width: 100%;">
+		<input title="" value="<?php echo $iwp_invoice['first_name']; ?>" placeholder="First Name" name="iwp_invoice[user_data][first_name]" class="input_field  iwp_first_name" type="text" id="" style="width: 100%;">
+		<input title="" value="<?php echo $iwp_invoice['last_name']; ?>" placeholder="Last Name" name="iwp_invoice[user_data][last_name]" class="input_field  iwp_last_name" type="text" id="" style="width: 100%;">
+		<input title="" value="<?php echo $iwp_invoice['company_name']; ?>" placeholder="Company Name" name="iwp_invoice[user_data][company_name]" class="input_field  iwp_company_name" type="text" id="" style="width: 100%;">
+		<input title="" value="<?php echo $iwp_invoice['phonenumber']; ?>" placeholder="Phone Number" name="iwp_invoice[user_data][phonenumber]" class="input_field  iwp_phonenumber" type="text" id="" style="width: 100%;">
+		<input title="" value="<?php echo $iwp_invoice['streetaddress']; ?>" placeholder="Street Address" name="iwp_invoice[user_data][streetaddress]" class="input_field  iwp_streetaddress" type="text" id="" style="width: 100%;">
+		<input title="" value="<?php echo $iwp_invoice['streetaddress2']; ?>" placeholder="Street Address 2" name="iwp_invoice[user_data][streetaddress2]" class="input_field  iwp_streetaddress2" type="text" id="" style="width: 100%;">
+		<input title="" value="<?php echo $iwp_invoice['city']; ?>" placeholder="City" name="iwp_invoice[user_data][city]" class="input_field  iwp_city" type="text" id="" style="width: 100%;">
+		<input title="" value="<?php echo $iwp_invoice['state']; ?>" placeholder="State" name="iwp_invoice[user_data][state]" class="input_field  iwp_state" type="text" id="" style="width: 100%;">
+		<input title="" value="<?php echo $iwp_invoice['zip']; ?>" placeholder="ZIP" name="iwp_invoice[user_data][zip]" class="input_field  iwp_zip" type="text" id="" style="width: 100%;">
 	</div>
 
 
 <?php
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
