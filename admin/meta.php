@@ -15,7 +15,8 @@ if( !defined( 'ABSPATH' ) ) exit;
 function iwp_details($post_id) {
 		wp_enqueue_script( 'wc_invoiced_writepanel_js' );
 
-		$values = get_post_meta( $post_id->ID, '_invoicedLineItems', true );
+		$values = get_post_meta( $post_id->ID, '_invoicedwp', true );
+		$values = $values['lineItems'];
 
 		$count = count( $values["iwp_invoice_name"] );
 
@@ -93,14 +94,14 @@ function iwp_details($post_id) {
 										?>" style="margin-left: 10px;"><?php _e( 'Add Discount', 'iwp-invoiced' ); ?></a>
 										<a href="#" class="button button-primary add_row" style="margin-left: 10px;"><?php _e( 'Add Line', 'iwp-invoiced' ); ?></a>
 									<?php 
-										if( isset( $_REQUEST['post_type'] ) ) {
+										//if( isset( $_REQUEST['post_type'] ) ) {
 											if( $_REQUEST['post_type'] <> 'invoicedwp_template' ) { ?>
 												<select style="float: right;">
 													<option value=""></option>
 													<option value="">Test Value to make sure it fits the value on the page.</option>
 												</select>
 											<?php } 
-										}
+										//}
 									?>
 
 									</th>
@@ -126,7 +127,7 @@ function iwp_details($post_id) {
 									</td>
 									<td> <?php // Total ?>
 										$ <input class="calculate_invoice_total input_total iwp_flatten_input" disabled="true" value="<?php echo $values["iwp_invoice_total"][0]; ?>" placeholder="0.00">
-										<input class="hidden_total input_total" name="iwp_invoice_total[0]" id="iwp_invoice_total[0]" value="<?php echo $values["iwp_invoice_total"][0]; ?>"  style="display: none !important;">
+										<input class="hidden_total input_total" name="iwp_invoice_total[0]" id="iwp_invoice_total[0]" value="<?php echo $values["iwp_invoice_total"][0]; ?>" style="display: none !important;">
 									</td>
 									<td class="remove">&nbsp;</td>
 								</tr>
@@ -167,7 +168,7 @@ function iwp_details($post_id) {
 
 							var rowNumber = <?php echo $count - 1; ?>;
 							
-				 			$( ".add_row" ).click(function( e ) {
+				 			$( 'body' ).on( 'click', '.add_row', function( e ) {
 				 				e.preventDefault();
 						 		
 						 		rowNumber = rowNumber + 1;
@@ -180,12 +181,9 @@ function iwp_details($post_id) {
 									$("tbody#invoiced_rows").append( response );
 								});
 						    });
-				 		});
 
-
-				 		jQuery(document).ready(function( $ ) {
 				 			//price change
-							$(".changesNo").on('change keyup blur', function( ){
+							$( 'body' ).on('change keyup blur', '.changesNo', function( ){
 								var regExp = /\[(\d+)\]/;
 
 								id_arr = $(this).attr('id');
@@ -229,6 +227,7 @@ function iwp_details($post_id) {
 	 * Save handler
 	 */
 function meta_box_save( $post_id ) {
+		var_dump($_POST);
 		if ( ! isset( $_POST['bookable_resource_details_meta_box_nonce'] ) || ! wp_verify_nonce( $_POST['bookable_resource_details_meta_box_nonce'], 'bookable_resource_details_meta_box' ) ) {
 			return $post_id;
 		}
@@ -238,6 +237,7 @@ function meta_box_save( $post_id ) {
 		if ( ! in_array( $_POST['post_type'], $this->post_types ) ) {
 			return $post_id;
 		}
+
 
 		// Qty field
 		update_post_meta( $post_id, 'qty', wc_clean( $_POST['_wc_booking_qty'] ) );
@@ -292,8 +292,10 @@ function iwp_payment( $invoice_id ) {
 
 
 function iwp_client($post_id) {
-  $iwp_invoice = get_post_meta($post_id->ID, '_invoicedClientInfo', true );
+  $iwp = get_post_meta($post_id->ID, '_invoicedwp', true );
+  $iwp_invoice = $iwp['user_data'];
 
+var_dump($iwp);
   wp_enqueue_script('wpi_select2_js');
   wp_enqueue_style('wpi_select2_css');
 
@@ -307,9 +309,9 @@ function iwp_client($post_id) {
   ?>
 
   <script type="text/javascript">
-    jQuery( document ).ready(function(){
-      jQuery(".iwp_email_selection").select2({
-        placeholder: 'Select User',
+    jQuery( document ).ready(function( $ ){
+      $(".iwp_email_selection").select2({
+        placeholder: '<?php echo $userEmail; ?>',
         multiple: false,
         width: '100%',
         minimumInputLength: 3,

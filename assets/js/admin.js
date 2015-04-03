@@ -121,14 +121,6 @@ jQuery(document).ready(function( $ ) {
 		}
 	});
 
-	$( '.date-picker' ).datepicker({
-		dateFormat: 'yy-mm-dd',
-		numberOfMonths: 1,
-		showButtonPanel: true,
-		showOn: 'button',
-		buttonImageOnly: true
-	});
-
 	$( ".iwp_email_selection" ).change( function () {
 
 	    //** Clear out current values just in case */
@@ -150,5 +142,5 @@ jQuery(document).ready(function( $ ) {
 
 	  } );
 
-	
+
 });

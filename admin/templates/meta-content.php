@@ -6,7 +6,7 @@ if ( isset( $_POST['version'] ) ) {
 ?>
 
 
-<tr class="line_row">
+<tr>
 	<td class="sort">&nbsp;</td>
 	<td style="border-right: 0 none !important;"> <?php // Name ?>
 		<input class="item_name input_field iwp_invoice_name[<?php echo $post_data; ?>]" value="<?php echo $values["iwp_invoice_name"][$post_data]; ?>" name="iwp_invoice_name[<?php echo $post_data; ?>]">
@@ -20,7 +20,7 @@ if ( isset( $_POST['version'] ) ) {
 		<input class="changesNo item_name input_field iwp_invoice_price[<?php echo $post_data; ?>]" value="" name="iwp_invoice_price[<?php echo $post_data; ?>]">
 	</td>
 	<td >
-		$ <input class="calculate_invoice_total iwp_flatten_input iwp_invoice_total[<?php echo $post_data; ?>]" disabled="true" value="" name="iwp_invoice_total[<?php echo $post_data; ?>]" placeholder="0.00" >
+		$ <input class="calculate_invoice_total input_total iwp_flatten_input" disabled="true" value="" placeholder="0.00">
 		<input class="hidden_total input_total" name="iwp_invoice_total[<?php echo $post_data; ?>]" id="iwp_invoice_total[<?php echo $post_data; ?>]" value="<?php echo $values["iwp_invoice_total"][$post_data]; ?>" style="display: none !important;">
 	</td>
 	<td class="remove">&nbsp;</td>
