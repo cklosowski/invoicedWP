@@ -80,46 +80,7 @@ jQuery(document).ready(function( $ ) {
 
 	$('.wc-invoiced-booking-form, .wc-invoiced-booking-form-button').show();
 
-	$('body').on('click', 'td.remove', function(){
-		$(this).closest('tr').remove();
-		return false;
-	});
-
-	$('body').on('click', 'td.remove_discount', function(){
-		$( '.add_discount' ).show();
-		return false;
-	});
-
-	$( '.add_discount' ).click(function(){
-		$(this).closest('table').find('tfoot').prepend( $( this ).data( 'row' ) );
-		$('body').trigger('row_added');
-		$(this).hide();
-		return false;
-	});
-
-	$('body').on('click', '.toggleDescription', function(){
-		$(this).closest('td').find('.iwp_invoice_description').show();
-		$(this).hide();
-		return false;
-	});
-
-	$('#invoiced_rows, #pricing_rows').sortable({
-		items:'tr',
-		cursor:'move',
-		axis:'y',
-		handle: '.sort',
-		scrollSensitivity:40,
-		forcePlaceholderSize: true,
-		helper: 'clone',
-		opacity: 0.65,
-		placeholder: 'wc-metabox-sortable-placeholder',
-		start:function(event,ui){
-			ui.item.css('background-color','#f6f6f6');
-		},
-		stop:function(event,ui){
-			ui.item.removeAttr('style');
-		}
-	});
+	
 
 	$( ".iwp_email_selection" ).change( function () {
 

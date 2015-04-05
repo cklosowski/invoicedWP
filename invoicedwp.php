@@ -175,11 +175,11 @@ if( !class_exists( 'IWP' ) ) {
                 add_filter( 'manage_invoicedwp_posts_columns', 'iwp_custom_columns' );
                 add_action( 'manage_posts_custom_column', 'iwp_display_custom_columns' );
 
+                // AJAX Functions
                 add_action( 'wp_ajax_iwp_search_email', array( 'IWP_Ajax', 'search_email' ) );
                 add_action( 'wp_ajax_iwp_search_recipient', array( 'IWP_Ajax', 'search_recipient' ) );
                 add_action( 'wp_ajax_iwp_add_row', array( 'IWP_Ajax', 'add_row' ) );
-
-
+                add_action( 'wp_ajax_iwp_add_template_row', array( 'IWP_Ajax', 'add_template_row' ) );
                 add_action( 'wp_ajax_iwp_get_user_data', create_function( '', ' die(IWP_Ajax::get_user_data($_REQUEST["user_email"]));' ) );
             }
         }

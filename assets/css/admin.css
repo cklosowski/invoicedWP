@@ -727,3 +727,17 @@ tr.iwp_advanced_payment_options  {
   overflow-x: hidden;
   max-height: 400px;
 }
+
+.currencySymbol {
+    float: left; 
+    margin-right: 10px;
+}
+
+.percentSymbol {
+    float:right;
+    margin-left: 10px;
+}
+
+.iwp_flatten_input {
+    text-align: right;
+}
