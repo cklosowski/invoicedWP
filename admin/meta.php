@@ -13,7 +13,6 @@ if( !defined( 'ABSPATH' ) ) exit;
 
 
 function iwp_details($post_id) {
-	var_dump( $_POST );
 
 	wp_enqueue_script( 'wc_invoiced_writepanel_js' );
 
@@ -170,171 +169,6 @@ function iwp_details($post_id) {
 							?>
 						</tbody>
 					</table>
-					<script>
-					jQuery(document).ready(function( $ ) {
-
-						var rowNumber = <?php echo $count - 1; ?>;
-						
-			 			$( 'body' ).on( 'click', '.add_row', function( e ) {
-			 				e.preventDefault();
-					 		
-					 		rowNumber = rowNumber + 1;
-						    var data = {
-								'action': 'iwp_add_row',
-								'version': rowNumber
-							};
-
-							$.post(ajaxurl, data, function(response) {
-								$("tbody#invoiced_rows").append( response );
-							});
-					    });
-
-			 			//price change
-						$( 'body' ).on('change keyup blur', '.changesNo', function( ){
-							var regExp = /\[(\d+)\]/;
-
-							id_arr = $(this).attr('id');
-							id = regExp.exec( id_arr );
-
-							var quantity = "";
-							var price = "";
-							
-							if( $(this).hasClass( "input_price" ) == true ) {
-								quantity = $(this).closest('tr').find(".input_qty").val();
-								price = $(this).val();
-							} else if( $(this).hasClass( "input_qty" ) == true ) {
-								price = $(this).closest('tr').find(".input_price").val();
-								quantity = $(this).val();
-							}
-							
-							if( quantity !='' && price !='' ) {
-								$(this).closest('tr').find(".input_total").val( (parseFloat(price)*parseFloat(quantity)).toFixed(2) );	
-								$(this).closest('tr').find(".hidden_total").val( (parseFloat(price)*parseFloat(quantity)).toFixed(2) );	
-							} 
-
-
-							// Calculate subtotal for the invoice
-						    var sum = 0;
-						    $(".calculate_invoice_total").each(function() {
-								if(!isNaN(this.value) &&  this.value.length!=0) {
-									sum += parseFloat(this.value);
-								}
-
-							});
-							 
-						    $(".calculate_invoice_subtotal").val( parseFloat( sum ).toFixed(2) );
-						    $(".hidden_subtotal").val( parseFloat( sum ).toFixed(2) );
-							
-						    // Calculate discount 
-							var discountAmount = $( '#discountAmount' ).val();
-							var discountType = $('#discountType').val();
-							var subTotal = $( '.calculate_invoice_subtotal' ).val();
-							
-							if( discountType == "percent" ){
-								$( ".calculate_discount_total").val( parseFloat( subTotal * ( discountAmount / 100 ) ).toFixed(2) );
-					 		}
-
-					 		if( discountType == "amount" ){
-					 			$( ".calculate_discount_total").val( parseFloat( discountAmount ).toFixed(2) );
-					 		}
-
-					 		// Get Payments and subtract them
-					 		
-
-
-
-					 		// Get Total
-					 		var discountTotal = $( ".calculate_discount_total").val();
-					 			
-					 		$( '.calculate_invoice_grandtotal').val( parseFloat( subTotal - discountTotal ).toFixed(2) );
-
-
-
-						});
-
-						$( 'body' ).on( 'change', '.selectTemplate', function( e ) {						 		
-					 		var template = $(this).val();
-					 		rowNumber = rowNumber + 1;
-
-						    var data = {
-								'action': 'iwp_add_template_row',
-								'version': rowNumber,
-								'template': template
-							};
-
-							$.post(ajaxurl, data, function(response) {
-								$("tbody#invoiced_rows").append( response );
-							});
-
-					    });
-
-						$( 'body' ).on( 'change', '#discountType', function( e ) {
-							var discountAmount = $( '#discountAmount' ).val();					 		
-					 		var discountType = $( '#discountType' ).val();
-					 		var subTotal = $( '.calculate_invoice_subtotal' ).val();
-					 		
-					 		if( discountType == "percent" ){
-					 			$( ".percentSymbol").show();
-					 			$( ".currencySymbol").hide();
-					 			$( ".calculate_discount_total").val( parseFloat( subTotal * ( discountAmount / 100 ) ).toFixed(2) );
-					 		}
-
-					 		if( discountType == "amount" ){
-					 			$( ".percentSymbol").hide();
-					 			$( ".currencySymbol").show();
-					 			$( ".calculate_discount_total").val( parseFloat( discountAmount ).toFixed(2) );
-					 		}
-
-					    });
-
-					    $('body').on('click', 'td.remove', function(){
-							$(this).closest('tr').remove();
-							return false;
-						});
-
-						$('body').on('click', 'td.remove_discount', function(){
-							$( '.add_discount' ).show();
-							$( '.column-invoice-details-discounts' ).hide();
-						
-							return false;
-						});
-
-						$( '.add_discount' ).click(function(){
-							$(this).closest('table').find('tfoot').prepend( $( this ).data( 'row' ) );
-							$('body').trigger('row_added');
-							$('.column-invoice-details-discounts').show();
-							$(this).hide();
-							return false;
-						});
-
-						$('body').on('click', '.toggleDescription', function(){
-							$(this).closest('td').find('.iwp_invoice_description').show();
-							$(this).hide();
-							return false;
-						});
-
-						$('#invoiced_rows, #pricing_rows').sortable({
-							items:'tr',
-							cursor:'move',
-							axis:'y',
-							handle: '.sort',
-							scrollSensitivity:40,
-							forcePlaceholderSize: true,
-							helper: 'clone',
-							opacity: 0.65,
-							placeholder: 'wc-metabox-sortable-placeholder',
-							start:function(event,ui){
-								ui.item.css('background-color','#f6f6f6');
-							},
-							stop:function(event,ui){
-								ui.item.removeAttr('style');
-							}
-						});
-
-		 			});
-
-
-		 			</script>
 				</div>
 			</div>
 			<div class="clear"></div>
@@ -353,7 +187,6 @@ function iwp_client($post_id) {
   $iwp = get_post_meta($post_id->ID, '_invoicedwp', true );
   $iwp_invoice = $iwp['user_data'];
 
-var_dump($iwp);
   wp_enqueue_script('wpi_select2_js');
   wp_enqueue_style('wpi_select2_css');
 
