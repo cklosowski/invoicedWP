@@ -123,7 +123,7 @@ function iwp_details($post_id) {
 								<td style="border-right: 0 none !important;"> <?php // Name ?>
 									<input class="item_name input_field" value="" name="iwp_invoice_name[0]">
 									<span style="text-size 9px;"><a class="toggleDescription"  href="#" >Add Description</a></span>
-									<textarea class="item_name input_field iwp_invoice_description0" value="" name="iwp_invoice_description[0]" id="iwp_invoice_description[0]" style="display: none; width: 100%; margin-top: 5px; font-size= 0.88em;" placeholder="Description"></textarea>
+									<textarea class="item_name input_field input_description iwp_invoice_description0" value="" name="iwp_invoice_description[0]" id="iwp_invoice_description[0]" style="display: none; width: 100%; margin-top: 5px; font-size= 0.88em;" placeholder="Description"></textarea>
 								</td>
 								<td style="border-right: 0 none !important;"> <?php // Qty ?>
 									<input class="changesNo item_name input_field input_qty" value="" name="iwp_invoice_qty[0]" id="iwp_invoice_qty[0]">
@@ -148,7 +148,7 @@ function iwp_details($post_id) {
 										<td style="border-right: 0 none !important;"> <?php // Name ?>
 											<input class="item_name input_field input_name" value="<?php echo $values["iwp_invoice_name"][$i]; ?>" name="iwp_invoice_name[<?php echo $i; ?>]">
 											<?php if( empty( $values["iwp_invoice_description"][$i] ) ) {  ?> <span style="text-size 10px;"><a class="toggleDescription"  href="#" >Add Description</a></span> <?php } ?>
-											<textarea class="item_name input_field iwp_invoice_description" value="" name="iwp_invoice_description[<?php echo $i; ?>]" style="<?php if( empty( $values["iwp_invoice_description"][$i] ) ) { echo 'display: none;'; } ?> width: 100%; margin-top: 5px; font-size= 0.88em;" placeholder="Description"><?php echo $values["iwp_invoice_description"][$i]; ?></textarea>
+											<textarea class="item_name input_field input_description iwp_invoice_description" value="" name="iwp_invoice_description[<?php echo $i; ?>]" style="<?php if( empty( $values["iwp_invoice_description"][$i] ) ) { echo 'display: none;'; } ?> width: 100%; margin-top: 5px; font-size= 0.88em;" placeholder="Description"><?php echo $values["iwp_invoice_description"][$i]; ?></textarea>
 										</td>
 										<td style="border-right: 0 none !important;"> <?php // Qty ?>
 											<input class="changesNo item_name input_field input_qty" value="<?php echo $values["iwp_invoice_qty"][$i]; ?>" name="iwp_invoice_qty[<?php echo $i; ?>]" id="iwp_invoice_qty[<?php echo $i; ?>]">
@@ -174,6 +174,7 @@ function iwp_details($post_id) {
 			<div class="clear"></div>
 		</div>
 	</div>
+
 	<?php
 }
 
