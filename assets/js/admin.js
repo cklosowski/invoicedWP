@@ -8,161 +8,42 @@ jQuery(document).ready(function( $ ) {
 		};
 	}
 
-	var xhr = [];
-
-	$('.wc-invoiced-booking-form')
-		.on('change', 'input, select', function() {
-			var index = $('.wc-invoiced-booking-form').index(this);
-
-			if ( xhr[index] ) {
-				xhr[index].abort();
-			}
-
-			$form = $(this).closest('form');
-
-			var required_fields = $form.find('input.required_for_calculation');
-			var filled          = true;
-			$.each( required_fields, function( index, field ) {
-				var value = $(field).val();
-				if ( ! value ) {
-					filled = false;
-				}
-			});
-			if ( ! filled ) {
-				$form.find('.wc-invoiced-booking-cost').hide();
-				return;
-			}
-
-			$form.find('.wc-invoiced-booking-cost').block({message: null, overlayCSS: {background: '#fff', backgroundSize: '16px 16px', opacity: 0.6}}).show();
-
-			xhr[index] = $.ajax({
-				type: 		'POST',
-				url: 		booking_form_params.ajax_url,
-				data: 		{
-					action: 'wc_invoiced_calculate_costs',
-					form:   $form.serialize()
-				},
-				success: 	function( code ) {
-					if ( code.charAt(0) !== '{' ) {
-						console.log( code );
-						code = '{' + code.split(/\{(.+)?/)[1];
-					}
-
-					result = $.parseJSON( code );
-
-					if ( result.result == 'ERROR' ) {
-						$form.find('.wc-invoiced-booking-cost').html( result.html );
-						$form.find('.wc-invoiced-booking-cost').unblock();
-						$form.find('.single_add_to_cart_button').attr('disabled', 'disabled');
-					} else if ( result.result == 'SUCCESS' ) {
-						$form.find('.wc-invoiced-booking-cost').html( result.html );
-						$form.find('.wc-invoiced-booking-cost').unblock();
-						$form.find('.single_add_to_cart_button').removeAttr('disabled');
-					} else {
-						$form.find('.wc-invoiced-booking-cost').hide();
-						$form.find('.single_add_to_cart_button').attr('disabled', 'disabled');
-						console.log( code );
-					}
-				},
-				error: function() {
-					$form.find('.wc-invoiced-booking-cost').hide();
-					$form.find('.single_add_to_cart_button').attr('disabled', 'disabled');
-				},
-				dataType: 	"html"
-			});
-		})
-		.each(function(){
-			var button = $(this).closest('form').find('.single_add_to_cart_button');
-
-			button.attr('disabled', 'disabled');
-		});
-
-
-	$('.wc-invoiced-booking-form, .wc-invoiced-booking-form-button').show();
-
-	
-	var rowNumber = $('#invoicedDisplay tbody tr').length - 1;
+	setInterval(function(){ calculateTotal(); }, 250);
 						
 	$( document ).on( 'click', '.add_row', function( e ) {
 		e.preventDefault();
  		
- 		rowNumber = rowNumber + 1;
-	    var data = {
-			'action': 'iwp_add_row',
-			'version': rowNumber
-		};
+ 		var rowNumber = $('#invoicedDisplay tbody tr').length;
+ 	
+		lastTR = $( '#invoicedDisplay tbody' ).find("tr:last"),
+		trNew = lastTR.clone()
+					  .find("input:text").val("").end();
 
-		$.post(ajaxurl, data, function(response) {
-			$("tbody#invoiced_rows").append( response );
-		});
+		lastTR.after(trNew);
+
+		nameID 	= 'iwp_invoice_name[' + rowNumber + ']';
+		descId 	= 'iwp_invoice_description[' + rowNumber + ']';
+		qtyId 	= 'iwp_invoice_qty[' + rowNumber + ']';
+		priceId = 'iwp_invoice_price[' + rowNumber + ']';
+		totalId = 'iwp_invoice_total[' + rowNumber + ']';
+
+		$( '#invoicedDisplay tbody tr:last').find('.input_name').attr('id', nameID ).attr('name', nameID);
+		$( '#invoicedDisplay tbody tr:last').find('.input_description').attr('id', descId ).attr('name', descId );
+		$( '#invoicedDisplay tbody tr:last').find('.input_qty').attr('id', qtyId ).attr('name', qtyId );
+		$( '#invoicedDisplay tbody tr:last').find('.input_price').attr('id', priceId ).attr('name', priceId );
+		$( '#invoicedDisplay tbody tr:last').find('.input_total').attr('id', totalId ).attr('name', totalId );
+
+		calculateTotal();
     });
 
 		//price change
-	$( document ).on('change keyup blur', '.changesNo', function( ){
-		var regExp = /\[(\d+)\]/;
-
-		id_arr = $(this).attr('id');
-		id = regExp.exec( id_arr );
-
-		var quantity = "";
-		var price = "";
-		
-		if( $(this).hasClass( "input_price" ) == true ) {
-			quantity = $(this).closest('tr').find(".input_qty").val();
-			price = $(this).val();
-		} else if( $(this).hasClass( "input_qty" ) == true ) {
-			price = $(this).closest('tr').find(".input_price").val();
-			quantity = $(this).val();
-		}
-		
-		if( quantity !='' && price !='' ) {
-			$(this).closest('tr').find(".input_total").val( (parseFloat(price)*parseFloat(quantity)).toFixed(2) );	
-			$(this).closest('tr').find(".hidden_total").val( (parseFloat(price)*parseFloat(quantity)).toFixed(2) );	
-		} 
-
-
-		// Calculate subtotal for the invoice
-	    var sum = 0;
-	    $(".calculate_invoice_total").each(function() {
-			if(!isNaN(this.value) &&  this.value.length!=0) {
-				sum += parseFloat(this.value);
-			}
-
-		});
-		 
-	    $(".calculate_invoice_subtotal").val( parseFloat( sum ).toFixed(2) );
-	    $(".hidden_subtotal").val( parseFloat( sum ).toFixed(2) );
-		
-	    // Calculate discount 
-		var discountAmount = $( '#discountAmount' ).val();
-		var discountType = $('#discountType').val();
-		var subTotal = $( '.calculate_invoice_subtotal' ).val();
-		
-		if( discountType == "percent" ){
-			$( ".calculate_discount_total").val( parseFloat( subTotal * ( discountAmount / 100 ) ).toFixed(2) );
- 		}
-
- 		if( discountType == "amount" ){
- 			$( ".calculate_discount_total").val( parseFloat( discountAmount ).toFixed(2) );
- 		}
-
- 		// Get Payments and subtract them
- 		
-
-
-
- 		// Get Total
- 		var discountTotal = $( ".calculate_discount_total").val();
- 			
- 		$( '.calculate_invoice_grandtotal').val( parseFloat( subTotal - discountTotal ).toFixed(2) );
-
-
-
+	$( 'body' ).on('change keyup blur', '.changesNo', function( ){
+		calculateTotal();
 	});
 
 	$( 'body' ).on( 'change', '.selectTemplate', function( e ) {						 		
  		var template = $(this).val();
- 		rowNumber = rowNumber + 1;
+ 		var rowNumber = $('#invoicedDisplay tbody tr').length;
 
 	    var data = {
 			'action': 'iwp_add_template_row',
@@ -173,8 +54,9 @@ jQuery(document).ready(function( $ ) {
 		$.post(ajaxurl, data, function(response) {
 			$("tbody#invoiced_rows").append( response );
 		});
-
     });
+
+
 
 	$( 'body' ).on( 'change', '#discountType', function( e ) {
 		var discountAmount = $( '#discountAmount' ).val();					 		
@@ -193,6 +75,7 @@ jQuery(document).ready(function( $ ) {
  			$( ".calculate_discount_total").val( parseFloat( discountAmount ).toFixed(2) );
  		}
 
+ 		calculateTotal();
     });
 
     $('body').on('click', 'td.remove', function(){
@@ -203,7 +86,6 @@ jQuery(document).ready(function( $ ) {
 	$('body').on('click', 'td.remove_discount', function(){
 		$( '.add_discount' ).show();
 		$( '.column-invoice-details-discounts' ).hide();
-	
 		return false;
 	});
 
@@ -245,9 +127,6 @@ jQuery(document).ready(function( $ ) {
 
 	$( ".iwp_email_selection" ).change( function () {
 
-	    //** Clear out current values just in case */
-	    //$( '.iwp_newUser input' ).val( '' );
-
 	    $.post( ajaxurl, {
 	      action: 'iwp_get_user_data',
 	      user_email: jQuery( this ).val()
@@ -264,5 +143,58 @@ jQuery(document).ready(function( $ ) {
 
 	  } );
 
+
+
+
+
+	function calculateTotal( ) {
+		// Calculate total for the invoice
+		var sum = 0;
+
+		$( 'tbody#invoiced_rows tr' ).each( function() {
+			if( !isNaN( $( this ).find('.input_qty').val() ) ) {
+				var qty = $( this ).find('.input_qty').val();
+			} else {
+				var qty = 0;
+			}
+
+			if( !isNaN( $( this ).find('.input_price').val() ) ) {
+				var price = $( this ).find('.input_price').val();
+			} else {
+				var price = 0;
+			}
+
+			var total = $( this ).find('.input_qty').val() * $( this ).find('.input_price').val();
+
+			$( this ).find('.input_total').val( parseFloat( total ).toFixed(2) );
+			$( this ).find('.hidden_total').val( $( this ).find('.input_total').val() );
+
+			sum += parseFloat(total);
+		});
+		 
+		$(".calculate_invoice_subtotal").val( parseFloat( sum ).toFixed(2) );
+		$(".hidden_subtotal").val( parseFloat( sum ).toFixed(2) );
+
+
+		// Calculate discount 
+		var discountAmount = $( '#discountAmount' ).val();
+		var discountType = $('#discountType').val();
+		var subTotal = $( '.calculate_invoice_subtotal' ).val();
+
+		if( discountType == "percent" ){
+			var discountTotal = parseFloat( subTotal * ( discountAmount / 100 ) ).toFixed(2);
+			} else if( discountType == "amount" ){
+				var discountTotal = parseFloat( discountAmount ).toFixed(2);
+			}
+
+			// Get Payments and subtract them
+		if( isNaN( discountTotal ) ) {
+			discountTotal = 0;
+		}
+
+		$( ".calculate_discount_total").val( parseFloat( discountTotal ).toFixed(2) );
+			$( '.calculate_invoice_grandtotal').val( parseFloat( subTotal - discountTotal ).toFixed(2) );
+
+	}
 
 });

@@ -69,7 +69,7 @@ function iwp_details($post_id) {
 
 						<?php 
 						if( isset( $post_id->post_type )  ) {
-							if( $post_id->post_type <> 'invoicedwp_template' ) { ?>
+							//if( $post_id->post_type <> 'invoicedwp_template' ) { ?>
 							<tfoot>
 								<tr>
 									<td colspan="6" style="background-color: #f9f9f9;">
@@ -112,7 +112,7 @@ function iwp_details($post_id) {
 								</tr>
 								
 							</tfoot>
-						<?php 	} 
+						<?php 	//} 
 						} ?>
 
 
