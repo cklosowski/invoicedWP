@@ -25,7 +25,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  */
 function iwp_settings_sanitize( $input = array() ) {
 
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 
 	if ( empty( $_POST['_wp_http_referer'] ) ) {
 		return $input;
@@ -87,7 +87,7 @@ function iwp_settings_sanitize( $input = array() ) {
  */
 function iwp_settings_sanitize_misc( $input ) {
 
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 
 	if( ! current_user_can( 'manage_shop_settings' ) ) {
 		return $input;
@@ -171,7 +171,7 @@ function iwp_header_callback( $args ) {
  * @return void
  */
 function iwp_checkbox_callback( $args ) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 
 	$checked = isset( $iwp_options[ $args[ 'id' ] ] ) ? checked( 1, $iwp_options[ $args[ 'id' ] ], false ) : '';
 	$html = '<input type="checkbox" id="iwp_settings[' . $args['id'] . ']" name="iwp_settings[' . $args['id'] . ']" value="1" ' . $checked . '/>';
@@ -191,7 +191,7 @@ function iwp_checkbox_callback( $args ) {
  * @return void
  */
 function iwp_multicheck_callback( $args ) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 
 	if ( ! empty( $args['options'] ) ) {
 		foreach( $args['options'] as $key => $option ):
@@ -212,7 +212,7 @@ function iwp_multicheck_callback( $args ) {
  * @return void
  */
 function iwp_payment_icons_callback( $args ) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 
 	if ( ! empty( $args['options'] ) ) {
 		foreach( $args['options'] as $key => $option ) {
@@ -278,7 +278,7 @@ function iwp_payment_icons_callback( $args ) {
  * @return void
  */
 function iwp_radio_callback( $args ) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 
 	foreach ( $args['options'] as $key => $option ) :
 		$checked = false;
@@ -306,7 +306,7 @@ function iwp_radio_callback( $args ) {
  * @return void
  */
 function iwp_gateways_callback( $args ) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 
 	foreach ( $args['options'] as $key => $option ) :
 		if ( isset( $iwp_options['gateways'][ $key ] ) )
@@ -330,7 +330,7 @@ function iwp_gateways_callback( $args ) {
  * @return void
  */
 function iwp_gateway_select_callback($args) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 
 	echo '<select name="iwp_settings[' . $args['id'] . ']"" id="iwp_settings[' . $args['id'] . ']">';
 
@@ -354,7 +354,7 @@ function iwp_gateway_select_callback($args) {
  * @return void
  */
 function iwp_text_callback( $args ) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 
 	if ( isset( $iwp_options[ $args['id'] ] ) )
 		$value = $iwp_options[ $args['id'] ];
@@ -379,7 +379,7 @@ function iwp_text_callback( $args ) {
  * @return void
  */
 function iwp_number_callback( $args ) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
     
     if ( isset( $iwp_options[ $args['id'] ] ) )
 		$value = $iwp_options[ $args['id'] ];
@@ -408,7 +408,7 @@ function iwp_number_callback( $args ) {
  * @return void
  */
 function iwp_textarea_callback( $args ) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 
 	if ( isset( $iwp_options[ $args['id'] ] ) )
 		$value = $iwp_options[ $args['id'] ];
@@ -432,7 +432,7 @@ function iwp_textarea_callback( $args ) {
  * @return void
  */
 function iwp_password_callback( $args ) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 
 	if ( isset( $iwp_options[ $args['id'] ] ) )
 		$value = $iwp_options[ $args['id'] ];
@@ -457,7 +457,7 @@ function iwp_password_callback( $args ) {
  * @return void
  */
 function iwp_select_callback($args) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 
 	if ( isset( $iwp_options[ $args['id'] ] ) )
 		$value = $iwp_options[ $args['id'] ];
@@ -493,7 +493,7 @@ function iwp_select_callback($args) {
  * @return void
  */
 function iwp_color_select_callback( $args ) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 
 	if ( isset( $iwp_options[ $args['id'] ] ) )
 		$value = $iwp_options[ $args['id'] ];
@@ -558,7 +558,7 @@ function iwp_rich_editor_callback( $args ) {
  * @return void
  */
 function iwp_upload_callback( $args ) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 
 	if ( isset( $iwp_options[ $args['id'] ] ) )
 		$value = $iwp_options[$args['id']];
@@ -585,7 +585,7 @@ function iwp_upload_callback( $args ) {
  * @return void
  */
 function iwp_color_callback( $args ) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 
 	if ( isset( $iwp_options[ $args['id'] ] ) )
 		$value = $iwp_options[ $args['id'] ];
@@ -612,7 +612,7 @@ function iwp_color_callback( $args ) {
  * @return void
  */
 function iwp_shop_states_callback($args) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 
     if ( isset( $args['placeholder'] ) )
         $placeholder = $args['placeholder'];
@@ -647,7 +647,7 @@ function iwp_shop_states_callback($args) {
  * @return void
  */
 function iwp_tax_rates_callback($args) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 	$rates = iwp_get_tax_rates();
 	ob_start(); ?>
 	<p><?php echo $args['desc']; ?></p>
@@ -764,7 +764,7 @@ function iwp_descriptive_text_callback( $args ) {
  */
 if ( ! function_exists( 'iwp_license_key_callback' ) ) {
 	function iwp_license_key_callback( $args ) {
-		global $iwp_options;
+		$iwp_options = get_option( 'iwp_settings' );
 
 		if ( isset( $iwp_options[ $args['id'] ] ) )
 			$value = $iwp_options[ $args['id'] ];

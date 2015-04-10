@@ -17,7 +17,7 @@ jQuery(document).ready(function( $ ) {
  	
 		lastTR = $( '#invoicedDisplay tbody' ).find("tr:last"),
 		trNew = lastTR.clone()
-					  .find("input:text").val("").end();
+					  .find("input").val("").end();
 
 		lastTR.after(trNew);
 

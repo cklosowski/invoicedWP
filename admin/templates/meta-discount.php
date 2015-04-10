@@ -10,7 +10,7 @@
 		</select> 
 	</td>
 	<td class="discount_row" style="background-color: #fdfdfd;"> <?php // price ?>
-		<div class="currencySymbol">$</div><div class="hidden percentSymbol" style="float:right; margin-left: 10px;">%</div><input id="discountAmount" class="item_name input_field changesNo" value="" name="iwp_invoice_discount" style="width: 74%; float: right;">
+		<div class="currencySymbol">$</div><div class="hidden percentSymbol" style="float:right; margin-left: 10px;">%</div><input type="number" id="discountAmount" class="item_name input_field changesNo" value="" name="iwp_invoice_discount" style="width: 74%; float: right;"  step="0.01">
 	</td>
 	<td class="remove_discount remove">&nbsp;</td>
 </tr>

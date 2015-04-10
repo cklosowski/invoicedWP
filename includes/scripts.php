@@ -43,8 +43,8 @@ function iwp_admin_scripts( $hook ) {
         wp_enqueue_style( 'iwp_admin_css', IWP_URL . '/assets/css/admin' . $suffix . '.css' );
 
 
-        wp_register_script( 'iwp_select2_js', IWP_URL . '/assets/select2/select2.js', array( 'jquery' ) );
-        wp_register_style( 'iwp_select2_css', IWP_URL . '/assets/select2/select2.css', array() );
+        wp_enqueue_script( 'iwp_select2_js', IWP_URL . '/assets/select2/select2.js', array( 'jquery' ) );
+        wp_enqueue_style( 'iwp_select2_css', IWP_URL . '/assets/select2/select2.css', array() );
     //}
 }
 add_action( 'admin_enqueue_scripts', 'iwp_admin_scripts', 100 );
@@ -76,7 +76,7 @@ add_action( 'wp_enqueue_scripts', 'iwp_scripts' );
  * @return string $message
  */
 function iwp_get_default_sale_notification_email() {
-    global $iwp_options;
+    $iwp_options = get_option( 'iwp_settings' );
 
     $default_email_body = __( 'Hello', 'iwp' ) . "\n\n" . sprintf( __( 'A %s purchase has been made', 'iwp' ), iwp_get_label_plural() ) . ".\n\n";
     $default_email_body .= sprintf( __( '%s sold:', 'iwp' ), iwp_get_label_plural() ) . "\n\n";

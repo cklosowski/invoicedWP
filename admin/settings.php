@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @return string $country The two letter country code for the shop's base country
  */
 function iwp_get_shop_country() {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 	
 	$country = isset( $iwp_options['business_country'] ) ? $iwp_options['business_country'] : 'US';
 	return apply_filters( 'iwp_shop_country', $country );
@@ -33,7 +33,7 @@ function iwp_get_shop_country() {
  * @return string $state The shop's base state name
  */
 function iwp_get_shop_state() {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 	$state = isset( $iwp_options['business_state'] ) ? $iwp_options['business_state'] : false;
 	return apply_filters( 'iwp_shop_state', $state );
 }
@@ -47,7 +47,7 @@ function iwp_get_shop_state() {
  * @return mixed|void  A list of states for the shop's base country
  */
 function iwp_get_shop_states( $country = null ) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 
 	if( empty( $country ) )
 		$country = iwp_get_shop_country();

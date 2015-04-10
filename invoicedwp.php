@@ -110,7 +110,7 @@ if( !class_exists( 'IWP' ) ) {
          * @return      void
          */
         private function includes() {
-            global $iwp_options;
+            $iwp_options = get_option( 'iwp_settings' );
 
             require_once IWP_PATH . 'admin/settings.php';
             //$iwp_options = iwp_get_settings();

@@ -75,17 +75,17 @@ function iwp_details($post_id) {
 									<td colspan="6" style="background-color: #f9f9f9;">
 										<dl style="width: 300px; float: right;">
 											<dt class="column-invoice-details-subtotal">Subtotal Excluding Tax:</dt>
-											<dd class="column-invoice-details-subtotal"><input value="" disabled="true" class="calculate_invoice_subtotal iwp_flatten_input"></dd>
+											<dd class="column-invoice-details-subtotal"><div style="float: left;">$</div><input value="" disabled="true" class="calculate_invoice_subtotal iwp_flatten_input" style="float: right; width: 90%;" ></dd>
 											<dt class="hidden column-invoice-details-adjustments" style="display: none;">Adjustments:</dt>
-											<dd class="hidden column-invoice-details-adjustments" style="display: none;"><input value="0.00" disabled="true" class="calculate_invoice_adjustments iwp_flatten_input"></dd>
+											<dd class="hidden column-invoice-details-adjustments" style="display: none;"><div style="float: left;">$</div><input value="0.00" disabled="true" class="calculate_invoice_adjustments iwp_flatten_input" style="float: right; width: 90%;" ></dd>
 											<dt class="hidden column-invoice-details-discounts" style="display: none;">Discount:</dt>
-											<dd class="hidden column-invoice-details-discounts" style="display: none;"><input value="0.00" disabled="true" class="iwp_flatten_input calculate_discount_total"></dd>
+											<dd class="hidden column-invoice-details-discounts" style="display: none;"><div style="float: left;">$</div><input value="0.00" disabled="true" class="iwp_flatten_input calculate_discount_total" style="float: right; width: 90%;" ></dd>
 											<dt class="hidden column-invoice-details-tax" style="display: none;">Sales Tax:</dt>
-											<dd class="hidden column-invoice-details-tax" style="display: none;"><input value="0.00" disabled="true" class="calculate_invoice_tax iwp_flatten_input"></dd>
+											<dd class="hidden column-invoice-details-tax" style="display: none;"><div style="float: left;">$</div><input value="0.00" disabled="true" class="calculate_invoice_tax iwp_flatten_input" style="float: right; width: 90%;" ></dd>
 											<dt class="hidden column-invoice-details-payment" style="display: none;">Payments:</dt>
-											<dd class="hidden column-invoice-details-payment" style="display: none;"><input value="0.00" disabled="true" class="calculate_invoice_payment iwp_flatten_input"></dd>
+											<dd class="hidden column-invoice-details-payment" style="display: none;"><div style="float: left;">$</div><input value="0.00" disabled="true" class="calculate_invoice_payment iwp_flatten_input" style="float: right; width: 90%;" ></dd>
 											<dt><b>Total:</b></dt>
-											<dd><input value="0.00" disabled="true" class="calculate_invoice_grandtotal iwp_flatten_input"></dd>
+											<dd><div style="float: left;">$</div><input value="0.00" disabled="true" class="calculate_invoice_grandtotal iwp_flatten_input" style="float: right; width: 90%;" ></dd>
 
 										</dl>
 						            </td>
@@ -122,14 +122,14 @@ function iwp_details($post_id) {
 								<td class="sort">&nbsp;</td>
 								<td style="border-right: 0 none !important;"> <?php // Name ?>
 									<input class="item_name input_field" value="" name="iwp_invoice_name[0]">
-									<span style="text-size 9px;"><a class="toggleDescription"  href="#" >Add Description</a></span>
+									<span><a class="toggleDescription"  href="#" style="text-size 9px !important;" >Add Description</a></span>
 									<textarea class="item_name input_field input_description iwp_invoice_description0" value="" name="iwp_invoice_description[0]" id="iwp_invoice_description[0]" style="display: none; width: 100%; margin-top: 5px; font-size= 0.88em;" placeholder="Description"></textarea>
 								</td>
 								<td style="border-right: 0 none !important;"> <?php // Qty ?>
-									<input class="changesNo item_name input_field input_qty" value="" name="iwp_invoice_qty[0]" id="iwp_invoice_qty[0]">
+									<input type="number" class="changesNo item_name input_field input_qty" value="" name="iwp_invoice_qty[0]" id="iwp_invoice_qty[0]">
 								</td>
 								<td style="border-right: 0 none !important;"> <?php // price ?>
-									<input class="changesNo item_name input_field input_price" value="" name="iwp_invoice_price[0]" id="iwp_invoice_price[0]">
+									<input type="number" class="changesNo item_name input_field input_price" value="" name="iwp_invoice_price[0]" id="iwp_invoice_price[0]"  step="0.01">
 								</td>
 								<td> <?php // Total ?>
 									$ <input class="calculate_invoice_total input_total iwp_flatten_input" disabled="true" value="<?php echo $values["iwp_invoice_total"][0]; ?>" placeholder="0.00">
@@ -147,14 +147,14 @@ function iwp_details($post_id) {
 										<td class="sort">&nbsp;</td>
 										<td style="border-right: 0 none !important;"> <?php // Name ?>
 											<input class="item_name input_field input_name" value="<?php echo $values["iwp_invoice_name"][$i]; ?>" name="iwp_invoice_name[<?php echo $i; ?>]">
-											<?php if( empty( $values["iwp_invoice_description"][$i] ) ) {  ?> <span style="text-size 10px;"><a class="toggleDescription"  href="#" >Add Description</a></span> <?php } ?>
+											<?php if( empty( $values["iwp_invoice_description"][$i] ) ) {  ?> <span><a class="toggleDescription"  href="#" style="text-size 9px !important;" >Add Description</a></span> <?php } ?>
 											<textarea class="item_name input_field input_description iwp_invoice_description" value="" name="iwp_invoice_description[<?php echo $i; ?>]" style="<?php if( empty( $values["iwp_invoice_description"][$i] ) ) { echo 'display: none;'; } ?> width: 100%; margin-top: 5px; font-size= 0.88em;" placeholder="Description"><?php echo $values["iwp_invoice_description"][$i]; ?></textarea>
 										</td>
 										<td style="border-right: 0 none !important;"> <?php // Qty ?>
-											<input class="changesNo item_name input_field input_qty" value="<?php echo $values["iwp_invoice_qty"][$i]; ?>" name="iwp_invoice_qty[<?php echo $i; ?>]" id="iwp_invoice_qty[<?php echo $i; ?>]">
+											<input type="number" class="changesNo item_name input_field input_qty" value="<?php echo $values["iwp_invoice_qty"][$i]; ?>" name="iwp_invoice_qty[<?php echo $i; ?>]" id="iwp_invoice_qty[<?php echo $i; ?>]">
 										</td>
 										<td style="border-right: 0 none !important;"> <?php // price ?>
-											<input class="changesNo item_name input_field input_price" value="<?php echo $values["iwp_invoice_price"][$i]; ?>" name="iwp_invoice_price[<?php echo $i; ?>]" id="iwp_invoice_price[<?php echo $i; ?>]">
+											<input type="number" class="changesNo item_name input_field input_price" value="<?php echo $values["iwp_invoice_price"][$i]; ?>" name="iwp_invoice_price[<?php echo $i; ?>]" id="iwp_invoice_price[<?php echo $i; ?>]" step="0.01">
 										</td>
 										<td>
 											$ <input class="calculate_invoice_total input_total iwp_flatten_input" disabled="true" value="<?php echo $values["iwp_invoice_total"][$i]; ?>" placeholder="0.00">

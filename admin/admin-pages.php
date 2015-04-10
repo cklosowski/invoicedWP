@@ -4,7 +4,7 @@
  * @return void
  */
 function iwp_display_options() {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 	//$license 	= get_option( '_iwp_license_key' );
 	//$status 	= get_option( '_iwp_license_key_status' );
 
@@ -59,8 +59,8 @@ function iwp_display_options() {
  */
 function iwp_get_settings() {
 
-	$settings = get_option( 'iwp_settings' );
-
+	$iwp_options = get_option( 'iwp_settings' );
+var_dump( $settings);
 	if( empty( $settings ) ) {
 
 		// Update old settings with new single option
@@ -160,10 +160,11 @@ function iwp_get_settings_tabs() {
 
 	$settings = iwp_get_registered_settings();
 
-	$tabs             = array();
-	$tabs['general']  = __( 'General', 'iwp' );
-	$tabs['business'] = __( 'Business Info', 'iwp' );
-	$tabs['emails']   = __( 'Emails', 'iwp' );
+	$tabs = array();
+	$tabs['general']  	= __( 'General', 'iwp' );
+	$tabs['business'] 	= __( 'Business Info', 'iwp' );
+	$tabs['taxes'] 		= __( 'Taxes', 'iwp' );
+	$tabs['emails']   	= __( 'Emails', 'iwp' );
 
 	if( ! empty( $settings['extensions'] ) ) {
 		$tabs['extensions'] = __( 'Extensions', 'iwp' );
@@ -330,6 +331,35 @@ function iwp_get_registered_settings() {
 					'name' => __( 'Tax/VAT Number', 'iwp' ),
 					'type' => 'text',
 				),
+			)
+		),
+		/** Taxes Settings */
+		'taxes' => apply_filters('iwp_settings_taxes',
+			array(
+				'enable_taxes' => array(
+					'id' => 'enable_taxes',
+					'name' => __( 'Enable Taxes', 'iwp' ),
+					'desc' => __( 'Check this to enable taxes on purchases.', 'iwp' ),
+					'type' => 'checkbox',
+				),
+				'tax_rate' => array(
+					'id' => 'tax_rate',
+					'name' => __( 'Fallback Tax Rate', 'iwp' ),
+					'desc' => __( 'Enter a percentage, such as 6.5. This is the default rate charged.', 'iwp' ),
+					'type' => 'text',
+					'size' => 'small'
+				),
+				'change_tax_on_invoice' => array(
+					'id' => 'change_tax_on_invoice',
+					'name' => __( 'Change Tax Rate on Invoice', 'iwp' ),
+					'desc' => __( 'Default tax rate will be displayed on the invoice when invoice is created but site owner can modify it.', 'iwp' ),
+					'type' => 'radio',
+					'std' => 'no',
+					'options' => array(
+						'yes' => __( 'Yes, I want to adjust tax rate on invoice', 'iwp' ),
+						'no'  => __( 'No, I will set a single tax rate for all invoices', 'iwp' )
+					)
+				)
 			)
 		),
 		/** Email Settings */
@@ -506,7 +536,7 @@ function iwp_get_pages( $force = false ) {
  */
 function iwp_display_sysinfo() {
 	global $wpdb;
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 	?>
 	<div class="wrap">
 		<div id="icon-options-general" class="icon32"></div><h2><?php _e( 'InvoicedWP - System Info', 'iwp-txt' ); ?></h2>
