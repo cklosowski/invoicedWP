@@ -30,15 +30,15 @@ function myInvoiceSettings() {
 
         	$display = '<input type="checkbox" name="isQuote" id="isQuote" value="' . $iwp['isQuote'] . '" ' . checked( $iwp['isQuote'], 1, false ) .' /> <label for="isQuote" class="">Quote</label><br />';
 
-    		$display .= '<input type="checkbox" name="reoccuringPayment" id="reoccuringPayment" value="' . $iwp['reoccuringPayment'] . '" ' . checked( $iwp['reoccuringPayment'], 1, false ) .' /> <label for="reoccuringPayment" class="">Reoccuring Bill</label><br />';
-            $display .= '<input type="text" name="reoccuringPaymentText" id="reoccuringPaymentText" value="' . $iwp['reoccuringPaymentText'] . '" placeholder="Next Payment"  style="width: 100%;" class="date-picker" /><br />'; // Need to add jQuery to update the place holder to be the invoice total.
+    		$display .= '<input type="checkbox" name="reoccuringPayment" id="reoccuringPayment" value="' . $iwp['reoccuringPayment'] . '" ' . checked( $iwp['reoccuringPayment'], 1, false ) .' /> <label for="reoccuringPayment" class="">Reoccuring Bill</label>';
+            $display .= '<input type="text" name="reoccuringPaymentText" id="reoccuringPaymentText" value="' . $iwp['reoccuringPaymentText'] . '" placeholder="Number of Days to Next Payment"  style="width: 100%; display: none;" /><br />'; // Need to add jQuery to update the place holder to be the invoice total.
             // Need to add jQuery to update this section to slide open when the box is checked.    	
         	
-            $display .= '<input type="checkbox" name="minPayment" id="minPayment" value="' . $iwp['minPayment'] . '" ' . checked( $iwp['minPayment'], 1, false ) .' /> <label for="minPayment" class="">Minimum Payment</label><br />';    
-        	$display .= '<input type="text" name="minPaymentText" id="minPaymentText" value="' . $iwp['minPaymentText'] . '" placeholder="Minimum Payment"  style="width: 100%;" /><br />'; // Need to add jQuery to update the place holder to be the invoice total.
+            $display .= '<input type="checkbox" name="minPayment" id="minPayment" value="' . $iwp['minPayment'] . '" ' . checked( $iwp['minPayment'], 1, false ) .' /> <label for="minPayment" class="">Minimum Payment</label>';    
+        	$display .= '<input type="text" name="minPaymentText" id="minPaymentText" value="' . $iwp['minPaymentText'] . '" placeholder="Minimum Payment"  style="width: 100%; display: none;" /><br />'; // Need to add jQuery to update the place holder to be the invoice total.
         	
-            $display .= '<input type="checkbox" name="paymentDueDate" id="minPayment" value="' . $iwp['paymentDueDate'] . '" ' . checked( $iwp['paymentDueDate'], 1, false ) .' /> <label for="paymentDueDate" class="">Set Due Date</label><br />';    
-            $display .= '<input type="text" name="paymentDueDateText" id="minPaymentText" value="' . $iwp['paymentDueDateText'] . '" placeholder="Due Date"  style="width: 100%;" class="date-picker" /><br />'; // Need to add jQuery to update the place holder to be the invoice total.
+            $display .= '<input type="checkbox" name="paymentDueDate" id="dueDate" value="' . $iwp['paymentDueDate'] . '" ' . checked( $iwp['paymentDueDate'], 1, false ) .' /> <label for="paymentDueDate" class="">Set Due Date</label>';    
+            $display .= '<input type="text" name="paymentDueDateText" id="dueDateText" value="' . $iwp['paymentDueDateText'] . '" placeholder="Due Date"  style="width: 100%; display: none;" class="date-picker" /><br />'; // Need to add jQuery to update the place holder to be the invoice total.
 
             echo '<div class="misc-pub-section misc-pub-section-last" style="border-top: 1px solid #eee;">';
         	echo apply_filters( 'iwp_extra_options', $display );

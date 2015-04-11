@@ -12,35 +12,12 @@
  * @author          Ryan Pletcher
  * @copyright       Copyright (c) 2015
  *
- * IMPORTANT! Ensure that you make the following adjustments
- * before releasing your extension:
  *
- * - Replace all instances of plugin-name with the name of your plugin.
- *   By WordPress coding standards, the folder name, plugin file name,
- *   and text domain should all match. For the purposes of standardization,
- *   the folder name, plugin file name, and text domain are all the
- *   lowercase form of the actual plugin name, replacing spaces with
- *   hyphens.
- *
- * - Replace all instances of Plugin_Name with the name of your plugin.
- *   For the purposes of standardization, the camel case form of the plugin
- *   name, replacing spaces with underscores, is used to define classes
- *   in your extension.
- *
- * - Replace all instances of PLUGINNAME with the name of your plugin.
- *   For the purposes of standardization, the uppercase form of the plugin
- *   name, removing spaces, is used to define plugin constants.
- *
- * - Replace all instances of Plugin Name with the actual name of your
- *   plugin. This really doesn't need to be anywhere other than in the
- *   EDD Licensing call in the hooks method.
- *
- * - Find all instances of @todo in the plugin and update the relevant
- *   areas as necessary.
- *
- * - All functions that are not class methods MUST be prefixed with the
- *   plugin name, replacing spaces with underscores. NOT PREFIXING YOUR
- *   FUNCTIONS CAN CAUSE PLUGIN CONFLICTS!
+ * Create Invoice page to view an invoice
+ * Setup more secure link to invoice
+ * Setup manual payment
+ * Setup paypal link payment
+ * 
  */
 
 
@@ -113,6 +90,7 @@ if( !class_exists( 'IWP' ) ) {
             $iwp_options = get_option( 'iwp_settings' );
 
             require_once IWP_PATH . 'admin/settings.php';
+            require_once IWP_PATH . 'admin/generateLink.php';
             //$iwp_options = iwp_get_settings();
 
             // Include scripts
@@ -120,8 +98,10 @@ if( !class_exists( 'IWP' ) ) {
             require_once IWP_PATH . 'includes/post-type.php';
             require_once IWP_PATH . 'admin/ajax-functions.php';
             require_once IWP_PATH . 'includes/functions.php';
+            require_once IWP_PATH . 'includes/single-invoicedwp.php';
 
             require_once IWP_PATH . 'admin/functions.php';
+
             
             require_once IWP_PATH . 'admin/admin-pages.php';
             require_once IWP_PATH . 'admin/form-callbacks.php';

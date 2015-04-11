@@ -99,14 +99,8 @@ function iwp_details($post_id) {
 											echo esc_attr( $html );
 										?>" style="margin-left: 10px;"><?php _e( 'Add Discount', 'iwp-invoiced' ); ?></a>
 										<a href="#" class="button button-primary add_row" style="margin-left: 10px;"><?php _e( 'Add Line', 'iwp-invoiced' ); ?></a>
-										<select style="float: right;" class="selectTemplate">
-											
-
+										<select style="float: right; width: 400px;" class="selectTemplate" >
 											<?php echo iwp_get_templates(); ?>
-
-
-
-											<option value="">Test Value to make sure it fits the value on the page.</option>
 										</select>
 									</th>
 								</tr>

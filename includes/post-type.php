@@ -34,7 +34,7 @@ function iwp_setup_init() {
 	$args = array(
 		'labels' 				=> $labels,
 		'public' 				=> true,
-		'publicly_queryable' 	=> false,
+		'publicly_queryable' 	=> true,
 		'show_ui' 				=> true,
 		'show_in_menu' 			=> true,
 		'query_var' 			=> true,

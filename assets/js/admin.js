@@ -197,4 +197,35 @@ jQuery(document).ready(function( $ ) {
 
 	}
 
+
+	$("#reoccuringPayment").change(function() {
+	    if(this.checked) {
+	        $("#reoccuringPaymentText").show();
+	    } else {
+	    	$("#reoccuringPaymentText").hide();
+	    }
+	});
+
+
+	$("#minPayment").change(function() {
+	    if(this.checked) {
+	        $("#minPaymentText").show();
+	    } else {
+	    	$("#minPaymentText").hide();
+	    }
+	});
+
+	$("#dueDate").change(function() {
+	    if(this.checked) {
+	        $("#dueDateText").show();
+	    } else {
+	    	$("#dueDateText").hide();
+	    }
+	});
+
+
+
+
+
+
 });
