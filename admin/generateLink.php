@@ -60,6 +60,8 @@ function wpse26869_get_shortlink( $link, $id, $context )
 	{
 		$id = get_queried_object_id();
 	}
+
+	//$id = md5( $id );
 	return home_url( 'invoice/' . $id );
 }
 

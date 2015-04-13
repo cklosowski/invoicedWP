@@ -1,4 +1,65 @@
 <?php
+
+/**
+ * Get an option
+ *
+ * Looks to see if the specified setting exists, returns default if not
+ *
+ * @since 1.8.4
+ * @return mixed
+ */
+function iwp_get_option( $key = '', $default = false ) {
+	global $iwp_options;
+	$value = ! empty( $iwp_options[ $key ] ) ? $iwp_options[ $key ] : $default;
+	$value = apply_filters( 'iwp_get_option', $value, $key, $default );
+	return apply_filters( 'iwp_get_option_' . $key, $value, $key, $default );
+}
+
+/**
+ * Update an option
+ *
+ * Updates an edd setting value in both the db and the global variable.
+ * Warning: Passing in an empty, false or null string value will remove
+ *          the key from the iwp_options array.
+ *
+ * @since 2.3
+ * @param string $key The Key to update
+ * @param string|bool|int $value The value to set the key to
+ * @return boolean True if updated, false if not.
+ */
+function iwp_update_option( $key = '', $value = false ) {
+
+	// If no key, exit
+	if ( empty( $key ) ){
+		return false;
+	}
+
+	if ( empty( $value ) ) {
+		$remove_option = iwp_delete_option( $key );
+		return $remove_option;
+	}
+
+	// First let's grab the current settings
+	$options = get_option( 'iwp_settings' );
+
+	// Let's let devs alter that value coming in
+	$value = apply_filters( 'iwp_update_option', $value, $key );
+
+	// Next let's try to update the value
+	$options[ $key ] = $value;
+	$did_update = update_option( 'iwp_settings', $options );
+
+	// If it updated, let's update the global variable
+	if ( $did_update ){
+		global $iwp_options;
+		$iwp_options[ $key ] = $value;
+
+	}
+
+	return $did_update;
+}
+
+
 /**
  * Display the General settings tab
  * @return void
@@ -60,9 +121,8 @@ function iwp_display_options() {
 function iwp_get_settings() {
 
 	$iwp_options = get_option( 'iwp_settings' );
-var_dump( $settings);
+	
 	if( empty( $settings ) ) {
-
 		// Update old settings with new single option
 
 		$general_settings 	= is_array( get_option( 'iwp_settings_general' ) )    ? get_option( 'iwp_settings_general' )  	: array();

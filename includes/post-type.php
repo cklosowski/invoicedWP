@@ -149,3 +149,24 @@ function iwp_display_custom_columns( $column ) {
 
 	}*/
 }
+
+
+
+
+function include_invoice_template_function( $template_path ) {
+    if ( get_post_type() == 'invoicedwp' ) {
+        if ( is_single() ) {
+            if ( $theme_file = locate_template( array ( 'single-invoicedwp.php' ) ) ) {
+                $template_path = $theme_file;
+            } else {
+                $template_path = plugin_dir_path( __FILE__ ) . 'single-invoicedwp.php';
+            }
+        }
+    }
+    return $template_path;
+}
+
+
+
+
+

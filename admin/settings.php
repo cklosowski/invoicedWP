@@ -4,13 +4,20 @@
  *
  * @package     iwp
  * @subpackage  Functions
- * @copyright   Copyright (c) 2014, Pippin Williamson
+ * @copyright   Copyright (c) 2014, Ryan Pletcher
  * @license     http://opensource.org/licenses/gpl-2.0.php GNU Public License
  * @since       1.6
  */
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
+
+
+
+
+
+
+
 
 
 /**
@@ -1568,58 +1575,58 @@ function iwp_get_turkey_states_list() {
 function iwp_get_spain_states_list() {
 	$states = array(
 		''   => '',
-	    'C'  => __( 'A Coru&ntilde;a', 'iwp' ),
-	    'VI' => __( 'Araba', 'iwp' ),
-	    'AB' => __( 'Albacete', 'iwp' ),
-	    'A'  => __( 'Alicante', 'iwp' ),
-	    'AL' => __( 'Almer&iacute;a', 'iwp' ),
-	    'O'  => __( 'Asturias', 'iwp' ),
-	    'AV' => __( '&Aacute;vila', 'iwp' ),
-	    'BA' => __( 'Badajoz', 'iwp' ),
-	    'PM' => __( 'Baleares', 'iwp' ),
-	    'B'  => __( 'Barcelona', 'iwp' ),
-	    'BU' => __( 'Burgos', 'iwp' ),
-	    'CC' => __( 'C&aacute;ceres', 'iwp' ),
-	    'CA' => __( 'C&aacute;diz', 'iwp' ),
-	    'S'  => __( 'Cantabria', 'iwp' ),
-	    'CS' => __( 'Castell&oacute;n', 'iwp' ),
-	    'CE' => __( 'Ceuta', 'iwp' ),
-	    'CR' => __( 'Ciudad Real', 'iwp' ),
-	    'CO' => __( 'C&oacute;rdoba', 'iwp' ),
-	    'CU' => __( 'Cuenca', 'iwp' ),
-	    'GI' => __( 'Girona', 'iwp' ),
-	    'GR' => __( 'Granada', 'iwp' ),
-	    'GU' => __( 'Guadalajara', 'iwp' ),
-	    'SS' => __( 'Gipuzkoa', 'iwp' ),
-	    'H'  => __( 'Huelva', 'iwp' ),
-	    'HU' => __( 'Huesca', 'iwp' ),
-	    'J'  => __( 'Ja&eacute;n', 'iwp' ),
-	    'LO' => __( 'La Rioja', 'iwp' ),
-	    'GC' => __( 'Las Palmas', 'iwp' ),
-	    'LE' => __( 'Le&oacute;n', 'iwp' ),
-	    'L'  => __( 'Lleida', 'iwp' ),
-	    'LU' => __( 'Lugo', 'iwp' ),
-	    'M'  => __( 'Madrid', 'iwp' ),
-	    'MA' => __( 'M&aacute;laga', 'iwp' ),
-	    'ML' => __( 'Melilla', 'iwp' ),
-	    'MU' => __( 'Murcia', 'iwp' ),
-	    'NA' => __( 'Navarra', 'iwp' ),
-	    'OR' => __( 'Ourense', 'iwp' ),
-	    'P'  => __( 'Palencia', 'iwp' ),
-	    'PO' => __( 'Pontevedra', 'iwp' ),
-	    'SA' => __( 'Salamanca', 'iwp' ),
-	    'TF' => __( 'Santa Cruz de Tenerife', 'iwp' ),
-	    'SG' => __( 'Segovia', 'iwp' ),
-	    'SE' => __( 'Sevilla', 'iwp' ),
-	    'SO' => __( 'Soria', 'iwp' ),
-	    'T'  => __( 'Tarragona', 'iwp' ),
-	    'TE' => __( 'Teruel', 'iwp' ),
-	    'TO' => __( 'Toledo', 'iwp' ),
-	    'V'  => __( 'Valencia', 'iwp' ),
-	    'VA' => __( 'Valladolid', 'iwp' ),
-	    'BI' => __( 'Bizkaia', 'iwp' ),
-	    'ZA' => __( 'Zamora', 'iwp' ),
-	    'Z'  => __( 'Zaragoza', 'iwp' )
+	    'C'  => __( 'A Coru&ntilde;a', 'iwp-txt' ),
+	    'VI' => __( 'Araba', 'iwp-txt' ),
+	    'AB' => __( 'Albacete', 'iwp-txt' ),
+	    'A'  => __( 'Alicante', 'iwp-txt' ),
+	    'AL' => __( 'Almer&iacute;a', 'iwp-txt' ),
+	    'O'  => __( 'Asturias', 'iwp-txt' ),
+	    'AV' => __( '&Aacute;vila', 'iwp-txt' ),
+	    'BA' => __( 'Badajoz', 'iwp-txt' ),
+	    'PM' => __( 'Baleares', 'iwp-txt' ),
+	    'B'  => __( 'Barcelona', 'iwp-txt' ),
+	    'BU' => __( 'Burgos', 'iwp-txt' ),
+	    'CC' => __( 'C&aacute;ceres', 'iwp-txt' ),
+	    'CA' => __( 'C&aacute;diz', 'iwp-txt' ),
+	    'S'  => __( 'Cantabria', 'iwp-txt' ),
+	    'CS' => __( 'Castell&oacute;n', 'iwp-txt' ),
+	    'CE' => __( 'Ceuta', 'iwp-txt' ),
+	    'CR' => __( 'Ciudad Real', 'iwp-txt' ),
+	    'CO' => __( 'C&oacute;rdoba', 'iwp-txt' ),
+	    'CU' => __( 'Cuenca', 'iwp-txt' ),
+	    'GI' => __( 'Girona', 'iwp-txt' ),
+	    'GR' => __( 'Granada', 'iwp-txt' ),
+	    'GU' => __( 'Guadalajara', 'iwp-txt' ),
+	    'SS' => __( 'Gipuzkoa', 'iwp-txt' ),
+	    'H'  => __( 'Huelva', 'iwp-txt' ),
+	    'HU' => __( 'Huesca', 'iwp-txt' ),
+	    'J'  => __( 'Ja&eacute;n', 'iwp-txt' ),
+	    'LO' => __( 'La Rioja', 'iwp-txt' ),
+	    'GC' => __( 'Las Palmas', 'iwp-txt' ),
+	    'LE' => __( 'Le&oacute;n', 'iwp-txt' ),
+	    'L'  => __( 'Lleida', 'iwp-txt' ),
+	    'LU' => __( 'Lugo', 'iwp-txt' ),
+	    'M'  => __( 'Madrid', 'iwp-txt' ),
+	    'MA' => __( 'M&aacute;laga', 'iwp-txt' ),
+	    'ML' => __( 'Melilla', 'iwp-txt' ),
+	    'MU' => __( 'Murcia', 'iwp-txt' ),
+	    'NA' => __( 'Navarra', 'iwp-txt' ),
+	    'OR' => __( 'Ourense', 'iwp-txt' ),
+	    'P'  => __( 'Palencia', 'iwp-txt' ),
+	    'PO' => __( 'Pontevedra', 'iwp-txt' ),
+	    'SA' => __( 'Salamanca', 'iwp-txt' ),
+	    'TF' => __( 'Santa Cruz de Tenerife', 'iwp-txt' ),
+	    'SG' => __( 'Segovia', 'iwp-txt' ),
+	    'SE' => __( 'Sevilla', 'iwp-txt' ),
+	    'SO' => __( 'Soria', 'iwp-txt' ),
+	    'T'  => __( 'Tarragona', 'iwp-txt' ),
+	    'TE' => __( 'Teruel', 'iwp-txt' ),
+	    'TO' => __( 'Toledo', 'iwp-txt' ),
+	    'V'  => __( 'Valencia', 'iwp-txt' ),
+	    'VA' => __( 'Valladolid', 'iwp-txt' ),
+	    'BI' => __( 'Bizkaia', 'iwp-txt' ),
+	    'ZA' => __( 'Zamora', 'iwp-txt' ),
+	    'Z'  => __( 'Zaragoza', 'iwp-txt' )
 	);
 
 	return apply_filters( 'iwp_spain_states', $states );
@@ -1635,34 +1642,94 @@ function iwp_get_spain_states_list() {
  */
 function iwp_get_currencies() {
 	$currencies = array(
-		'USD'  => __( 'US Dollars (&#36;)', 'edd' ),
-		'EUR'  => __( 'Euros (&euro;)', 'edd' ),
-		'GBP'  => __( 'Pounds Sterling (&pound;)', 'edd' ),
-		'AUD'  => __( 'Australian Dollars (&#36;)', 'edd' ),
-		'BRL'  => __( 'Brazilian Real (R&#36;)', 'edd' ),
-		'CAD'  => __( 'Canadian Dollars (&#36;)', 'edd' ),
-		'CZK'  => __( 'Czech Koruna', 'edd' ),
-		'DKK'  => __( 'Danish Krone', 'edd' ),
-		'HKD'  => __( 'Hong Kong Dollar (&#36;)', 'edd' ),
-		'HUF'  => __( 'Hungarian Forint', 'edd' ),
-		'ILS'  => __( 'Israeli Shekel (&#8362;)', 'edd' ),
-		'JPY'  => __( 'Japanese Yen (&yen;)', 'edd' ),
-		'MYR'  => __( 'Malaysian Ringgits', 'edd' ),
-		'MXN'  => __( 'Mexican Peso (&#36;)', 'edd' ),
-		'NZD'  => __( 'New Zealand Dollar (&#36;)', 'edd' ),
-		'NOK'  => __( 'Norwegian Krone', 'edd' ),
-		'PHP'  => __( 'Philippine Pesos', 'edd' ),
-		'PLN'  => __( 'Polish Zloty', 'edd' ),
-		'SGD'  => __( 'Singapore Dollar (&#36;)', 'edd' ),
-		'SEK'  => __( 'Swedish Krona', 'edd' ),
-		'CHF'  => __( 'Swiss Franc', 'edd' ),
-		'TWD'  => __( 'Taiwan New Dollars', 'edd' ),
-		'THB'  => __( 'Thai Baht (&#3647;)', 'edd' ),
-		'INR'  => __( 'Indian Rupee (&#8377;)', 'edd' ),
-		'TRY'  => __( 'Turkish Lira (&#8378;)', 'edd' ),
-		'RIAL' => __( 'Iranian Rial (&#65020;)', 'edd' ),
-		'RUB'  => __( 'Russian Rubles', 'edd' )
+		'USD'  => __( 'US Dollars (&#36;)', 'iwp-txt' ),
+		'EUR'  => __( 'Euros (&euro;)', 'iwp-txt' ),
+		'GBP'  => __( 'Pounds Sterling (&pound;)', 'iwp-txt' ),
+		'AUD'  => __( 'Australian Dollars (&#36;)', 'iwp-txt' ),
+		'BRL'  => __( 'Brazilian Real (R&#36;)', 'iwp-txt' ),
+		'CAD'  => __( 'Canadian Dollars (&#36;)', 'iwp-txt' ),
+		'CZK'  => __( 'Czech Koruna', 'iwp-txt' ),
+		'DKK'  => __( 'Danish Krone', 'iwp-txt' ),
+		'HKD'  => __( 'Hong Kong Dollar (&#36;)', 'iwp-txt' ),
+		'HUF'  => __( 'Hungarian Forint', 'iwp-txt' ),
+		'ILS'  => __( 'Israeli Shekel (&#8362;)', 'iwp-txt' ),
+		'JPY'  => __( 'Japanese Yen (&yen;)', 'iwp-txt' ),
+		'MYR'  => __( 'Malaysian Ringgits', 'iwp-txt' ),
+		'MXN'  => __( 'Mexican Peso (&#36;)', 'iwp-txt' ),
+		'NZD'  => __( 'New Zealand Dollar (&#36;)', 'iwp-txt' ),
+		'NOK'  => __( 'Norwegian Krone', 'iwp-txt' ),
+		'PHP'  => __( 'Philippine Pesos', 'iwp-txt' ),
+		'PLN'  => __( 'Polish Zloty', 'iwp-txt' ),
+		'SGD'  => __( 'Singapore Dollar (&#36;)', 'iwp-txt' ),
+		'SEK'  => __( 'Swedish Krona', 'iwp-txt' ),
+		'CHF'  => __( 'Swiss Franc', 'iwp-txt' ),
+		'TWD'  => __( 'Taiwan New Dollars', 'iwp-txt' ),
+		'THB'  => __( 'Thai Baht (&#3647;)', 'iwp-txt' ),
+		'INR'  => __( 'Indian Rupee (&#8377;)', 'iwp-txt' ),
+		'TRY'  => __( 'Turkish Lira (&#8378;)', 'iwp-txt' ),
+		'RIAL' => __( 'Iranian Rial (&#65020;)', 'iwp-txt' ),
+		'RUB'  => __( 'Russian Rubles', 'iwp-txt' )
 	);
 
 	return apply_filters( 'iwp_currencies', $currencies );
 }
+
+
+
+/**
+ * Get the store's set currency
+ *
+ * @since 1.5.2
+ * @return string The currency code
+ */
+function iwp_get_currency() {
+    $currency = iwp_get_option( 'currency', 'USD' );
+    return apply_filters( 'iwp_currency', $currency );
+}
+
+/**
+ * Given a currency determine the symbol to use. If no currency given, site default is used.
+ * If no symbol is determine, the currency string is returned.
+ *
+ * @since  2.2
+ * @param  string $currency The currency string
+ * @return string           The symbol to use for the currency
+ */
+function iwp_currency_symbol( $currency = '' ) {
+    if ( empty( $currency ) ) {
+        $currency = iwp_get_currency();
+    }
+
+    switch ( $currency ) :
+        case "GBP" :
+            $symbol = '&pound;';
+            break;
+        case "BRL" :
+            $symbol = 'R&#36;';
+            break;
+        case "EUR" :
+            $symbol = '&euro;';
+            break;
+        case "USD" :
+        case "AUD" :
+        case "NZD" :
+        case "CAD" :
+        case "HKD" :
+        case "MXN" :
+        case "SGD" :
+            $symbol = '&#36;';
+            break;
+        case "JPY" :
+            $symbol = '&yen;';
+            break;
+        default :
+            $symbol = $currency;
+            break;
+    endswitch;
+
+    return apply_filters( 'iwp_currency_symbol', $symbol, $currency );
+}
+
+
+
+

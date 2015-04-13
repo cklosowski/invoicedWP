@@ -9,6 +9,8 @@ jQuery(document).ready(function( $ ) {
 	}
 
 	setInterval(function(){ calculateTotal(); }, 250);
+
+	
 						
 	$( document ).on( 'click', '.add_row', function( e ) {
 		e.preventDefault();
@@ -17,7 +19,7 @@ jQuery(document).ready(function( $ ) {
  	
 		lastTR = $( '#invoicedDisplay tbody' ).find("tr:last"),
 		trNew = lastTR.clone()
-					  .find("input").val("").end();
+					  .find("input, textarea").val("").end();
 
 		lastTR.after(trNew);
 

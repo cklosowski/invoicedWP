@@ -29,11 +29,16 @@ function iwp_admin_scripts( $hook ) {
      * @todo		This block loads styles or scripts explicitly on the
      *				iwp settings page.
      */
-    //if( $hook == $iwp_settings_page ) {
+    
+    $possibleHooks = apply_filters( 'iwp_hooks', array( 'post.php', 'post-new.php' ) );
+    $possiblePostType = apply_filters( 'iwp_posttypes', array( 'invoicedwp', 'invoicedwp_template') );
+
+    if( in_array($hook , $possibleHooks ) && in_array( $post_type, $possiblePostType ) ) {
+        wp_enqueue_style( 'jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
+
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'jquery-ui-core' );
         wp_enqueue_script( 'jquery-ui-datepicker' );
-        wp_enqueue_style( 'jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
 
         wp_enqueue_style( 'thickbox' ); // call to media files in wp
         wp_enqueue_script( 'thickbox' );
@@ -45,7 +50,7 @@ function iwp_admin_scripts( $hook ) {
 
         wp_enqueue_script( 'iwp_select2_js', IWP_URL . '/assets/select2/select2.js', array( 'jquery' ) );
         wp_enqueue_style( 'iwp_select2_css', IWP_URL . '/assets/select2/select2.css', array() );
-    //}
+    }
 }
 add_action( 'admin_enqueue_scripts', 'iwp_admin_scripts', 100 );
 

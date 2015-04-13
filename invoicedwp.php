@@ -6,7 +6,7 @@
  * Version:         1.0.0
  * Author:          WP Ronin
  * Author URI:      wp-ronin.com
- * Text Domain:     invoicewp
+ * Text Domain:     iwp-txt
  *
  * @package         Invoiced WP
  * @author          Ryan Pletcher
@@ -98,7 +98,6 @@ if( !class_exists( 'IWP' ) ) {
             require_once IWP_PATH . 'includes/post-type.php';
             require_once IWP_PATH . 'admin/ajax-functions.php';
             require_once IWP_PATH . 'includes/functions.php';
-            require_once IWP_PATH . 'includes/single-invoicedwp.php';
 
             require_once IWP_PATH . 'admin/functions.php';
 
@@ -147,6 +146,7 @@ if( !class_exists( 'IWP' ) ) {
             //add_filter( 'edd_settings_extensions', array( $this, 'settings' ), 1 );
 
             add_action( 'init', 'iwp_setup_init' );
+            add_filter( 'template_include', 'include_invoice_template_function', 1 );
             
             if( is_admin() ) {    
                 add_action( 'admin_menu', array( $this, 'iwp_setup_admin_menu' ), 1000, 0 );
@@ -188,6 +188,7 @@ if( !class_exists( 'IWP' ) ) {
             public function iwp_setup_admin_meta() {
 
                 // Meta Boxes for the Invoice Page
+                add_meta_box( 'iwp_notice', __( 'Invoice Notice', 'iwp-txt' ), 'iwp_notice', 'invoicedwp', 'side', 'low' );
                 add_meta_box( 'iwp_payment', __( 'Payment Information', 'iwp-txt' ), 'iwp_payment', 'invoicedwp', 'side' );
                 add_meta_box( 'iwp_client', __( 'Client Information', 'iwp-txt' ), 'iwp_client', 'invoicedwp', 'side', 'low' );
                 add_meta_box( 'iwp_details', __( 'Billing Details', 'iwp-txt' ), 'iwp_details', 'invoicedwp', 'normal', 'low' );
@@ -200,8 +201,6 @@ if( !class_exists( 'IWP' ) ) {
                 remove_meta_box( 'slugdiv', 'invoicedwp_template' , 'normal' );
                 
             }
-
-
 
         /**
          * Internationalization

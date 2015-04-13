@@ -63,15 +63,20 @@ function iwp_settings_sanitize( $input = array() ) {
 				$key = $value['id'];
 			}
 
-			if ( empty( $input[$key] ) ) {
-				unset( $iwp_options[$key] );
-			}
+			//if ( empty( $input[$key] ) ) {
+			//	unset( $iwp_options[$key] );
+			//}
 
 		}
 	}
 
 	// Merge our new settings with the existing
-	$output = array_merge( $iwp_options, $input );
+	// 
+	if( is_array( $iwp_options ) ) {
+		$output = array_merge( $iwp_options, $input );
+	} else {
+		$output = $input;
+	}
 
 	add_settings_error( 'iwp-notices', '', __( 'Settings updated.', 'iwp' ), 'updated' );
 
