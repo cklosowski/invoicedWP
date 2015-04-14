@@ -13,13 +13,12 @@ if( !defined( 'ABSPATH' ) ) exit;
 
 
 function iwp_details($post_id) {
-
 	wp_enqueue_script( 'wc_invoiced_writepanel_js' );
 
 	$values = get_post_meta( $post_id->ID, '_invoicedwp', true );
 	$values = $values['lineItems'];
 	$iwp_currency = iwp_currency_symbol();
-var_dump( $iwp_currency );
+
 	$count = count( $values["iwp_invoice_name"] );
 
 	?>

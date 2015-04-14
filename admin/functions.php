@@ -157,7 +157,46 @@ function iwp_get_roles() {
 }
 
 
+/**
+ * Returns a nicely formatted amount.
+ *
+ * @since 1.0
+ *
+ * @param string $amount   Price amount to format
+ * @param string $decimals Whether or not to use decimals.  Useful when set to false for non-currency numbers.
+ *
+ * @return string $amount Newly formatted amount or Price Not Available
+ */
+function iwp_format_amount( $amount, $decimals = true ) {
+    $thousands_sep = iwp_get_option( 'thousands_separator', ',' );
+    $decimal_sep   = iwp_get_option( 'decimal_separator', '.' );
 
+    // Format the amount
+    if ( $decimal_sep == ',' && false !== ( $sep_found = strpos( $amount, $decimal_sep ) ) ) {
+        $whole = substr( $amount, 0, $sep_found );
+        $part = substr( $amount, $sep_found + 1, ( strlen( $amount ) - 1 ) );
+        $amount = $whole . '.' . $part;
+    }
+
+    // Strip , from the amount (if set as the thousands separator)
+    if ( $thousands_sep == ',' && false !== ( $found = strpos( $amount, $thousands_sep ) ) ) {
+        $amount = str_replace( ',', '', $amount );
+    }
+
+    // Strip ' ' from the amount (if set as the thousands separator)
+    if ( $thousands_sep == ' ' && false !== ( $found = strpos( $amount, $thousands_sep ) ) ) {
+        $amount = str_replace( ' ', '', $amount );
+    }
+
+    if ( empty( $amount ) ) {
+        $amount = 0;
+    }
+
+    $decimals  = apply_filters( 'iwp_format_amount_decimals', $decimals ? 2 : 0, $amount );
+    $formatted = number_format( $amount, $decimals, $decimal_sep, $thousands_sep );
+
+    return apply_filters( 'iwp_format_amount', $formatted, $amount, $decimals, $decimal_sep, $thousands_sep );
+}
 
 
 
