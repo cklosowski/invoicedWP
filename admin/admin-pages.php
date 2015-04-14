@@ -9,7 +9,7 @@
  * @return mixed
  */
 function iwp_get_option( $key = '', $default = false ) {
-	global $iwp_options;
+	$iwp_options = get_option( 'iwp_settings' );
 	$value = ! empty( $iwp_options[ $key ] ) ? $iwp_options[ $key ] : $default;
 	$value = apply_filters( 'iwp_get_option', $value, $key, $default );
 	return apply_filters( 'iwp_get_option_' . $key, $value, $key, $default );
@@ -206,7 +206,7 @@ add_action('admin_init', 'iwp_register_settings');
  * @return void
  */
 function iwp_missing_callback($args) {
-	printf( __( 'The callback function used for the <strong>%s</strong> setting is missing.', 'iwp' ), $args['id'] );
+	printf( __( 'The callback function used for the <strong>%s</strong> setting is missing.', 'iwp-txt' ), $args['id'] );
 }
 
 
@@ -221,19 +221,19 @@ function iwp_get_settings_tabs() {
 	$settings = iwp_get_registered_settings();
 
 	$tabs = array();
-	$tabs['general']  	= __( 'General', 'iwp' );
-	$tabs['business'] 	= __( 'Business Info', 'iwp' );
-	$tabs['taxes'] 		= __( 'Taxes', 'iwp' );
-	$tabs['emails']   	= __( 'Emails', 'iwp' );
+	$tabs['general']  	= __( 'General', 'iwp-txt' );
+	$tabs['business'] 	= __( 'Business Info', 'iwp-txt' );
+	$tabs['taxes'] 		= __( 'Taxes', 'iwp-txt' );
+	$tabs['emails']   	= __( 'Emails', 'iwp-txt' );
 
 	if( ! empty( $settings['extensions'] ) ) {
-		$tabs['extensions'] = __( 'Extensions', 'iwp' );
+		$tabs['extensions'] = __( 'Extensions', 'iwp-txt' );
 	}
 	if( ! empty( $settings['licenses'] ) ) {
-		$tabs['licenses'] = __( 'Licenses', 'iwp' );
+		$tabs['licenses'] = __( 'Licenses', 'iwp-txt' );
 	}
 
-	$tabs['misc']      = __( 'Misc', 'iwp' );
+	$tabs['misc']      = __( 'Misc', 'iwp-txt' );
 
 	return apply_filters( 'iwp_settings_tabs', $tabs );
 }
@@ -257,71 +257,71 @@ function iwp_get_registered_settings() {
 
 				'partial_payments' => array(
 					'id' => 'partial_payments',
-					'name' => __( 'Allow partial payments', 'iwp' ),
-					'desc' => __( '', 'iwp' ),
+					'name' => __( 'Allow partial payments', 'iwp-txt' ),
+					'desc' => __( '', 'iwp-txt' ),
 					'type' => 'checkbox'
 				),
 				'partial_payment_default' => array(
 					'id' => 'partial_payment_default',
-					'name' => __( 'Partial payments allowed by default', 'iwp' ),
-					'desc' => __( '', 'iwp' ),
+					'name' => __( 'Partial payments allowed by default', 'iwp-txt' ),
+					'desc' => __( '', 'iwp-txt' ),
 					'type' => 'checkbox'
 				),
 				'show_recurring_billing' => array(
 					'id' => 'show_recurring_billing',
-					'name' => __( 'Show recurring billing options', 'iwp' ),
-					'desc' => __( '', 'iwp' ),
+					'name' => __( 'Show recurring billing options', 'iwp-txt' ),
+					'desc' => __( '', 'iwp-txt' ),
 					'type' => 'checkbox'
 				),
 				'enforce_https' => array(
 					'id' => 'enforce_https',
-					'name' => __( 'Enforce HTTPS on invoice pages', 'iwp' ),
-					'desc' => __( '', 'iwp' ),
+					'name' => __( 'Enforce HTTPS on invoice pages', 'iwp-txt' ),
+					'desc' => __( '', 'iwp-txt' ),
 					'type' => 'checkbox'
 				),
 				'minimum_level' => array(
 					'id' => 'minimum_level',
-					'name' => __( 'Minimum user level to manage Invoices', 'iwp' ),
-					'desc' => __( '', 'iwp' ),
+					'name' => __( 'Minimum user level to manage Invoices', 'iwp-txt' ),
+					'desc' => __( '', 'iwp-txt' ),
 					'type' => 'select',
 					'options' => iwp_get_roles()
 				),
 				'currency_settings' => array(
 					'id' => 'currency_settings',
-					'name' => '<strong>' . __( 'Currency Settings', 'iwp' ) . '</strong>',
-					'desc' => __( 'Configure the currency options', 'iwp' ),
+					'name' => '<strong>' . __( 'Currency Settings', 'iwp-txt' ) . '</strong>',
+					'desc' => __( 'Configure the currency options', 'iwp-txt' ),
 					'type' => 'header'
 				),
 				'currency' => array(
 					'id' => 'currency',
-					'name' => __( 'Currency', 'iwp' ),
-					'desc' => __( 'Choose your currency. Note that some payment gateways have currency restrictions.', 'iwp' ),
+					'name' => __( 'Currency', 'iwp-txt' ),
+					'desc' => __( 'Choose your currency. Note that some payment gateways have currency restrictions.', 'iwp-txt' ),
 					'type' => 'select',
                     'options' => iwp_get_currencies(),
                     'select2' => true
 				),
 				'currency_position' => array(
 					'id' => 'currency_position',
-					'name' => __( 'Currency Position', 'iwp' ),
-					'desc' => __( 'Choose the location of the currency sign.', 'iwp' ),
+					'name' => __( 'Currency Position', 'iwp-txt' ),
+					'desc' => __( 'Choose the location of the currency sign.', 'iwp-txt' ),
 					'type' => 'select',
 					'options' => array(
-						'before' => __( 'Before - $10', 'iwp' ),
-						'after' => __( 'After - 10$', 'iwp' )
+						'before' => __( 'Before - $10', 'iwp-txt' ),
+						'after' => __( 'After - 10$', 'iwp-txt' )
 					)
 				),
 				'thousands_separator' => array(
 					'id' => 'thousands_separator',
-					'name' => __( 'Thousands Separator', 'iwp' ),
-					'desc' => __( 'The symbol (usually , or .) to separate thousands', 'iwp' ),
+					'name' => __( 'Thousands Separator', 'iwp-txt' ),
+					'desc' => __( 'The symbol (usually , or .) to separate thousands', 'iwp-txt' ),
 					'type' => 'text',
 					'size' => 'small',
 					'std' => ','
 				),
 				'decimal_separator' => array(
 					'id' => 'decimal_separator',
-					'name' => __( 'Decimal Separator', 'iwp' ),
-					'desc' => __( 'The symbol (usually , or .) to separate decimal points', 'iwp' ),
+					'name' => __( 'Decimal Separator', 'iwp-txt' ),
+					'desc' => __( 'The symbol (usually , or .) to separate decimal points', 'iwp-txt' ),
 					'type' => 'text',
 					'size' => 'small',
 					'std' => '.'
@@ -332,63 +332,79 @@ function iwp_get_registered_settings() {
 		//* Business Settings */
 		'business' => apply_filters('iwp_settings_business',
 			array(
+				'business_logo' => array(
+					'id' => 'business_logo',
+					'name' => __( 'Logo', 'iwp-txt' ),
+					'desc' => __( 'Upload or choose a logo to be displayed at the top of your invoices.', 'iwp-txt' ),
+					'type' => 'upload'
+				),
 				'business_info' => array(
 					'id' => 'business_info',
-					'name' => '<strong>' . __( 'Business Information', 'iwp' ) . '</strong>',
-					'desc' => __( 'Enter your businesses information below', 'iwp' ),
+					'name' => '<strong>' . __( 'Business Information', 'iwp-txt' ) . '</strong>',
+					'desc' => __( 'Enter your businesses information below', 'iwp-txt' ),
 					'type' => 'header'
 				),
 				'business_name' => array(
 					'id' => 'business_name',
-					'name' => __( 'Business Name', 'iwp' ),
+					'name' => __( 'Business Name', 'iwp-txt' ),
 					'type' => 'text',
 				),
 				'business_address1' => array(
-					'id' => 'address1',
-					'name' => __( 'Address Line 1', 'iwp' ),
+					'id' => 'business_address1',
+					'name' => __( 'Address Line 1', 'iwp-txt' ),
 					'type' => 'text',
 				),
 				'business_address2' => array(
-					'id' => 'address2',
-					'name' => __( 'Address Line 2', 'iwp' ),
+					'id' => 'business_address2',
+					'name' => __( 'Address Line 2', 'iwp-txt' ),
 					'type' => 'text',
 				),
 				'business_city' => array(
 					'id' => 'business_city',
-					'name' => __( 'City', 'iwp' ),
+					'name' => __( 'City', 'iwp-txt' ),
 					'type' => 'text',
 				),
 				'business_country' => array(
 					'id' => 'business_country',
-					'name' => __( 'Country', 'iwp' ),
-					'desc' => __( 'Where does you operate from?', 'iwp' ),
+					'name' => __( 'Country', 'iwp-txt' ),
+					'desc' => __( 'Where does you operate from?', 'iwp-txt' ),
 					'type' => 'select',
                     'options' => iwp_get_country_list(),
                     'select2' => true,
-                    'placeholder' => __( 'Select a country', 'iwp' )
+                    'placeholder' => __( 'Select a country', 'iwp-txt' )
 				),
 				'business_state' => array(
 					'id' => 'business_state',
-					'name' => __( 'State / Province', 'iwp' ),
-					'desc' => __( 'What state / province does your store operate from?', 'iwp' ),
+					'name' => __( 'State / Province', 'iwp-txt' ),
+					'desc' => __( 'What state / province does your store operate from?', 'iwp-txt' ),
 					'type' => 'shop_states',
                     'select2' => true,
-                    'placeholder' => __( 'Select a state', 'iwp' )
+                    'placeholder' => __( 'Select a state', 'iwp-txt' )
 				),
 				'business_zip_code' => array(
-					'id' => 'zip_code',
-					'name' => __( 'Zip / Postal Code', 'iwp' ),
+					'id' => 'business_zip_code',
+					'name' => __( 'Zip / Postal Code', 'iwp-txt' ),
 					'type' => 'number',
 					'size' => 'small'
 				),
+				'business_email' => array(
+					'id' => 'business_email',
+					'name' => __( 'Email Adress', 'iwp-txt' ),
+					'type' => 'text'
+				),
+				'business_phone_number' => array(
+					'id' => 'business_phone_number',
+					'name' => __( 'Phone Number', 'iwp-txt' ),
+					'type' => 'text'
+				),
 				'registration_number' => array(
 					'id' => 'registration_number',
-					'name' => __( 'Registration Number', 'iwp' ),
+					'name' => __( 'Registration Number', 'iwp-txt' ),
 					'type' => 'text',
 				),
 				'taxvat_number' => array(
 					'id' => 'taxvat_number',
-					'name' => __( 'Tax/VAT Number', 'iwp' ),
+					'name' => __( 'Tax/VAT Number', 'iwp-txt' ),
 					'type' => 'text',
 				),
 			)
@@ -398,26 +414,26 @@ function iwp_get_registered_settings() {
 			array(
 				'enable_taxes' => array(
 					'id' => 'enable_taxes',
-					'name' => __( 'Enable Taxes', 'iwp' ),
-					'desc' => __( 'Check this to enable taxes on purchases.', 'iwp' ),
+					'name' => __( 'Enable Taxes', 'iwp-txt' ),
+					'desc' => __( 'Check this to enable taxes on purchases.', 'iwp-txt' ),
 					'type' => 'checkbox',
 				),
 				'tax_rate' => array(
 					'id' => 'tax_rate',
-					'name' => __( 'Fallback Tax Rate', 'iwp' ),
-					'desc' => __( 'Enter a percentage, such as 6.5. This is the default rate charged.', 'iwp' ),
+					'name' => __( 'Fallback Tax Rate', 'iwp-txt' ),
+					'desc' => __( 'Enter a percentage, such as 6.5. This is the default rate charged.', 'iwp-txt' ),
 					'type' => 'text',
 					'size' => 'small'
 				),
 				'change_tax_on_invoice' => array(
 					'id' => 'change_tax_on_invoice',
-					'name' => __( 'Change Tax Rate on Invoice', 'iwp' ),
-					'desc' => __( 'Default tax rate will be displayed on the invoice when invoice is created but site owner can modify it.', 'iwp' ),
+					'name' => __( 'Change Tax Rate on Invoice', 'iwp-txt' ),
+					'desc' => __( 'Default tax rate will be displayed on the invoice when invoice is created but site owner can modify it.', 'iwp-txt' ),
 					'type' => 'radio',
 					'std' => 'no',
 					'options' => array(
-						'yes' => __( 'Yes, I want to adjust tax rate on invoice', 'iwp' ),
-						'no'  => __( 'No, I will set a single tax rate for all invoices', 'iwp' )
+						'yes' => __( 'Yes, I want to adjust tax rate on invoice', 'iwp-txt' ),
+						'no'  => __( 'No, I will set a single tax rate for all invoices', 'iwp-txt' )
 					)
 				)
 			)
@@ -427,8 +443,8 @@ function iwp_get_registered_settings() {
 			array(
 				'email_logo' => array(
 					'id' => 'email_logo',
-					'name' => __( 'Logo', 'iwp' ),
-					'desc' => __( 'Upload or choose a logo to be displayed at the top of the purchase receipt emails. Displayed on HTML emails only.', 'iwp' ),
+					'name' => __( 'Logo', 'iwp-txt' ),
+					'desc' => __( 'Upload or choose a logo to be displayed at the top of the purchase receipt emails. Displayed on HTML emails only.', 'iwp-txt' ),
 					'type' => 'upload'
 				),
 				'email_settings' => array(
@@ -439,105 +455,105 @@ function iwp_get_registered_settings() {
 				),
 				'from_name' => array(
 					'id' => 'from_name',
-					'name' => __( 'From Name', 'iwp' ),
-					'desc' => __( 'The name purchase receipts are said to come from. This should probably be your site or shop name.', 'iwp' ),
+					'name' => __( 'From Name', 'iwp-txt' ),
+					'desc' => __( 'The name purchase receipts are said to come from. This should probably be your site or shop name.', 'iwp-txt' ),
 					'type' => 'text',
 					'std'  => get_bloginfo( 'name' )
 				),
 				'from_email' => array(
 					'id' => 'from_email',
-					'name' => __( 'From Email', 'iwp' ),
-					'desc' => __( 'Email to send purchase receipts from. This will act as the "from" and "reply-to" address.', 'iwp' ),
+					'name' => __( 'From Email', 'iwp-txt' ),
+					'desc' => __( 'Email to send purchase receipts from. This will act as the "from" and "reply-to" address.', 'iwp-txt' ),
 					'type' => 'text',
 					'std'  => get_bloginfo( 'admin_email' )
 				),
 
 				'new_invoice_header' => array(
 					'id' => 'new_invoice_header',
-					'name' => '<strong>' . __('New Invoice Email Template', 'iwp') . '</strong>',
-					'desc' => __('Configure new invoice notification emails', 'iwp'),
+					'name' => '<strong>' . __('New Invoice Email Template', 'iwp-txt') . '</strong>',
+					'desc' => __('Configure new invoice notification emails', 'iwp-txt'),
 					'type' => 'header'
 				),
 				'new_invoice_subject' => array(
 					'id' => 'new_invoice_subject',
-					'name' => __( 'New Invoice Subject', 'iwp' ),
-					'desc' => __( 'Enter the subject line for the new invoice email', 'iwp' ),
+					'name' => __( 'New Invoice Subject', 'iwp-txt' ),
+					'desc' => __( 'Enter the subject line for the new invoice email', 'iwp-txt' ),
 					'type' => 'text',
-					'std'  => __( '[New Invoice] {subject}', 'iwp' )
+					'std'  => __( '[New Invoice] {subject}', 'iwp-txt' )
 				),
 				'new_invoice' => array(
 					'id' => 'new_invoice',
-					'name' => __( 'New Invoice', 'iwp' ),
-					'desc' => __('Enter the email that is sent to users after completing an invoice is created. HTML is accepted. Available template tags:', 'iwp') . '<br/>' . iwp_get_emails_tags_list(),
+					'name' => __( 'New Invoice', 'iwp-txt' ),
+					'desc' => __('Enter the email that is sent to users after completing an invoice is created. HTML is accepted. Available template tags:', 'iwp-txt') . '<br/>' . iwp_get_emails_tags_list(),
 					'type' => 'rich_editor',
 					'std'  => __( "Dear", "iwp" ) . " {name},\n\n" . __( "Thank you for your purchase. Please click on the link(s) below to download your files.", "iwp" ) . "\n\n{download_list}\n\n{sitename}"
 				),
 				'reminder_email_header' => array(
 					'id' => 'reminder_email_header',
-					'name' => '<strong>' . __('Reminder Email Template', 'iwp') . '</strong>',
-					'desc' => __('Configure reminder email', 'iwp'),
+					'name' => '<strong>' . __('Reminder Email Template', 'iwp-txt') . '</strong>',
+					'desc' => __('Configure reminder email', 'iwp-txt'),
 					'type' => 'header'
 				),
 				'reminder_notification_subject' => array(
 					'id' => 'reminder_notification_subject',
-					'name' => __( 'Reminder Notification Subject', 'iwp' ),
-					'desc' => __( 'Enter the subject line for the reminder notification email', 'iwp' ),
+					'name' => __( 'Reminder Notification Subject', 'iwp-txt' ),
+					'desc' => __( 'Enter the subject line for the reminder notification email', 'iwp-txt' ),
 					'type' => 'text',
 					'std' => '[Reminder] {subject}'
 				),
 				'reminder_notification' => array(
 					'id' => 'reminder_notification',
-					'name' => __( 'Reminder Notification', 'iwp' ),
-					'desc' => __( 'Enter the email that is sent to reminder notification emails after completion of a purchase. HTML is accepted. Available template tags:', 'iwp' ) . '<br/>' . iwp_get_emails_tags_list(),
+					'name' => __( 'Reminder Notification', 'iwp-txt' ),
+					'desc' => __( 'Enter the email that is sent to reminder notification emails after completion of a purchase. HTML is accepted. Available template tags:', 'iwp-txt' ) . '<br/>' . iwp_get_emails_tags_list(),
 					'type' => 'rich_editor',
 					'std' => iwp_get_default_sale_notification_email()
 				),
 
 				'receipt_email_header' => array(
 					'id' => 'receipt_email_header',
-					'name' => '<strong>' . __('Receipt Template', 'iwp') . '</strong>',
-					'desc' => __('Configure receipt email', 'iwp'),
+					'name' => '<strong>' . __('Receipt Template', 'iwp-txt') . '</strong>',
+					'desc' => __('Configure receipt email', 'iwp-txt'),
 					'type' => 'header'
 				),
 				'receipt_email_subject' => array(
 					'id' => 'receipt_email_subject',
-					'name' => __( 'Receipt Email Subject', 'iwp' ),
-					'desc' => __( 'Enter the subject line for the receipt email', 'iwp' ),
+					'name' => __( 'Receipt Email Subject', 'iwp-txt' ),
+					'desc' => __( 'Enter the subject line for the receipt email', 'iwp-txt' ),
 					'type' => 'text',
 					'std' => '[Payment Received] {subject}'
 				),
 				'receipt_notification' => array(
 					'id' => 'receipt_notification',
-					'name' => __( 'Receipt Notification', 'iwp' ),
-					'desc' => __( 'Enter the email that is sent to receipt notification emails after completion of a payment. HTML is accepted. Available template tags:', 'iwp' ) . '<br/>' . iwp_get_emails_tags_list(),
+					'name' => __( 'Receipt Notification', 'iwp-txt' ),
+					'desc' => __( 'Enter the email that is sent to receipt notification emails after completion of a payment. HTML is accepted. Available template tags:', 'iwp-txt' ) . '<br/>' . iwp_get_emails_tags_list(),
 					'type' => 'rich_editor',
 					'std' => iwp_get_default_sale_notification_email()
 				),
 				'quote_email_header' => array(
 					'id' => 'quote_email_header',
-					'name' => '<strong>' . __('Quote Template', 'iwp') . '</strong>',
-					'desc' => __('Configure quote email', 'iwp'),
+					'name' => '<strong>' . __('Quote Template', 'iwp-txt') . '</strong>',
+					'desc' => __('Configure quote email', 'iwp-txt'),
 					'type' => 'header'
 				),
 				'quote_email_subject' => array(
 					'id' => 'quote_email_subject',
-					'name' => __( 'Quote Email Subject', 'iwp' ),
-					'desc' => __( 'Enter the subject line for the quote email', 'iwp' ),
+					'name' => __( 'Quote Email Subject', 'iwp-txt' ),
+					'desc' => __( 'Enter the subject line for the quote email', 'iwp-txt' ),
 					'type' => 'text',
 					'std' => '[Quote] {subject}'
 				),
 				'quote_notification' => array(
 					'id' => 'quote_notification',
-					'name' => __( 'Quote', 'iwp' ),
-					'desc' => __( 'Enter the email that is sent to quote notification emails. HTML is accepted. Available template tags:', 'iwp' ) . '<br/>' . iwp_get_emails_tags_list(),
+					'name' => __( 'Quote', 'iwp-txt' ),
+					'desc' => __( 'Enter the email that is sent to quote notification emails. HTML is accepted. Available template tags:', 'iwp-txt' ) . '<br/>' . iwp_get_emails_tags_list(),
 					'type' => 'rich_editor',
 					'std' => iwp_get_default_sale_notification_email()
 				),
 				
 				'disable_admin_notices' => array(
 					'id' => 'disable_admin_notices',
-					'name' => __( 'Disable Admin Notifications', 'iwp' ),
-					'desc' => __( 'Check this box if you do not want to receive emails when new sales are made.', 'iwp' ),
+					'name' => __( 'Disable Admin Notifications', 'iwp-txt' ),
+					'desc' => __( 'Check this box if you do not want to receive emails when new sales are made.', 'iwp-txt' ),
 					'type' => 'checkbox'
 				)
 			)
