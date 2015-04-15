@@ -135,26 +135,31 @@ function iwp_custom_columns( $cols ) {
 function iwp_display_custom_columns( $column ) {
 	global $post;
 
+	$iwp = get_post_meta( $post->ID, '_invoicedwp', true );
+
 	$custom = get_post_custom();
-	//$iwp_columns = unserialize( $custom['_invoicedwp'][0] );
+	$iwp_columns = unserialize( $custom['_invoicedwp'][0] );
 
 	//$_staff_title 	= $iwp_columns[""];
 	
-	/*switch ( $column ) {
-		case "photo":
-			if( has_post_thumbnail() ){
-				echo get_the_post_thumbnail( $post->ID, array( 75, 75 ) );
-			}
+	switch ( $iwp ) {
+		case "paid":
+			$iwp = get_post_meta( $post->ID, '_invoicedwp', true );
+			var_dump($iwp);
+			$displayTotal = $iwp['invoice_totals']["totals"] - $iwp['invoice_totals']["payments"];
+			echo $displayTotal;
 		break;
 
-	}*/
+	}
 }
 
 
 
 
 function include_invoice_template_function( $template_path ) {
+
     if ( get_post_type() == 'invoicedwp' ) {
+
         if ( is_single() ) {
             if ( $theme_file = locate_template( array ( 'single-invoicedwp.php' ) ) ) {
                 $template_path = $theme_file;

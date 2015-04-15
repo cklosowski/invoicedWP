@@ -741,3 +741,10 @@ tr.iwp_advanced_payment_options  {
 .iwp_flatten_input {
     text-align: right;
 }
+
+.iwp_invoiceBalance {
+    width: 100%;
+    font-weight: bold;
+    margin: 10px 0;
+    font-size: 1.1em;
+}

@@ -10,8 +10,6 @@ jQuery(document).ready(function( $ ) {
 
 	setInterval(function(){ calculateTotal(); }, 250);
 
-	
-						
 	$( document ).on( 'click', '.add_row', function( e ) {
 		e.preventDefault();
  		
@@ -131,15 +129,16 @@ jQuery(document).ready(function( $ ) {
 
 	    $.post( ajaxurl, {
 	      action: 'iwp_get_user_data',
-	      user_email: jQuery( this ).val()
+	      user_email: $( this ).val()
 	    }, function ( result ) {
 	      if ( result ) {
 	        user_data = result.user_data;
 
 	        for ( var field in user_data ) {
-	          jQuery( '.iwp_newUser .iwp_' + field ).val( user_data[field] );
+	          $( '.iwp_newUser .iwp_' + field ).val( user_data[field] );
 
 	        }
+	        $( '.makeNewAccount' ).hide();
 	      }
 	    }, 'json' );
 
@@ -179,15 +178,16 @@ jQuery(document).ready(function( $ ) {
 
 
 		// Calculate discount 
-		var discountAmount = $( '#discountAmount' ).val();
-		var discountType = $('#discountType').val();
-		var subTotal = $( '.calculate_invoice_subtotal' ).val();
+		var discountAmount 	= $( '#discountAmount' ).val();
+		var discountType 	= $('#discountType').val();
+		var subTotal 		= $( '.calculate_invoice_subtotal' ).val();
+		var paymentMade 	= $( '.calculate_invoice_payment' ).val();
 
 		if( discountType == "percent" ){
 			var discountTotal = parseFloat( subTotal * ( discountAmount / 100 ) ).toFixed(2);
-			} else if( discountType == "amount" ){
-				var discountTotal = parseFloat( discountAmount ).toFixed(2);
-			}
+		} else if( discountType == "amount" ){
+			var discountTotal = parseFloat( discountAmount ).toFixed(2);
+		}
 
 			// Get Payments and subtract them
 		if( isNaN( discountTotal ) ) {
@@ -226,7 +226,14 @@ jQuery(document).ready(function( $ ) {
 	});
 
 
-
+	$( '#makeAccount' ).change(function() {
+	    if(this.checked) {
+	        $("#makeAccountText").show();
+	        $(".makeNewAccount").hide();
+	    } else {
+	    	$("#makeAccountText").hide();
+	    }
+	});
 
 
 

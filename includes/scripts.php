@@ -23,7 +23,7 @@ function iwp_admin_scripts( $hook ) {
     global $iwp_settings_page, $post_type;
 
     // Use minified libraries if SCRIPT_DEBUG is turned off
-	$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+	//$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
     
     /**
      * @todo		This block loads styles or scripts explicitly on the

@@ -162,6 +162,8 @@ if( !class_exists( 'IWP' ) ) {
                 add_action( 'wp_ajax_iwp_add_template_row', array( 'IWP_Ajax', 'add_template_row' ) );
                 add_action( 'wp_ajax_iwp_get_user_data', create_function( '', ' die(IWP_Ajax::get_user_data($_REQUEST["user_email"]));' ) );
             }
+
+            
         }
 
 
@@ -186,10 +188,15 @@ if( !class_exists( 'IWP' ) ) {
              * @access public
              */
             public function iwp_setup_admin_meta() {
-
+                global $post;
                 // Meta Boxes for the Invoice Page
-                add_meta_box( 'iwp_notice', __( 'Invoice Notice', 'iwp-txt' ), 'iwp_notice', 'invoicedwp', 'side', 'low' );
-                add_meta_box( 'iwp_payment', __( 'Payment Information', 'iwp-txt' ), 'iwp_payment', 'invoicedwp', 'side' );
+                
+                $iwp = get_post_meta( $post->ID, '_invoicedwp', true );
+                if ( isset( $iwp['isQuote'] ) ) 
+                    if ( $iwp['isQuote'] != 1 ) 
+                        add_meta_box( 'iwp_payment', __( 'Payment Information', 'iwp-txt' ), 'iwp_payment', 'invoicedwp', 'side' );
+                
+                add_meta_box( 'iwp_notice', __( 'Invoice Notice', 'iwp-txt' ), 'iwp_notice', 'invoicedwp', 'normal', 'low' );
                 add_meta_box( 'iwp_client', __( 'Client Information', 'iwp-txt' ), 'iwp_client', 'invoicedwp', 'side', 'low' );
                 add_meta_box( 'iwp_details', __( 'Billing Details', 'iwp-txt' ), 'iwp_details', 'invoicedwp', 'normal', 'low' );
 

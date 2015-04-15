@@ -14,6 +14,8 @@ if( !defined( 'ABSPATH' ) ) exit;
 function myInvoiceSettings() {
     global $post;
 
+    wp_nonce_field('iwp_extra_nonce', 'iwp_extra_nonce' );
+
     if ( ( get_post_type($post) == 'invoicedwp' ) || ( get_post_type($post) == 'invoicedwp_template' ) ) {
     	$custom = get_post_custom();
     	
@@ -23,8 +25,6 @@ function myInvoiceSettings() {
 			$newiwp = maybe_unserialize( $custom['_invoicedwp'][0] );
             $iwp = array_merge( $iwp, $newiwp );
     	}
-
-    	wp_nonce_field( plugin_basename(__FILE__), 'iwp_extra_nonce' );
 
         if ( get_post_type($post) == 'invoicedwp') {
 
@@ -60,12 +60,7 @@ add_action( 'post_submitbox_misc_actions', 'myInvoiceSettings' );
 
 function save_myInvoiceSettings($post_id) {
 	
-	$iwp = get_post_meta( $post_id, '_invoicedwp', true );
-	//var_dump( $_POST );
     if (!isset($_POST['post_type']) )
-        return;
-
-    if ( !wp_verify_nonce( $_POST['iwp_extra_nonce'], plugin_basename(__FILE__) ) )
         return;
 
     if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) 
@@ -73,6 +68,11 @@ function save_myInvoiceSettings($post_id) {
 
     if ( ('invoicedwp' == $_POST['post_type'] || 'invoicedwp_template' == $_POST['post_type'] ) && !current_user_can( 'edit_post', $post_id ) )
         return;
+
+    if ( ! wp_verify_nonce( $_POST['iwp_extra_nonce'], 'iwp_extra_nonce' ) )
+        return;
+
+    $iwp = get_post_meta( $post_id, '_invoicedwp', true );
     
     if ( 'invoicedwp' == $_POST['post_type'] ) {
         if (isset($_POST['isQuote'])) {
@@ -113,6 +113,7 @@ function save_myInvoiceSettings($post_id) {
 
     $totalLines = count( $_POST["iwp_invoice_price"] );
 
+    // Handles the Invoice fields
     $invoicePost["iwp_invoice_name"]            = iwp_sanitize( $_POST["iwp_invoice_name"] );
     $invoicePost["iwp_invoice_description"]     = iwp_sanitize( $_POST["iwp_invoice_description"] );
     $invoicePost["iwp_invoice_qty"]             = iwp_sanitize( $_POST["iwp_invoice_qty"] );
@@ -127,6 +128,18 @@ function save_myInvoiceSettings($post_id) {
     $iwp['invoice_notice']  = iwp_sanitize( $_POST["iwp_notice"] );
     $iwp['invoice_totals']  = iwp_sanitize( $_POST["iwp_totals"] );
     $iwp['user_data']       = iwp_sanitize( $_POST["iwp_invoice"]["user_data"] );
+
+    // Handles Payments
+    if( ! empty( $_POST["iwp_payment_amount"] ) ) {
+        $iwp["iwp_invoice_payment"]["amount"][] = iwp_sanitize( $_POST["iwp_payment_amount"] );
+        $iwp["iwp_invoice_payment"]["method"][] = $_POST["iwp_payment_method"];
+    }
+
+    $payment = 0;
+    foreach ($iwp["iwp_invoice_payment"]["amount"] as $key => $value)
+        $payment += $value;
+
+    $iwp['invoice_totals']["payments"]  = $payment;
 
     update_post_meta( $post_id, '_invoicedwp', $iwp ); // Saves if the invoice is only a quote
 

@@ -44,35 +44,48 @@
                                 </td>
                                 <td class="unit"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['lineItems']['iwp_invoice_price'][$key] ); ?></td>
                                 <td class="qty"><?php echo $invoiceContent['lineItems']['iwp_invoice_qty'][$key]; ?></td>
-                                <td class="total"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['lineItems']['iwp_invoice_total'][$key] ); ?></td>
+                                <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['lineItems']['iwp_invoice_total'][$key] ); ?></td>
                             </tr>
                         <?php } ?>
                         
                         
                         <tr>
-                            <td style="tet-align: right;" colspan="3"><?php _e( 'Subtotal', 'invoicedwp' ); ?></td>
-                            <td class="total"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['subtotal'] ); ?></td>
+                            <td style="text-align: right;" colspan="3"><?php _e( 'Subtotal', 'invoicedwp' ); ?></td>
+                            <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['subtotal'] ); ?></td>
                         </tr>
                         <tr class="hidden_total">
-                            <td style="tet-align: right;" colspan="3"><?php _e( 'Tax', 'invoicedwp' ); ?></td>
-                            <td class="total"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['tax'] ); ?></td>
+                            <td style="text-align: right;" colspan="3"><?php _e( 'Tax', 'invoicedwp' ); ?></td>
+                            <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['tax'] ); ?></td>
                         </tr>
                         <tr class="hidden_total">
-                            <td style="tet-align: right;" colspan="3"><?php _e( 'Adjustments', 'invoicedwp' ); ?></td>
-                            <td class="total"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['adjustments'] ); ?></td>
+                            <td style="text-align: right;" colspan="3"><?php _e( 'Adjustments', 'invoicedwp' ); ?></td>
+                            <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['adjustments'] ); ?></td>
                         </tr>
                         <tr class="hidden_total">
-                            <td style="tet-align: right;" colspan="3"><?php _e( 'Discount', 'invoicedwp' ); ?></td>
-                            <td class="total"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['discount'] ); ?></td>
+                            <td style="text-align: right;" colspan="3"><?php _e( 'Discount', 'invoicedwp' ); ?></td>
+                            <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['discount'] ); ?></td>
                         </tr>
-                        <tr class="hidden_total">
-                            <td style="tet-align: right;" colspan="3"><?php _e( 'Payments', 'invoicedwp' ); ?></td>
-                            <td class="total"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['payments'] ); ?></td>
+                        <?php if( $invoiceContent['invoice_totals']["payments"] > 0 ) { ?>
+                        <tr>
+                            <td style="text-align: right;" colspan="3"><?php _e( 'Payments', 'invoicedwp' ); ?></td>
+                            <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['payments'] ); ?></td>
+                        </tr>
+                        <?php } ?>
+                        <tr>
+                            <td style="text-align: right;" colspan="3" class="grand_total"><?php _e( 'Total', 'invoicedwp' ); ?></td>
+                            <td class="grand_total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['total'] ); ?></td>
+                        </tr>
+                        <?php if( $invoiceContent['invoice_totals']["payments"] > 0 ) { ?>
+                        <tr>
+                            <td style="text-align: right;" colspan="3"><?php _e( 'Payments', 'invoicedwp' ); ?></td>
+                            <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['payments'] ); ?></td>
                         </tr>
                         <tr>
-                            <td style="tet-align: right;" colspan="3" class="grand_total"><?php _e( 'Total', 'invoicedwp' ); ?></td>
-                            <td class="grand_total"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['total'] ); ?></td>
+                            <td style="text-align: right;" colspan="3"><?php _e( 'Remaining Balance', 'invoicedwp' ); ?></td>
+                            <td class="total" style="text-align: right;"><strong><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['total']= $invoiceContent['invoice_totals']['total'] - $invoiceContent['invoice_totals']['payments'] ); ?></strong></td>
                         </tr>
+                        <?php } ?>
+
                     </tbody>
                 </table>
                 <div id="notices">
