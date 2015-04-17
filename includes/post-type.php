@@ -137,15 +137,13 @@ function iwp_display_custom_columns( $column ) {
 
 	$iwp = get_post_meta( $post->ID, '_invoicedwp', true );
 
-	$custom = get_post_custom();
-	$iwp_columns = unserialize( $custom['_invoicedwp'][0] );
+	//$custom = get_post_custom();
+	//$iwp_columns = unserialize( $custom['_invoicedwp'][0] );
 
 	//$_staff_title 	= $iwp_columns[""];
 	
 	switch ( $iwp ) {
 		case "paid":
-			$iwp = get_post_meta( $post->ID, '_invoicedwp', true );
-			var_dump($iwp);
 			$displayTotal = $iwp['invoice_totals']["totals"] - $iwp['invoice_totals']["payments"];
 			echo $displayTotal;
 		break;

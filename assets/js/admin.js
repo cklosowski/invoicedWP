@@ -147,8 +147,7 @@ jQuery(document).ready(function( $ ) {
 
 
 
-
-	function calculateTotal( ) {
+function calculateTotal( ) {
 		// Calculate total for the invoice
 		var sum = 0;
 
@@ -185,14 +184,14 @@ jQuery(document).ready(function( $ ) {
 		var discountType 	= 0;
 		var subTotal 		= 0;
 		var taxAmount		= 0;
-
+        var paymentMade     = 0;
 
 		discountAmount 	= $( '#discountAmount' ).val();
 		discountType 	= $('#discountType').val();
 		subTotal 		= $( '.calculate_invoice_subtotal' ).val();
 		taxAmount		= subTotal * ( $( '#iwp_tax_rate' ).val() / 100 );
 
-		var paymentMade 	= $( '.calculate_invoice_payment' ).val();
+		//paymentMade 	= $( '.calculate_invoice_payment' ).val();
 
 		if( discountType == "percent" ){
 			var discountTotal = ( subTotal + taxAmount ) * ( discountAmount / 100 );
@@ -204,16 +203,17 @@ jQuery(document).ready(function( $ ) {
 		if( isNaN( discountTotal ) ) {
 			discountTotal = 0;
 		}
-
-		var grandTotal = ( parseFloat( subTotal ).toFixed(2) + parseFloat( taxAmount ).toFixed(2) ) - parseFloat( discountTotal ).toFixed(2);
-		//grandTotal = parseFloat( grandTotal ).toFixed(2) - parseFloat( discountTotal ).toFixed(2);
+         
+		var grandTotal = (parseFloat( subTotal ) + parseFloat( taxAmount )) - parseFloat( discountTotal);
+		
+       //grandTotal = parseFloat( grandTotal ).toFixed(2) - parseFloat( discountTotal ).toFixed(2);
 
 		$( ".calculate_invoice_tax " ).val( parseFloat( taxAmount ).toFixed(2) );
 		$( ".calculate_discount_total").val( parseFloat( discountTotal ).toFixed(2) );
 		$( '.calculate_invoice_grandtotal').val( parseFloat( grandTotal ).toFixed(2) );
-		console.log( subTotal + ' ' + taxAmount + ' ' + discountTotal + ' ' + paymentMade + ' ' + grandTotal );
+		
+       console.log( subTotal + ' ' + taxAmount + ' ' + discountTotal + ' ' + paymentMade + ' ' + grandTotal );
 	}
-
 
 	$("#reoccuringPayment").change(function() {
 	    if(this.checked) {
