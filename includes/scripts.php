@@ -44,8 +44,8 @@ function iwp_admin_scripts( $hook ) {
         wp_enqueue_script( 'thickbox' );
         wp_enqueue_script( 'media-upload' ); 
 
-        wp_enqueue_script( 'iwp_admin_js', IWP_URL . '/assets/js/admin' . $suffix . '.js', array( 'jquery' ) );
-        wp_enqueue_style( 'iwp_admin_css', IWP_URL . '/assets/css/admin' . $suffix . '.css' );
+        wp_enqueue_script( 'iwp_admin_js', IWP_URL . '/assets/js/admin.js', array( 'jquery' ) );
+        wp_enqueue_style( 'iwp_admin_css', IWP_URL . '/assets/css/admin.css' );
 
 
         wp_enqueue_script( 'iwp_select2_js', IWP_URL . '/assets/select2/select2.js', array( 'jquery' ) );

@@ -407,6 +407,11 @@ function iwp_get_registered_settings() {
 					'name' => __( 'Tax/VAT Number', 'iwp-txt' ),
 					'type' => 'text',
 				),
+				'invoice_global_notice' => array(
+					'id' => 'invoice_global_notice',
+					'name' => __( 'Global notice on invoces', 'iwp-txt' ),
+					'type' => 'rich_editor',
+				),
 			)
 		),
 		/** Taxes Settings */

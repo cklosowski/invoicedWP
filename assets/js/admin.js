@@ -176,17 +176,28 @@ jQuery(document).ready(function( $ ) {
 		$(".calculate_invoice_subtotal").val( parseFloat( sum ).toFixed(2) );
 		$(".hidden_subtotal").val( parseFloat( sum ).toFixed(2) );
 
+		// Calculate Tax
+
+
 
 		// Calculate discount 
-		var discountAmount 	= $( '#discountAmount' ).val();
-		var discountType 	= $('#discountType').val();
-		var subTotal 		= $( '.calculate_invoice_subtotal' ).val();
+		var discountAmount 	= 0;
+		var discountType 	= 0;
+		var subTotal 		= 0;
+		var taxAmount		= 0;
+
+
+		discountAmount 	= $( '#discountAmount' ).val();
+		discountType 	= $('#discountType').val();
+		subTotal 		= $( '.calculate_invoice_subtotal' ).val();
+		taxAmount		= subTotal * ( $( '#iwp_tax_rate' ).val() / 100 );
+
 		var paymentMade 	= $( '.calculate_invoice_payment' ).val();
 
 		if( discountType == "percent" ){
-			var discountTotal = parseFloat( subTotal * ( discountAmount / 100 ) ).toFixed(2);
+			var discountTotal = ( subTotal + taxAmount ) * ( discountAmount / 100 );
 		} else if( discountType == "amount" ){
-			var discountTotal = parseFloat( discountAmount ).toFixed(2);
+			var discountTotal = discountAmount;
 		}
 
 			// Get Payments and subtract them
@@ -194,9 +205,13 @@ jQuery(document).ready(function( $ ) {
 			discountTotal = 0;
 		}
 
-		$( ".calculate_discount_total").val( parseFloat( discountTotal ).toFixed(2) );
-			$( '.calculate_invoice_grandtotal').val( parseFloat( subTotal - discountTotal ).toFixed(2) );
+		var grandTotal = ( parseFloat( subTotal ).toFixed(2) + parseFloat( taxAmount ).toFixed(2) ) - parseFloat( discountTotal ).toFixed(2);
+		//grandTotal = parseFloat( grandTotal ).toFixed(2) - parseFloat( discountTotal ).toFixed(2);
 
+		$( ".calculate_invoice_tax " ).val( parseFloat( taxAmount ).toFixed(2) );
+		$( ".calculate_discount_total").val( parseFloat( discountTotal ).toFixed(2) );
+		$( '.calculate_invoice_grandtotal').val( parseFloat( grandTotal ).toFixed(2) );
+		console.log( subTotal + ' ' + taxAmount + ' ' + discountTotal + ' ' + paymentMade + ' ' + grandTotal );
 	}
 
 

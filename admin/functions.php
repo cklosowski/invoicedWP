@@ -147,6 +147,19 @@ function save_myInvoiceSettings($post_id) {
 add_action( 'save_post', 'save_myInvoiceSettings' );
 
 
+function secureLink( $post_ID, $post, $update ) {
+    global $wpdb;
+
+    $where = array( 'ID' => $post_ID );
+    $postNameMD5 = md5( $post->post_name );
+
+    $wpdb->update( $wpdb->posts, array( 'post_name' => $postNameMD5 ), $where );
+
+}
+add_action( 'save_post_invoicedwp', 'secureLink', 10, 3 );
+
+
+
 function iwp_sanitize( $items ) {
     if( ! is_array( $items ) )
         return sanitize_text_field( $items );

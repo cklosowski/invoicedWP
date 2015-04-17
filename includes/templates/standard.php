@@ -3,10 +3,16 @@
                 <div id="logo">
                     <img src="logo.png">
                 </div>
-                <h1><?php the_title(); ?></h1>
+                <pre>
+                <?php print_r( $iwp_options ); ?>
+
+                </pre>
+                <h1><?php if ( $invoiceContent['isQuote'] == 1 ) { echo 'Quote'; } else { the_title(); } ?></h1>
                 <div id="company" style="width: 45%; float: left;">
                     <div><?php echo $iwp_options['business_name']; ?></div>
-                    <div><?php echo $iwp_options['business_address1']; ?><br> <?php echo $iwp_options['business_address2']; ?><br> <?php echo $iwp_options['business_city']; ?> <?php echo $iwp_options['business_state']; ?>, <?php echo $iwp_options['business_zip_code']; ?><br><?php echo $iwp_options['business_country']; ?></div>
+                    <div><?php echo $iwp_options['business_address1']; ?><br> 
+                    <?php echo $iwp_options['business_address2']; ?> <br>
+                    <?php echo $iwp_options['business_city']; ?> <?php echo $iwp_options['business_state']; ?>, <?php echo $iwp_options['business_zip_code']; ?><br><?php echo $iwp_options['business_country']; ?></div>
                     <div><?php echo $iwp_options['business_phone_number']; ?></div>
                     <div><a href="mailto:<?php echo $iwp_options['business_email']; ?>"><?php echo $iwp_options['business_email']; ?></a></div>
                 </div>
