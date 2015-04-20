@@ -127,7 +127,7 @@ function iwp_get_settings() {
 
 		$general_settings 	= is_array( get_option( 'iwp_settings_general' ) )    ? get_option( 'iwp_settings_general' )  	: array();
 		$business_settings 	= is_array( get_option( 'iwp_settings_business' ) )   ? get_option( 'iwp_settings_buisness' ) 	: array();
-		$email_settings   	= is_array( get_option( 'iwp_settings_emails' ) )     ? get_option( 'iwp_settings_emails' )   	: array();
+		//$email_settings   	= is_array( get_option( 'iwp_settings_emails' ) )     ? get_option( 'iwp_settings_emails' )   	: array();
 		$ext_settings     	= is_array( get_option( 'iwp_settings_extensions' ) ) ? get_option( 'iwp_settings_extensions' )	: array();
 		$license_settings 	= is_array( get_option( 'iwp_settings_licenses' ) )   ? get_option( 'iwp_settings_licenses' )	: array();
 		$misc_settings    	= is_array( get_option( 'iwp_settings_misc' ) )       ? get_option( 'iwp_settings_misc' )		: array();
@@ -224,7 +224,7 @@ function iwp_get_settings_tabs() {
 	$tabs['general']  	= __( 'General', 'iwp-txt' );
 	$tabs['business'] 	= __( 'Business Info', 'iwp-txt' );
 	$tabs['taxes'] 		= __( 'Taxes', 'iwp-txt' );
-	$tabs['emails']   	= __( 'Emails', 'iwp-txt' );
+	//$tabs['emails']   	= __( 'Emails', 'iwp-txt' );
 
 	if( ! empty( $settings['extensions'] ) ) {
 		$tabs['extensions'] = __( 'Extensions', 'iwp-txt' );

@@ -13,7 +13,7 @@ for( $i = 0; $i < $count; $i++ ) { ?>
 	
 	 		var rowNumber = jQuery('#invoicedDisplay tbody tr').length;
 	 	
-			lastTR = jQuery( '#invoicedDisplay tbody' ).find("tr:last"),
+			lastTR = jQuery( '#invoicedDisplay tbody#invoiced_rows' ).find("tr:last"),
 			trNew = lastTR.clone()
 						  .find("input:text").val("").end();
 

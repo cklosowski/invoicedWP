@@ -529,7 +529,8 @@ function iwp_color_select_callback( $args ) {
  * @global $wp_version WordPress Version
  */
 function iwp_rich_editor_callback( $args ) {
-	global $iwp_options, $wp_version;
+	global $wp_version;
+	$iwp_options = get_option( 'iwp_settings' );
 
 	if ( isset( $iwp_options[ $args['id'] ] ) ) {
 		$value = $iwp_options[ $args['id'] ];

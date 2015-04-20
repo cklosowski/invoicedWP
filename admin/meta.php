@@ -21,7 +21,7 @@ function iwp_details($post_id) {
 	$values 		= isset( $iwp['lineItems'] ) ? $iwp['lineItems'] : NULL;
 	
 	$iwp_currency 	= iwp_currency_symbol();
-	$count 			= count( $values["iwp_invoice_name"] );
+	$count 			= count( $values["iwp_invoice_total"] );
 
 	?>
 	<style type="text/css">
@@ -52,6 +52,11 @@ function iwp_details($post_id) {
 			box-shadow: none !important;
 		}
 	</style>
+	<?php
+	//echo '<pre>';
+	//print_r( $iwp );
+	//echo '</pre>';
+	?>
 
 	<div class="iwp_options_panel iwp">
 		<div class="panel-wrap" id="invoiced_availability">
@@ -75,21 +80,30 @@ function iwp_details($post_id) {
 							<tfoot>
 								<tr>
 									<td colspan="6" style="background-color: #f9f9f9;">
-										<dl style="width: 300px; float: right;">
-											<dt class="column-invoice-details-subtotal"><?php _e( 'Subtotal', 'iwp-txt'); ?>:</dt>
-											<dd class="column-invoice-details-subtotal"><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[subtotal]" value=""  class="calculate_invoice_subtotal iwp_flatten_input" style="float: right; width: 90%;" ></dd>
+										<table style="float: right; ">
+											<tr>
+												<td style="background: none; border: 0px;" ><?php _e( 'Subtotal', 'iwp-txt'); ?>:</td>
+												<td style="background: none; border: 0px;" ><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[subtotal]" value=""  class="calculate_invoice_subtotal iwp_flatten_input" style="float: right; width: 90%;" ></td>
+											</tr>
 											<?php if( $iwp_options["enable_taxes"] == 1 ) { ?>
-												<dt class="column-invoice-details-tax">Sales Tax:</dt>
-												<dd class="column-invoice-details-tax"><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[tax]" value="0.00"  class="calculate_invoice_tax iwp_flatten_input" style="float: right; width: 90%;" ><input type="hidden" id="iwp_tax_rate" value='<?php echo $iwp_options["tax_rate"]; ?>' ></dd>
+												<tr>
+													<td style="background: none; border: 0px;" class="column-invoice-details-tax"><?php _e( 'Sales Tax', 'iwp-txt'); ?>:</td>
+													<td style="background: none; border: 0px;"  class="column-invoice-details-tax"><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[tax]" value="0.00"  class="calculate_invoice_tax iwp_flatten_input" style="float: right; width: 90%;" ><input type="hidden" id="iwp_tax_rate" value='<?php echo $iwp_options["tax_rate"]; ?>' ></td>
+												</tr>
 											<?php } ?>
-											<dt class="hidden column-invoice-details-adjustments" style="display: none;">Adjustments:</dt>
-											<dd class="hidden column-invoice-details-adjustments" style="display: none;"><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[adjustments]" value="0.00"  class="calculate_invoice_adjustments iwp_flatten_input" style="float: right; width: 90%;" ></dd>
-											<dt class="hidden column-invoice-details-discounts" style="display: none;">Discount:</dt>
-											<dd class="hidden column-invoice-details-discounts" style="display: none;"><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[discount]" value="0.00"  class="iwp_flatten_input calculate_discount_total" style="float: right; width: 90%;" ></dd>
-											<dt><b><?php _e( 'Total', 'iwp-txt'); ?>:</b></dt>
-											<dd><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[total]" id="iwp_totals[total]" value="0.00"  class="calculate_invoice_grandtotal iwp_flatten_input" style="float: right; width: 90%;" ></dd>
-
-										</dl>
+											<tr>
+												<td style="background: none; border: 0px;"  class="hidden column-invoice-details-adjustments"><?php _e( 'Adjustments', 'iwp-txt'); ?>:</td>
+												<td style="background: none; border: 0px;"  class="hidden column-invoice-details-adjustments"><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[adjustments]" value="0.00"  class="calculate_invoice_adjustments iwp_flatten_input" style="float: right; width: 90%;" ></td>
+											</tr>
+											<tr>
+												<td style="background: none; border: 0px;" class="hidden column-invoice-details-discounts"><?php _e( 'Discount', 'iwp-txt'); ?>:</td>
+												<td style="background: none; border: 0px;" class="hidden column-invoice-details-discounts"><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[discount]" value="0.00"  class="iwp_flatten_input calculate_discount_total" style="float: right; width: 90%;" ></td>
+											</tr>
+											<tr>
+												<td style="background: none; border: 0px;" ><b><?php _e( 'Total', 'iwp-txt'); ?>:</b></td>
+												<td style="background: none; border: 0px;" ><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[total]" id="iwp_totals[total]" value="0.00"  class="calculate_invoice_grandtotal iwp_flatten_input" style="float: right; width: 90%;" ></td>
+											</tr>
+										</table>
 						            </td>
 								</tr>
 								<tr>
@@ -206,7 +220,7 @@ function iwp_payment( $invoice_id ) {
 			<option>Check</option>
 			<option>CC</option>
 		</select>
-		<div class='iwp_invoiceBalance'><?php echo __( 'Remaining Balance', 'iwp-txt') . ': ' . iwp_currency_symbol() . ' ' . iwp_format_amount( $remainingBalance ); ?></div>
+		<div class='iwp_invoiceBalance'><?php echo __( 'Remaining Balance', 'iwp-txt') . ':<br />' . iwp_currency_symbol() . ' ' . iwp_format_amount( $remainingBalance ); ?></div>
 	</div>
 
 	<?php

@@ -52,34 +52,44 @@ function iwp_setup_init() {
 
 	$show_in_menu = 'invoicedwp';
 
-	register_post_type( 'invoicedWP_template',
-		array(
-			'labels' => array(
-				'name'      			=> __( 'Line Items', 'invoicedwp' ),
-				'singular_name'			=> __( 'Line Item', 'invoicedwp' ),
-				'menu_name'    			=> _x( 'Line Items', 'Admin menu name', 'invoicedwp' ),
-				'add_new'     			=> __( 'Add Line Items', 'invoicedwp' ),
-				'add_new_item'    		=> __( 'Add New Line Items', 'invoicedwp' ),
-				'edit'      			=> __( 'Edit', 'invoicedwp' ),
-				'edit_item'    			=> __( 'Edit Line Items', 'invoicedwp' ),
-				'new_item'     			=> __( 'New Line Items', 'invoicedwp' ),
-				'view'      			=> __( 'View Line Itemss', 'invoicedwp' ),
-				'view_item'    			=> __( 'View Line Items', 'invoicedwp' ),
-				'search_items'    		=> __( 'Search Line Itemss', 'invoicedwp' ),
-				'not_found'    			=> __( 'No Line Itemss found', 'invoicedwp' ),
-				'not_found_in_trash'	=> __( 'No Line Itemss found in trash', 'invoicedwp' ),
-				'parent'     			=> __( 'Parent Line Items', 'invoicedwp' )
-				),
-
-			'public'  				=> true,
-			'has_archive' 			=> true,
-			'publicly_queryable'	=> false,
-			'exclude_from_search'	=> true,
-			'show_in_menu' 	 		=> 'edit.php?post_type=invoicedwp',
-			'hierarchical' 			=> false,
-			'supports'   			=> array( 'title', 'comments' )
-		)
+	$temp_labels = array(
+		'name'      			=> __( 'Templates', 'invoicedwp' ),
+		'singular_name'			=> __( 'Template', 'invoicedwp' ),
+		'menu_name'    			=> _x( 'Templates', 'Admin menu name', 'invoicedwp' ),
+		'add_new'     			=> __( 'Add Template', 'invoicedwp' ),
+		'add_new_item'    		=> __( 'Add New Templates', 'invoicedwp' ),
+		'edit'      			=> __( 'Edit', 'invoicedwp' ),
+		'edit_item'    			=> __( 'Edit Templates', 'invoicedwp' ),
+		'new_item'     			=> __( 'New Templates', 'invoicedwp' ),
+		'view'      			=> __( 'View Templatess', 'invoicedwp' ),
+		'view_item'    			=> __( 'View Templates', 'invoicedwp' ),
+		'search_items'    		=> __( 'Search Templatess', 'invoicedwp' ),
+		'not_found'    			=> __( 'No Templatess found', 'invoicedwp' ),
+		'not_found_in_trash'	=> __( 'No Templatess found in trash', 'invoicedwp' ),
+		'parent'     			=> __( 'Parent Templates', 'invoicedwp' )
 	);
+
+
+	$args = array(
+		'labels' 				=> $temp_labels,
+		'public' 				=> false,
+		'publicly_queryable' 	=> false,
+		'show_ui' 				=> true,
+		'query_var' 			=> true,
+		'rewrite' 				=> true,
+		'capability_type' 		=> 'page',
+		'has_archive' 			=> false,
+		'menu_position' 		=> 20,
+		'show_in_menu' 	 		=> 'edit.php?post_type=invoicedwp',
+		'hierarchical' 			=> false,
+		'supports'   			=> array( 'title', 'comments' )
+	);
+
+	register_post_type( 'invoicedWP_template', $args );
+
+
+
+
 
 
 	register_post_status( 'quote', array(
@@ -120,8 +130,9 @@ function iwp_custom_columns( $cols ) {
 		'title'			=> __( 'Name' ),
 		'paid'			=> __( 'Amount Paid' ),
 		'recipient'		=> __( 'Recipient' ),
-		'invoiceID'		=> __( 'Invoice ID'),
+		//'invoiceID'		=> __( 'Invoice ID'),
 		'dueDate'		=> __( 'Due Date' ),
+		'date'		=> __( 'Creation Date' ),
 
 	);
 	return $cols;
@@ -136,16 +147,43 @@ function iwp_display_custom_columns( $column ) {
 	global $post;
 
 	$iwp = get_post_meta( $post->ID, '_invoicedwp', true );
+	$curencyPos = iwp_get_option( 'currency_position', 'before' );
 
 	//$custom = get_post_custom();
 	//$iwp_columns = unserialize( $custom['_invoicedwp'][0] );
 
 	//$_staff_title 	= $iwp_columns[""];
 	
-	switch ( $iwp ) {
+	switch ( $column ) {
 		case "paid":
-			$displayTotal = $iwp['invoice_totals']["totals"] - $iwp['invoice_totals']["payments"];
-			echo $displayTotal;
+			$displayTotal = $iwp['invoice_totals']["total"] + $iwp['invoice_totals']["payments"];
+			if ( $curencyPos == "before" ) {
+				echo iwp_currency_symbol() . iwp_format_amount( $iwp['invoice_totals']["payments"] ) . ' / ' . iwp_currency_symbol() . iwp_format_amount( $displayTotal );
+				$unpaid = iwp_currency_symbol() . iwp_format_amount( $iwp['invoice_totals']["total"] );
+			} else {
+				echo iwp_format_amount( $iwp['invoice_totals']["payments"] ) . iwp_currency_symbol() . ' / ' . iwp_format_amount( $displayTotal ) . iwp_currency_symbol();
+				$unpaid = iwp_format_amount( $iwp['invoice_totals']["total"] ) . iwp_currency_symbol();
+			}
+			if( $iwp['invoice_totals']["total"] > 0 )
+				echo '<br />Unpaid: <strong>' . $unpaid . '</strong>';
+
+		break;
+
+		case "recipient":
+		 $name = $iwp["user_data"]["first_name"] . ' ' . $iwp["user_data"]["last_name"];
+			echo $name;
+		break;
+		case "invoiceID":
+			echo "-";
+		break;
+		case "dueDate":
+			$dueDate = $iwp["paymentDueDate"];
+			
+			if( $dueDate == 0 ) {
+				echo "-";
+			} else {
+				echo $iwp["paymentDueDateText"];
+			}
 		break;
 
 	}

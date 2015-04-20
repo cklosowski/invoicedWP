@@ -153,7 +153,10 @@ if( !class_exists( 'IWP' ) ) {
                 add_action( 'add_meta_boxes', array( $this, 'iwp_setup_admin_meta' ) );
                 
                 add_filter( 'manage_invoicedwp_posts_columns', 'iwp_custom_columns' );
-                add_action( 'manage_posts_custom_column', 'iwp_display_custom_columns' );
+                add_action( 'manage_invoicedwp_posts_custom_column', 'iwp_display_custom_columns' );
+
+                //add_filter( 'manage_invoicedwp_template_posts_columns', 'iwp_custom_columns' );
+                //add_action( 'manage_posts_custom_column', 'iwp_display_custom_columns' );
 
                 // AJAX Functions
                 add_action( 'wp_ajax_iwp_search_email', array( 'IWP_Ajax', 'search_email' ) );
@@ -176,7 +179,7 @@ if( !class_exists( 'IWP' ) ) {
         public function iwp_setup_admin_menu() {
             global $iwp_dashboard_page, $iwp_settings_page,$iwp_sysinfo_page;
 
-            $iwp_dashboard_page = add_submenu_page( 'edit.php?post_type=invoicedwp', __( 'Dashboard', 'iwp-txt' ), __( 'Dashboard', 'iwp-txt' ), 'manage_options', 'iwp-display-dashboard', 'iwp_display_dashboard' );
+            //$iwp_dashboard_page = add_submenu_page( 'edit.php?post_type=invoicedwp', __( 'Dashboard', 'iwp-txt' ), __( 'Dashboard', 'iwp-txt' ), 'manage_options', 'iwp-display-dashboard', 'iwp_display_dashboard' );
             $iwp_settings_page = add_submenu_page( 'edit.php?post_type=invoicedwp', __( 'Options', 'iwp-txt' ), __( 'Options', 'iwp-txt' ), 'manage_options', 'iwp-display-options', 'iwp_display_options' );
             $iwp_sysinfo_page = add_submenu_page( 'edit.php?post_type=invoicedwp', __( 'System Info', 'iwp-txt' ), __( 'System Info', 'iwp-txt' ), 'manage_options', 'iwp-system-info', 'iwp_display_sysinfo' );
         }

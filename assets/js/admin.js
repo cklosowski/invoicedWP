@@ -15,7 +15,7 @@ jQuery(document).ready(function( $ ) {
  		
  		var rowNumber = $('#invoicedDisplay tbody tr').length;
  	
-		lastTR = $( '#invoicedDisplay tbody' ).find("tr:last"),
+		lastTR = $( '#invoicedDisplay tbody#invoiced_rows' ).find("tr:last"),
 		trNew = lastTR.clone()
 					  .find("input, textarea").val("").end();
 
@@ -33,13 +33,13 @@ jQuery(document).ready(function( $ ) {
 		$( '#invoicedDisplay tbody tr:last').find('.input_price').attr('id', priceId ).attr('name', priceId );
 		$( '#invoicedDisplay tbody tr:last').find('.input_total').attr('id', totalId ).attr('name', totalId );
 
-		calculateTotal();
+		//calculateTotal();
     });
 
-		//price change
-	$( 'body' ).on('change keyup blur', '.changesNo', function( ){
-		calculateTotal();
-	});
+	//price change
+	//$( 'body' ).on('change keyup blur', '.changesNo', function( ){
+		//calculateTotal();
+	//});
 
 	$( 'body' ).on( 'change', '.selectTemplate', function( e ) {						 		
  		var template = $(this).val();
@@ -58,38 +58,40 @@ jQuery(document).ready(function( $ ) {
 
 
 
-	$( 'body' ).on( 'change', '#discountType', function( e ) {
-		var discountAmount = $( '#discountAmount' ).val();					 		
- 		var discountType = $( '#discountType' ).val();
- 		var subTotal = $( '.calculate_invoice_subtotal' ).val();
+	$( 'body' ).on( 'change keyup blur', '#discountType, #discountAmount', function( e ) {
+ 		var discountType 	= $( '#discountType' ).val();
  		
  		if( discountType == "percent" ){
  			$( ".percentSymbol").show();
  			$( ".currencySymbol").hide();
- 			$( ".calculate_discount_total").val( parseFloat( subTotal * ( discountAmount / 100 ) ).toFixed(2) );
  		}
 
  		if( discountType == "amount" ){
  			$( ".percentSymbol").hide();
  			$( ".currencySymbol").show();
- 			$( ".calculate_discount_total").val( parseFloat( discountAmount ).toFixed(2) );
  		}
 
- 		calculateTotal();
+ 		if( ! $( '#discountAmount' ).val() ) {
+			$( '#discountAmount' ).val( 0 );
+		}
+
     });
 
+	// If the remove button is clicked
     $('body').on('click', 'td.remove', function(){
 		$(this).closest('tr').remove();
 		return false;
 	});
 
+	// If the remove discount button is clicked
 	$('body').on('click', 'td.remove_discount', function(){
 		$( '.add_discount' ).show();
 		$( '.column-invoice-details-discounts' ).hide();
 		return false;
 	});
 
-	$( '.add_discount' ).click(function(){
+	// The Add Discount button is clicked
+	$( 'body' ).on('click', '.add_discount', function(){
 		$(this).closest('table').find('tfoot').prepend( $( this ).data( 'row' ) );
 		$('body').trigger('row_added');
 		$('.column-invoice-details-discounts').show();
@@ -97,12 +99,14 @@ jQuery(document).ready(function( $ ) {
 		return false;
 	});
 
+	// The toggle Description button is clicked
 	$('body').on('click', '.toggleDescription', function(){
 		$(this).closest('td').find('.iwp_invoice_description').show();
 		$(this).hide();
 		return false;
 	});
 
+	// Sort the rows in the inventory
 	$('#invoiced_rows, #pricing_rows').sortable({
 		items:'tr',
 		cursor:'move',
@@ -121,10 +125,7 @@ jQuery(document).ready(function( $ ) {
 		}
 	});
 
-
-
-
-
+	// Function to get the user data if the account exists
 	$( ".iwp_email_selection" ).change( function () {
 
 	    $.post( ajaxurl, {
@@ -147,7 +148,7 @@ jQuery(document).ready(function( $ ) {
 
 
 
-function calculateTotal( ) {
+	function calculateTotal( ) {
 		// Calculate total for the invoice
 		var sum = 0;
 
@@ -171,49 +172,40 @@ function calculateTotal( ) {
 
 			sum += parseFloat(total);
 		});
-		 
+
 		$(".calculate_invoice_subtotal").val( parseFloat( sum ).toFixed(2) );
 		$(".hidden_subtotal").val( parseFloat( sum ).toFixed(2) );
 
-		// Calculate Tax
-
-
-
-		// Calculate discount 
-		var discountAmount 	= 0;
-		var discountType 	= 0;
-		var subTotal 		= 0;
+		var subTotal 		= $( '.calculate_invoice_subtotal' ).val();
 		var taxAmount		= 0;
-        var paymentMade     = 0;
+		var discountAmount 	= $( '#discountAmount' ).val();					 		
+ 		var discountType 	= $( '#discountType' ).val();
+ 		var totalDiscount	= 0;
 
-		discountAmount 	= $( '#discountAmount' ).val();
-		discountType 	= $('#discountType').val();
-		subTotal 		= $( '.calculate_invoice_subtotal' ).val();
-		taxAmount		= subTotal * ( $( '#iwp_tax_rate' ).val() / 100 );
-
-		//paymentMade 	= $( '.calculate_invoice_payment' ).val();
-
-		if( discountType == "percent" ){
-			var discountTotal = ( subTotal + taxAmount ) * ( discountAmount / 100 );
-		} else if( discountType == "amount" ){
-			var discountTotal = discountAmount;
+		if ( $( '#iwp_tax_rate' ).val() > 0 ) {
+			taxAmount = subTotal * ( $( '#iwp_tax_rate' ).val() / 100 );
 		}
 
-			// Get Payments and subtract them
-		if( isNaN( discountTotal ) ) {
-			discountTotal = 0;
-		}
-         
-		var grandTotal = (parseFloat( subTotal ) + parseFloat( taxAmount )) - parseFloat( discountTotal);
+ 		if( discountType == "percent" ){
+ 			var totalSubtotal = parseFloat( subTotal ) + parseFloat( taxAmount ); 
+ 			var discount = discountAmount / 100 ;
+
+ 			totalDiscount = totalSubtotal * discount;
+ 		}
+
+ 		if( discountType == "amount" ){
+ 			totalDiscount = discountAmount;
+ 		}
+
+ 		$( ".calculate_discount_total").val( parseFloat( totalDiscount ).toFixed(2) );
+ 		$( ".calculate_invoice_tax " ).val( parseFloat( taxAmount ).toFixed(2) );
+
+		var grandTotal = (parseFloat( subTotal ) + parseFloat( taxAmount )) - parseFloat( totalDiscount );
 		
-       //grandTotal = parseFloat( grandTotal ).toFixed(2) - parseFloat( discountTotal ).toFixed(2);
-
-		$( ".calculate_invoice_tax " ).val( parseFloat( taxAmount ).toFixed(2) );
-		$( ".calculate_discount_total").val( parseFloat( discountTotal ).toFixed(2) );
 		$( '.calculate_invoice_grandtotal').val( parseFloat( grandTotal ).toFixed(2) );
-		
-       console.log( subTotal + ' ' + taxAmount + ' ' + discountTotal + ' ' + paymentMade + ' ' + grandTotal );
 	}
+
+	// Invoice Setup functions
 
 	$("#reoccuringPayment").change(function() {
 	    if(this.checked) {
@@ -250,6 +242,85 @@ function calculateTotal( ) {
 	    }
 	});
 
+	/**
+	 * Settings screen JS
+	 */
+	var IWP_Settings = {
 
+		init : function() {
+			this.general();
+		},
+
+		general : function() {
+
+			if( $('.iwp-color-picker').length ) {
+				$('.iwp-color-picker').wpColorPicker();
+			}
+			// WP 3.5+ uploader
+			var file_frame;
+			window.formfield = '';
+
+			$('body').on('click', '.iwp_settings_upload_button', function(e) {
+
+				e.preventDefault();
+
+				var button = $(this);
+
+				window.formfield = $(this).parent().prev();
+
+				// If the media frame already exists, reopen it.
+				if ( file_frame ) {
+					//file_frame.uploader.uploader.param( 'post_id', set_to_post_id );
+					file_frame.open();
+					return;
+				}
+
+				// Create the media frame.
+				file_frame = wp.media.frames.file_frame = wp.media({
+					frame: 'post',
+					state: 'insert',
+					title: button.data( 'uploader_title' ),
+					button: {
+						text: button.data( 'uploader_button_text' )
+					},
+					multiple: false
+				});
+
+				file_frame.on( 'menu:render:default', function( view ) {
+					// Store our views in an object.
+					var views = {};
+
+					// Unset default menu items
+					view.unset( 'library-separator' );
+					view.unset( 'gallery' );
+					view.unset( 'featured-image' );
+					view.unset( 'embed' );
+
+					// Initialize the views in our view object.
+					view.set( views );
+				} );
+
+				// When an image is selected, run a callback.
+				file_frame.on( 'insert', function() {
+
+					var selection = file_frame.state().get('selection');
+					selection.each( function( attachment, index ) {
+						attachment = attachment.toJSON();
+						window.formfield.val(attachment.url);
+					});
+				});
+
+				// Finally, open the modal
+				file_frame.open();
+			});
+
+
+			// WP 3.5+ uploader
+			var file_frame;
+			window.formfield = '';
+		}
+
+	}
+	IWP_Settings.init();
 
 });

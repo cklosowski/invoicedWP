@@ -12,14 +12,6 @@
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-
-
-
-
-
-
-
-
 /**
  * Get Shop Base Country
  *

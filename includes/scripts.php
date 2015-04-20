@@ -33,7 +33,7 @@ function iwp_admin_scripts( $hook ) {
     $possibleHooks = apply_filters( 'iwp_hooks', array( 'post.php', 'post-new.php' ) );
     $possiblePostType = apply_filters( 'iwp_posttypes', array( 'invoicedwp', 'invoicedwp_template') );
 
-    if( in_array($hook , $possibleHooks ) && in_array( $post_type, $possiblePostType ) ) {
+    if( (in_array($hook , $possibleHooks ) && in_array( $post_type, $possiblePostType )) || ( $hook == 'invoicedwp_page_iwp-display-options' ) ) {
         wp_enqueue_style( 'jquery-style', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/themes/smoothness/jquery-ui.css' );
 
         wp_enqueue_script( 'jquery' );
@@ -46,7 +46,6 @@ function iwp_admin_scripts( $hook ) {
 
         wp_enqueue_script( 'iwp_admin_js', IWP_URL . '/assets/js/admin.js', array( 'jquery' ) );
         wp_enqueue_style( 'iwp_admin_css', IWP_URL . '/assets/css/admin.css' );
-
 
         wp_enqueue_script( 'iwp_select2_js', IWP_URL . '/assets/select2/select2.js', array( 'jquery' ) );
         wp_enqueue_style( 'iwp_select2_css', IWP_URL . '/assets/select2/select2.css', array() );
@@ -263,3 +262,14 @@ function iwp_get_email_tags() {
 
     
 }
+
+function prevent_searches() {
+    global $post;
+
+    if( $post->post_type == 'invoicedwp' )
+        echo "<meta name='robots' content='noindex,follow' />";
+
+}
+add_action('wp_head','prevent_searches');
+
+

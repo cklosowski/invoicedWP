@@ -1,30 +1,32 @@
         <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-            <header class="entry-header">
+            <header class="entry-content">
                 <div id="logo">
-                    <img src="logo.png">
+                    <img src="<?php echo $iwp_options['business_logo']; ?>">
                 </div>
-                <pre>
-                <?php print_r( $iwp_options ); ?>
-
-                </pre>
-                <h1><?php if ( $invoiceContent['isQuote'] == 1 ) { echo 'Quote'; } else { the_title(); } ?></h1>
-                <div id="company" style="width: 45%; float: left;">
+                <h1><?php if ( $invoiceContent['isQuote'] == 1 ) { _e( 'Quote', 'iwp-txt' ); } else { _e( 'Invoice', 'iwp-txt' ); } ?></h1>
+                <div id="company" style="width: 49%; float: left;">
                     <div><?php echo $iwp_options['business_name']; ?></div>
                     <div><?php echo $iwp_options['business_address1']; ?><br> 
-                    <?php echo $iwp_options['business_address2']; ?> <br>
+                    <?php if( ! empty( $iwp_options['business_address2'] ) ) { echo $iwp_options['business_address2'] . "<br>"; } ?>
                     <?php echo $iwp_options['business_city']; ?> <?php echo $iwp_options['business_state']; ?>, <?php echo $iwp_options['business_zip_code']; ?><br><?php echo $iwp_options['business_country']; ?></div>
                     <div><?php echo $iwp_options['business_phone_number']; ?></div>
                     <div><a href="mailto:<?php echo $iwp_options['business_email']; ?>"><?php echo $iwp_options['business_email']; ?></a></div>
                 </div>
-                <div id="project" style="width: 45%; float: right;">
+                <div id="project" style="width: 50%; float: right;">
                     <div><span><?php _e( 'Project:', 'invoicedwp' ); ?></span> <?php echo get_the_title(); ?></div>
-                    <div><span><?php _e( 'Client:', 'invoicedwp' ); ?></span> <?php echo $invoiceContent['user_data']['company_name']; ?></div>
+                    <?php if( ! empty( $invoiceContent['user_data']['company_name'] ) ) { ?><div><span><?php _e( 'Client:', 'invoicedwp' ); ?></span> <?php echo $invoiceContent['user_data']['company_name']; ?></div><?php } ?>
                     <div><span><?php _e( 'Name:', 'invoicedwp' ); ?></span> <?php echo $invoiceContent['user_data']['first_name'] . '  ' . $invoiceContent['user_data']['last_name']; ?></div>
-                    <div><span><?php _e( 'Address:', 'invoicedwp' ); ?></span> <?php echo $invoiceContent['user_data']['streetaddress']; ?><br /> <?php echo $invoiceContent['user_data']['streetaddress2']; ?></div>
+                    <div><span><?php _e( 'Address:', 'invoicedwp' ); ?></span><br /> <?php echo $invoiceContent['user_data']['streetaddress'] . ' '; if( ! empty( $iwp_options['business_address2'] ) ) { echo $invoiceContent['user_data']['streetaddress2'] . ' '; } echo $invoiceContent['user_data']['city'] . ', ' . $invoiceContent['user_data']['state'] . ', ' . $invoiceContent['user_data']['zip']; ?></div>
                     <div><span><?php _e( 'Email:', 'invoicedwp' ); ?></span> <a href="<?php echo $invoiceContent['user_data']['user_email']; ?>"><?php echo $invoiceContent['user_data']['user_email']; ?></a></div>
                     <div><span><?php _e( 'Phone:', 'invoicedwp' ); ?></span> <?php echo $invoiceContent['user_data']['phonenumber']; ?></div>
-                    <div><span><?php _e( 'DATE:', 'invoicedwp' ); ?></span> August 17, 2015</div>
-                    <div><span><?php _e( 'Due Date:', 'invoicedwp' ); ?></span> <?php echo $invoiceContent['user_data']['paymentDueDate']; ?></div>
+                    <div><span><?php _e( 'DATE:', 'invoicedwp' ); ?></span> <?php echo the_time('F j, Y'); ?></div>
+                    <?php if( $invoiceContent['paymentDueDate'] == 1 ) { ?>
+                        <div><strong><span><?php _e( 'Due Date:', 'invoicedwp' ); ?></span> <?php echo $invoiceContent['paymentDueDateText']; ?></strong></div>
+                    <?php } ?>
+                    <?php if( $invoiceContent['minPayment'] == 1 ) { ?>
+                        <div style="font-size: 0.8em;"><span><?php _e( 'Minimum Payment Due:', 'invoicedwp' ); ?></span> <?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['minPaymentText'] ); ?></div>
+                    <?php } ?>
+
                 </div>
             </header>
  
@@ -59,18 +61,22 @@
                             <td style="text-align: right;" colspan="3"><?php _e( 'Subtotal', 'invoicedwp' ); ?></td>
                             <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['subtotal'] ); ?></td>
                         </tr>
-                        <tr class="hidden_total">
+                        <?php if( $invoiceContent['invoice_totals']['tax'] > 0 ) { ?>
+                        <tr>
                             <td style="text-align: right;" colspan="3"><?php _e( 'Tax', 'invoicedwp' ); ?></td>
                             <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['tax'] ); ?></td>
                         </tr>
+                        <?php } ?>
                         <tr class="hidden_total">
                             <td style="text-align: right;" colspan="3"><?php _e( 'Adjustments', 'invoicedwp' ); ?></td>
                             <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['adjustments'] ); ?></td>
                         </tr>
-                        <tr class="hidden_total">
+                        <?php if( $invoiceContent['invoice_totals']['discount'] > 0 ) { ?>
+                        <tr>
                             <td style="text-align: right;" colspan="3"><?php _e( 'Discount', 'invoicedwp' ); ?></td>
                             <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['discount'] ); ?></td>
                         </tr>
+                        <?php } ?>
                         <?php if( $invoiceContent['invoice_totals']["payments"] > 0 ) { ?>
                         <tr>
                             <td style="text-align: right;" colspan="3"><?php _e( 'Payments', 'invoicedwp' ); ?></td>
@@ -94,12 +100,11 @@
 
                     </tbody>
                 </table>
-                <div id="notices">
-                    <div><?php _e( 'Notices', 'invoicedwp' ); ?>:</div>
-                    <div class="notice"><?php echo $invoiceContent['invoice_notice']; ?></div>
+                <div id="notices" class="entry-content">
+                    <div class="notice"><?php _e( 'Notices', 'invoicedwp' ); ?>: <?php echo $invoiceContent['invoice_notice']; ?></div>
                 </div>
             </main>
-            <footer>
-                <?php echo $invoiceContent['invoice_global_notice']; ?>
+            <footer class="entry-footer">
+                <?php echo $iwp_options['invoice_global_notice']; ?>
             </footer>
         </article>
