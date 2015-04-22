@@ -66,10 +66,10 @@ function iwp_details($post_id) {
 						<thead>
 							<tr>
 								<th class="sort" width="1%">&nbsp;</th>
-								<th><?php _e( 'Name', 'iwp-invoiced' ); ?></th>
-								<th style="width: 70px;" ><?php _e( 'Qty', 'iwp-invoiced' ); ?></th>
-								<th style="width: 70px;" ><?php _e( 'Price', 'iwp-invoiced' ); ?></th>
-								<th style="width: 90px;" ><?php _e( 'Total', 'iwp-invoiced' ); ?></th>
+								<th><?php _e( 'Name', 'iwp-txt' ); ?></th>
+								<th style="width: 70px;" ><?php _e( 'Qty', 'iwp-txt' ); ?></th>
+								<th style="width: 70px;" ><?php _e( 'Price', 'iwp-txt' ); ?></th>
+								<th style="width: 90px;" ><?php _e( 'Total', 'iwp-txt' ); ?></th>
 								<th class="remove" style="width:20px !important;">&nbsp;</th>
 							</tr>
 						</thead>
@@ -78,6 +78,31 @@ function iwp_details($post_id) {
 						if( isset( $post_id->post_type )  ) {
 							//if( $post_id->post_type <> 'invoicedwp_template' ) { ?>
 							<tfoot>
+								<?php if( ! empty( $iwp["iwp_invoice_discount"]["type"] ) ) { ?>
+								<tr class="discount_row" style="background-color: #fdfdfd;">
+									<td class="discount_row" style="background-color: #fdfdfd; border-right: 0 none !important;">&nbsp;</td>
+									<td class="discount_row" style="background-color: #fdfdfd; border-right: 0 none !important;"> <?php // Name ?>
+										<input class="item_name input_field" value="<?php echo $iwp["iwp_invoice_discount"]["name"]; ?>" name="iwp_invoice_discount_name">
+									</td>
+									<td colspan="2" class="discount_row" style="background-color: #fdfdfd; border-right: 0 none !important;">
+										<select id="discountType" name="iwp_invoice_discountType" >
+											<option value="amount" <?php selected( $iwp["iwp_invoice_discount"]["type"], "amount" ); ?>><?php _e('Amount Discount', 'iwp-txt'); ?></option>
+											<option value="percent" <?php selected( $iwp["iwp_invoice_discount"]["type"], "percent" ); ?>><?php _e('Percent Discount', 'iwp-txt'); ?></option>
+										</select> 
+									</td>
+									<td class="discount_row" style="background-color: #fdfdfd;"> <?php // price ?>
+										<div class="currencySymbol"><?php echo $iwp_currency; ?></div><div class="hidden percentSymbol" style="float:right; margin-left: 10px;">%</div><input type="number" id="discountAmount" class="item_name input_field changesNo" value="<?php echo $iwp["iwp_invoice_discount"]["discount"]; ?>" name="iwp_invoice_discount" style="width: 74%; float: right;"  step="0.01">
+									</td>
+									<td class="remove_discount remove">&nbsp;</td>
+								</tr>
+								<script>
+								
+									jQuery(document).ready(function( $ ) {
+										$( '.column-invoice-details-discounts').show();
+									});
+
+								</script>
+								<?php } ?>
 								<tr>
 									<td colspan="6" style="background-color: #f9f9f9;">
 										<table style="float: right; ">
@@ -88,33 +113,39 @@ function iwp_details($post_id) {
 											<?php if( $iwp_options["enable_taxes"] == 1 ) { ?>
 												<tr>
 													<td style="background: none; border: 0px;" class="column-invoice-details-tax"><?php _e( 'Sales Tax', 'iwp-txt'); ?>:</td>
-													<td style="background: none; border: 0px;"  class="column-invoice-details-tax"><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[tax]" value="0.00"  class="calculate_invoice_tax iwp_flatten_input" style="float: right; width: 90%;" ><input type="hidden" id="iwp_tax_rate" value='<?php echo $iwp_options["tax_rate"]; ?>' ></td>
+													<td style="background: none; border: 0px;"  class="column-invoice-details-tax"><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[tax]" value="<?php _e( '0.00', 'iwp-txt'); ?>"  class="calculate_invoice_tax iwp_flatten_input" style="float: right; width: 90%;" ><input type="hidden" id="iwp_tax_rate" value='<?php echo $iwp_options["tax_rate"]; ?>' ></td>
 												</tr>
 											<?php } ?>
 											<tr>
 												<td style="background: none; border: 0px;"  class="hidden column-invoice-details-adjustments"><?php _e( 'Adjustments', 'iwp-txt'); ?>:</td>
-												<td style="background: none; border: 0px;"  class="hidden column-invoice-details-adjustments"><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[adjustments]" value="0.00"  class="calculate_invoice_adjustments iwp_flatten_input" style="float: right; width: 90%;" ></td>
+												<td style="background: none; border: 0px;"  class="hidden column-invoice-details-adjustments"><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[adjustments]" value="<?php _e( '0.00', 'iwp-txt'); ?>"  class="calculate_invoice_adjustments iwp_flatten_input" style="float: right; width: 90%;" ></td>
 											</tr>
 											<tr>
 												<td style="background: none; border: 0px;" class="hidden column-invoice-details-discounts"><?php _e( 'Discount', 'iwp-txt'); ?>:</td>
-												<td style="background: none; border: 0px;" class="hidden column-invoice-details-discounts"><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[discount]" value="0.00"  class="iwp_flatten_input calculate_discount_total" style="float: right; width: 90%;" ></td>
+												<td style="background: none; border: 0px;" class="hidden column-invoice-details-discounts"><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[discount]" value="<?php _e( '0.00', 'iwp-txt'); ?>"  class="iwp_flatten_input calculate_discount_total" style="float: right; width: 90%;" ></td>
 											</tr>
 											<tr>
 												<td style="background: none; border: 0px;" ><b><?php _e( 'Total', 'iwp-txt'); ?>:</b></td>
-												<td style="background: none; border: 0px;" ><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[total]" id="iwp_totals[total]" value="0.00"  class="calculate_invoice_grandtotal iwp_flatten_input" style="float: right; width: 90%;" ></td>
+												<td style="background: none; border: 0px;" ><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[total]" id="iwp_totals[total]" value="<?php _e( '0.00', 'iwp-txt'); ?>"  class="calculate_invoice_grandtotal iwp_flatten_input" style="float: right; width: 90%;" ></td>
 											</tr>
 										</table>
 						            </td>
 								</tr>
 								<tr>
 									<th colspan="6">
-										<a href="#" class="button button-primary add_discount" data-row="<?php
+
+									<?php
+										$hide = '';
+										if( ! empty( $iwp["iwp_invoice_discount"]["type"] ) ) { $hide = 'hidden'; }
+									?>
+										<a href="#" class="button button-primary add_discount <?php echo $hide; ?>" data-row="<?php
 											ob_start();
 											include( 'templates/meta-discount.php' );
 											$html = ob_get_clean();
 											echo esc_attr( $html );
-										?>" style="margin-left: 10px;"><?php _e( 'Add Discount', 'iwp-invoiced' ); ?></a>
-										<a href="#" class="button button-primary add_row" style="margin-left: 10px;"><?php _e( 'Add Line', 'iwp-invoiced' ); ?></a>
+										?>" style="margin-left: 10px;"><?php _e( 'Add Discount', 'iwp-txt' ); ?></a>
+
+										<a href="#" class="button button-primary add_row" style="margin-left: 10px;"><?php _e( 'Add Line', 'iwp-txt' ); ?></a>
 										<select style="float: right; width: 400px;" class="selectTemplate" >
 											<?php echo iwp_get_templates(); ?>
 										</select>
@@ -132,8 +163,8 @@ function iwp_details($post_id) {
 								<td class="sort">&nbsp;</td>
 								<td style="border-right: 0 none !important;"> <?php // Name ?>
 									<input class="item_name input_field" value="" name="iwp_invoice_name[0]">
-									<span><a class="toggleDescription"  href="#" style="text-size 9px !important;" >Add Description</a></span>
-									<textarea class="item_name input_field input_description iwp_invoice_description0" value="" name="iwp_invoice_description[0]" id="iwp_invoice_description[0]" style="display: none; width: 100%; margin-top: 5px; font-size= 0.88em;" placeholder="Description"></textarea>
+									<span><a class="toggleDescription"  href="#" style="text-size 9px !important;" ><?php _e( 'Add Description', 'iwp-txt' ); ?></a></span>
+									<textarea class="item_name input_field input_description iwp_invoice_description0" value="" name="iwp_invoice_description[0]" id="iwp_invoice_description[0]" style="display: none; width: 100%; margin-top: 5px; font-size= 0.88em;" placeholder="<?php _e( 'Description', 'iwp-txt'); ?>"></textarea>
 								</td>
 								<td style="border-right: 0 none !important;"> <?php // Qty ?>
 									<input type="number" class="changesNo item_name input_field input_qty" value="" name="iwp_invoice_qty[0]" id="iwp_invoice_qty[0]">
@@ -142,7 +173,7 @@ function iwp_details($post_id) {
 									<input type="number" class="changesNo item_name input_field input_price" value="" name="iwp_invoice_price[0]" id="iwp_invoice_price[0]"  step="0.01">
 								</td>
 								<td> <?php // Total ?>
-									<?php echo $iwp_currency; ?> <input class="calculate_invoice_total input_total iwp_flatten_input"  value="<?php echo $values["iwp_invoice_total"][0]; ?>" placeholder="0.00">
+									<?php echo $iwp_currency; ?> <input class="calculate_invoice_total input_total iwp_flatten_input"  value="<?php echo $values["iwp_invoice_total"][0]; ?>" placeholder="<?php _e( '0.00', 'iwp-txt'); ?>">
 									<input class="hidden_total input_total" name="iwp_invoice_total[0]" id="iwp_invoice_total[0]" value="<?php echo $values["iwp_invoice_total"][0]; ?>" style="display: none !important;">
 								</td>
 								<td class="remove">&nbsp;</td>
@@ -157,8 +188,8 @@ function iwp_details($post_id) {
 										<td class="sort">&nbsp;</td>
 										<td style="border-right: 0 none !important;"> <?php // Name ?>
 											<input class="item_name input_field input_name" value="<?php echo $values["iwp_invoice_name"][$i]; ?>" name="iwp_invoice_name[<?php echo $i; ?>]">
-											<?php if( empty( $values["iwp_invoice_description"][$i] ) ) {  ?> <span><a class="toggleDescription"  href="#" style="text-size 9px !important;" >Add Description</a></span> <?php } ?>
-											<textarea class="item_name input_field input_description iwp_invoice_description" value="" name="iwp_invoice_description[<?php echo $i; ?>]" style="<?php if( empty( $values["iwp_invoice_description"][$i] ) ) { echo 'display: none;'; } ?> width: 100%; margin-top: 5px; font-size= 0.88em;" placeholder="Description"><?php echo $values["iwp_invoice_description"][$i]; ?></textarea>
+											<?php if( empty( $values["iwp_invoice_description"][$i] ) ) {  ?> <span><a class="toggleDescription"  href="#" style="text-size 9px !important;" ><?php _e( 'Add Description', 'iwp-txt'); ?></a></span> <?php } ?>
+											<textarea class="item_name input_field input_description iwp_invoice_description" value="" name="iwp_invoice_description[<?php echo $i; ?>]" style="<?php if( empty( $values["iwp_invoice_description"][$i] ) ) { echo 'display: none;'; } ?> width: 100%; margin-top: 5px; font-size= 0.88em;" placeholder="<?php _e( 'Description', 'iwp-txt'); ?>"><?php echo $values["iwp_invoice_description"][$i]; ?></textarea>
 										</td>
 										<td style="border-right: 0 none !important;"> <?php // Qty ?>
 											<input type="number" class="changesNo item_name input_field input_qty" value="<?php echo $values["iwp_invoice_qty"][$i]; ?>" name="iwp_invoice_qty[<?php echo $i; ?>]" id="iwp_invoice_qty[<?php echo $i; ?>]">
@@ -167,12 +198,11 @@ function iwp_details($post_id) {
 											<input type="number" class="changesNo item_name input_field input_price" value="<?php echo $values["iwp_invoice_price"][$i]; ?>" name="iwp_invoice_price[<?php echo $i; ?>]" id="iwp_invoice_price[<?php echo $i; ?>]" step="0.01">
 										</td>
 										<td>
-											<?php echo $iwp_currency; ?> <input class="calculate_invoice_total input_total iwp_flatten_input"  value="<?php echo $values["iwp_invoice_total"][$i]; ?>" placeholder="0.00">
+											<?php echo $iwp_currency; ?> <input class="calculate_invoice_total input_total iwp_flatten_input"  value="<?php echo $values["iwp_invoice_total"][$i]; ?>" placeholder="<?php _e( '0.00', 'iwp-txt'); ?>">
 											<input class="hidden_total input_total" name="iwp_invoice_total[<?php echo $i; ?>]" id="iwp_invoice_total[<?php echo $i; ?>]" value="<?php echo $values["iwp_invoice_total"][$i]; ?>" style="display: none !important;">
 										</td>
 										<td class="remove">&nbsp;</td>
 									</tr>
-
 									<?php
 								}
 							}
@@ -194,7 +224,7 @@ function iwp_payment( $invoice_id ) {
 	do_action( 'iwp_before_payment');
 	?>
 
-
+	<?php if( isset ( $iwp["iwp_invoice_payment"] ) ) { ?>
 	<table width="100%" class="widefat striped" id="paymentDisplay">
 	<?php
 	
@@ -210,11 +240,15 @@ function iwp_payment( $invoice_id ) {
 
 			//$myPayments += $iwp["iwp_invoice_payment"]["amount"][$key];
 		}
-		$remainingBalance = (float) $iwp["invoice_totals"]["total"] - (float) $iwp["invoice_totals"]["payments"];
+		
 	?>
 	</table>
+	<?php } 
+
+	$remainingBalance = (float) $iwp["invoice_totals"]["total"] - (float) $iwp["invoice_totals"]["payments"];
+	?>
 	<div style="margin-top: 10px;">
-		<input type="number" class="item_name input_field input_qty" value="<?php echo $iwp["invoice_payment"]; ?>" name="iwp_payment_amount" id="iwp_payment_amount">
+		<input type="number" class="item_name input_field input_qty" value="<?php echo isset( $iwp["invoice_payment"] ) ? $iwp["invoice_payment"] : ""; ?>" name="iwp_payment_amount" id="iwp_payment_amount">
 		<select name="iwp_payment_method" id="iwp_payment_method">
 			<option>Cash</option>
 			<option>Check</option>
@@ -240,6 +274,7 @@ function iwp_notice($post_id) {
 }
 
 function iwp_client($post_id) {
+	$user_email = '';
 	$iwp = get_post_meta($post_id->ID, '_invoicedwp', true );
 	
 	$userEmail = 'Select User';
@@ -311,7 +346,7 @@ function iwp_client($post_id) {
 
 	<div class="iwp_newUser">
 		<div class="iwp_email_selection_wrapper" style="margin: 10px 0;" >
-			<input type="text" value="<?php echo $userEmail; ?>" name="iwp_invoice[user_data][user_email]" class="iwp_email_selection" />
+			<input type="text" value="<?php echo $userEmail; ?>" name="iwp_invoice[user_data][user_email]" class="iwp_email_selection" id="iwp_email_selection"style="width: 100%;" placeholder="Enter Email" />
 		</div>
 
 		<input title="" value="<?php echo isset( $iwp_invoice['first_name'] ) ? $iwp_invoice['first_name'] : ''; ?>" placeholder="First Name" name="iwp_invoice[user_data][first_name]" class="input_field  iwp_first_name" type="text" id="" style="width: 100%;">
@@ -323,9 +358,8 @@ function iwp_client($post_id) {
 		<input title="" value="<?php echo isset( $iwp_invoice['city'] ) ? $iwp_invoice['city'] :  ''; ?>" placeholder="City" name="iwp_invoice[user_data][city]" class="input_field  iwp_city" type="text" id="" style="width: 100%;">
 		<input title="" value="<?php echo isset( $iwp_invoice['state'] ) ? $iwp_invoice['state'] :  ''; ?>" placeholder="State" name="iwp_invoice[user_data][state]" class="input_field  iwp_state" type="text" id="" style="width: 100%;">
 		<input title="" value="<?php echo isset( $iwp_invoice['zip'] ) ? $iwp_invoice['zip'] :  ''; ?>" placeholder="ZIP" name="iwp_invoice[user_data][zip]" class="input_field  iwp_zip" type="text" id="" style="width: 100%;">
-		<input type="text" name="makeAccountText" id="makeAccountText" value="<?php echo isset( $iwp['makeAccountText'] ) ? $iwp_invoice['makeAccountText'] :  ''; ?>" placeholder="Email address for account"  style="width: 100%; display: none;" />
 		<div class="makeNewAccount" style="margin-top: 10px">
-			<input type="checkbox" name="makeAccount" id="makeAccount" value="' . $iwp['makeAccount'] . '" ' . checked( $iwp['makeAccount'], 1, false ) .' /> <label for="makeAccount">Make Customer Account</label>
+			<input type="checkbox" name="makeAccount" id="makeAccount" value="<?php echo $iwp_invoice['makeAccount']; ?>" <?php checked( $iwp_invoice['makeAccount'], 1, false ); ?> /> <label for="makeAccount">Make Customer Account</label>
 	        
         </div>
 	</div>

@@ -82,13 +82,13 @@ add_action( 'wp_enqueue_scripts', 'iwp_scripts' );
 function iwp_get_default_sale_notification_email() {
     $iwp_options = get_option( 'iwp_settings' );
 
-    $default_email_body = __( 'Hello', 'iwp' ) . "\n\n" . sprintf( __( 'A %s purchase has been made', 'iwp' ), iwp_get_label_plural() ) . ".\n\n";
-    $default_email_body .= sprintf( __( '%s sold:', 'iwp' ), iwp_get_label_plural() ) . "\n\n";
+    $default_email_body = __( 'Hello', 'iwp-txt' ) . "\n\n" . sprintf( __( 'A %s purchase has been made', 'iwp-txt' ), iwp_get_label_plural() ) . ".\n\n";
+    $default_email_body .= sprintf( __( '%s sold:', 'iwp-txt' ), iwp_get_label_plural() ) . "\n\n";
     $default_email_body .= '{download_list}' . "\n\n";
-    $default_email_body .= __( 'Purchased by: ', 'iwp' ) . ' {name}' . "\n";
-    $default_email_body .= __( 'Amount: ', 'iwp' ) . ' {price}' . "\n";
-    $default_email_body .= __( 'Payment Method: ', 'iwp' ) . ' {payment_method}' . "\n\n";
-    $default_email_body .= __( 'Thank you', 'iwp' );
+    $default_email_body .= __( 'Purchased by: ', 'iwp-txt' ) . ' {name}' . "\n";
+    $default_email_body .= __( 'Amount: ', 'iwp-txt' ) . ' {price}' . "\n";
+    $default_email_body .= __( 'Payment Method: ', 'iwp-txt' ) . ' {payment_method}' . "\n\n";
+    $default_email_body .= __( 'Thank you', 'iwp-txt' );
 
     $message = ( isset( $iwp_options['sale_notification'] ) && !empty( $iwp_options['sale_notification'] ) ) ? $iwp_options['sale_notification'] : $default_email_body;
 
@@ -103,8 +103,8 @@ function iwp_get_default_sale_notification_email() {
  */
 function iwp_get_default_labels() {
     $defaults = array(
-       'singular' => __( 'Download', 'iwp' ),
-       'plural'   => __( 'Downloads', 'iwp')
+       'singular' => __( 'Download', 'iwp-txt' ),
+       'plural'   => __( 'Downloads', 'iwp-txt')
     );
     return apply_filters( 'iwp_default_downloads_name', $defaults );
 }

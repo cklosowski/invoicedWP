@@ -13,8 +13,6 @@
  * @copyright       Copyright (c) 2015
  *
  *
- * Create Invoice page to view an invoice
- * Setup more secure link to invoice
  * Setup manual payment
  * Setup paypal link payment
  * 
@@ -163,7 +161,7 @@ if( !class_exists( 'IWP' ) ) {
                 add_action( 'wp_ajax_iwp_search_recipient', array( 'IWP_Ajax', 'search_recipient' ) );
                 add_action( 'wp_ajax_iwp_add_row', array( 'IWP_Ajax', 'add_row' ) );
                 add_action( 'wp_ajax_iwp_add_template_row', array( 'IWP_Ajax', 'add_template_row' ) );
-                add_action( 'wp_ajax_iwp_get_user_data', create_function( '', ' die(IWP_Ajax::get_user_data($_REQUEST["user_email"]));' ) );
+                add_action( 'wp_ajax_iwp_get_user_data', create_function( '', ' die(IWP_Ajax::get_user_data( iwp_sanitize( $_REQUEST["user_email"] ) ) );' ) );
             }
 
             

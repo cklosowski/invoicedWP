@@ -1,6 +1,6 @@
 <?php
 if ( isset( $_POST['version'] ) ) {
-  $post_data = $_POST['version'];
+  $post_data = iwp_sanitize( $_POST['version'] );
 }
 
 $values = get_post_meta( $template, '_invoicedwp', true );

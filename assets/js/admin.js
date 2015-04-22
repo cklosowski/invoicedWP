@@ -235,7 +235,9 @@ jQuery(document).ready(function( $ ) {
 
 	$( '#makeAccount' ).change(function() {
 	    if(this.checked) {
-	        $("#makeAccountText").show();
+	        $("#iwp_email_selection").show();
+	        $("#iwp_email_selection").val( '' );
+	        $("#s2id_autogen1").hide();
 	        $(".makeNewAccount").hide();
 	    } else {
 	    	$("#makeAccountText").hide();

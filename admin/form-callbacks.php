@@ -78,7 +78,7 @@ function iwp_settings_sanitize( $input = array() ) {
 		$output = $input;
 	}
 
-	add_settings_error( 'iwp-notices', '', __( 'Settings updated.', 'iwp' ), 'updated' );
+	add_settings_error( 'iwp-notices', '', __( 'Settings updated.', 'iwp-txt' ), 'updated' );
 
 	return $output;
 }
@@ -114,29 +114,7 @@ function iwp_settings_sanitize_misc( $input ) {
 }
 add_filter( 'iwp_settings_misc_sanitize', 'iwp_settings_sanitize_misc' );
 
-/**
- * Taxes Settings Sanitization
- *
- * Adds a settings error (for the updated message)
- * This also saves the tax rates table
- *
- * @since 1.0.0
- * @param array $input The value inputted in the field
- * @return string $input Sanitizied value
- */
-function iwp_settings_sanitize_taxes( $input ) {
 
-	if( ! current_user_can( 'manage_shop_settings' ) ) {
-		return $input;
-	}
-
-	$new_rates = ! empty( $_POST['tax_rates'] ) ? array_values( $_POST['tax_rates'] ) : array();
-
-	update_option( 'iwp_tax_rates', $new_rates );
-
-	return $input;
-}
-add_filter( 'iwp_settings_taxes_sanitize', 'iwp_settings_sanitize_taxes' );
 
 /**
  * Sanitize text fields
@@ -573,7 +551,7 @@ function iwp_upload_callback( $args ) {
 
 	$size = ( isset( $args['size'] ) && ! is_null( $args['size'] ) ) ? $args['size'] : 'regular';
 	$html = '<input type="text" class="' . $size . '-text" id="iwp_settings[' . $args['id'] . ']" name="iwp_settings[' . $args['id'] . ']" value="' . esc_attr( stripslashes( $value ) ) . '"/>';
-	$html .= '<span>&nbsp;<input type="button" class="iwp_settings_upload_button button-secondary" value="' . __( 'Upload File', 'iwp' ) . '"/></span>';
+	$html .= '<span>&nbsp;<input type="button" class="iwp_settings_upload_button button-secondary" value="' . __( 'Upload File', 'iwp-txt' ) . '"/></span>';
 	$html .= '<label for="iwp_settings[' . $args['id'] . ']"> '  . $args['desc'] . '</label>';
 
 	echo $html;
@@ -660,11 +638,11 @@ function iwp_tax_rates_callback($args) {
 	<table id="iwp_tax_rates" class="wp-list-table widefat fixed posts">
 		<thead>
 			<tr>
-				<th scope="col" class="iwp_tax_country"><?php _e( 'Country', 'iwp' ); ?></th>
-				<th scope="col" class="iwp_tax_state"><?php _e( 'State / Province', 'iwp' ); ?></th>
-				<th scope="col" class="iwp_tax_global" title="<?php _e( 'Apply rate to whole country, regardless of state / province', 'iwp' ); ?>"><?php _e( 'Country Wide', 'iwp' ); ?></th>
-				<th scope="col" class="iwp_tax_rate"><?php _e( 'Rate', 'iwp' ); ?></th>
-				<th scope="col"><?php _e( 'Remove', 'iwp' ); ?></th>
+				<th scope="col" class="iwp_tax_country"><?php _e( 'Country', 'iwp-txt' ); ?></th>
+				<th scope="col" class="iwp_tax_state"><?php _e( 'State / Province', 'iwp-txt' ); ?></th>
+				<th scope="col" class="iwp_tax_global" title="<?php _e( 'Apply rate to whole country, regardless of state / province', 'iwp-txt' ); ?>"><?php _e( 'Country Wide', 'iwp-txt' ); ?></th>
+				<th scope="col" class="iwp_tax_rate"><?php _e( 'Rate', 'iwp-txt' ); ?></th>
+				<th scope="col"><?php _e( 'Remove', 'iwp-txt' ); ?></th>
 			</tr>
 		</thead>
 		<?php if( ! empty( $rates ) ) : ?>
@@ -680,7 +658,7 @@ function iwp_tax_rates_callback($args) {
 						'show_option_none' => false,
                         'class'            => 'iwp-select iwp-tax-country',
                         'select2' => true,
-                        'placeholder' => __( 'Choose a country', 'iwp' )
+                        'placeholder' => __( 'Choose a country', 'iwp-txt' )
 					) );
 					?>
 				</td>
@@ -695,7 +673,7 @@ function iwp_tax_rates_callback($args) {
 							'show_option_all'  => false,
                             'show_option_none' => false,
                             'select2' => true,
-                            'placeholder' => __( 'Choose a state', 'iwp' )
+                            'placeholder' => __( 'Choose a state', 'iwp-txt' )
 						) );
 					} else {
 						echo EDD()->html->text( array(
@@ -706,10 +684,10 @@ function iwp_tax_rates_callback($args) {
 				</td>
 				<td class="iwp_tax_global">
 					<input type="checkbox" name="tax_rates[<?php echo $key; ?>][global]" id="tax_rates[<?php echo $key; ?>][global]" value="1"<?php checked( true, ! empty( $rate['global'] ) ); ?>/>
-					<label for="tax_rates[<?php echo $key; ?>][global]"><?php _e( 'Apply to whole country', 'iwp' ); ?></label>
+					<label for="tax_rates[<?php echo $key; ?>][global]"><?php _e( 'Apply to whole country', 'iwp-txt' ); ?></label>
 				</td>
 				<td class="iwp_tax_rate"><input type="number" class="small-text" step="0.0001" min="0.0" max="99" name="tax_rates[<?php echo $key; ?>][rate]" value="<?php echo $rate['rate']; ?>"/></td>
-				<td><span class="iwp_remove_tax_rate button-secondary"><?php _e( 'Remove Rate', 'iwp' ); ?></span></td>
+				<td><span class="iwp_remove_tax_rate button-secondary"><?php _e( 'Remove Rate', 'iwp-txt' ); ?></span></td>
 			</tr>
 			<?php endforeach; ?>
 		<?php else : ?>
@@ -723,7 +701,7 @@ function iwp_tax_rates_callback($args) {
 						'show_option_none' => false,
                         'class'            => 'iwp-select iwp-tax-country',
                         'select2' => true,
-                        'placeholder' => __( 'Choose a country', 'iwp' )
+                        'placeholder' => __( 'Choose a country', 'iwp-txt' )
 					) ); ?>
 				</td>
 				<td class="iwp_tax_state">
@@ -733,15 +711,15 @@ function iwp_tax_rates_callback($args) {
 				</td>
 				<td class="iwp_tax_global">
 					<input type="checkbox" name="tax_rates[0][global]" value="1"/>
-					<label for="tax_rates[0][global]"><?php _e( 'Apply to whole country', 'iwp' ); ?></label>
+					<label for="tax_rates[0][global]"><?php _e( 'Apply to whole country', 'iwp-txt' ); ?></label>
 				</td>
 				<td class="iwp_tax_rate"><input type="number" class="small-text" step="0.0001" min="0.0" name="tax_rates[0][rate]" value=""/></td>
-				<td><span class="iwp_remove_tax_rate button-secondary"><?php _e( 'Remove Rate', 'iwp' ); ?></span></td>
+				<td><span class="iwp_remove_tax_rate button-secondary"><?php _e( 'Remove Rate', 'iwp-txt' ); ?></span></td>
 			</tr>
 		<?php endif; ?>
 	</table>
 	<p>
-		<span class="button-secondary" id="iwp_add_tax_rate"><?php _e( 'Add Tax Rate', 'iwp' ); ?></span>
+		<span class="button-secondary" id="iwp_add_tax_rate"><?php _e( 'Add Tax Rate', 'iwp-txt' ); ?></span>
 	</p>
 	<?php
 	echo ob_get_clean();
@@ -781,7 +759,7 @@ if ( ! function_exists( 'iwp_license_key_callback' ) ) {
 		$html = '<input type="text" class="' . $size . '-text" id="iwp_settings[' . $args['id'] . ']" name="iwp_settings[' . $args['id'] . ']" value="' . esc_attr( $value ) . '"/>';
 
 		if ( 'valid' == get_option( $args['options']['is_valid_license_option'] ) ) {
-			$html .= '<input type="submit" class="button-secondary" name="' . $args['id'] . '_deactivate" value="' . __( 'Deactivate License',  'iwp' ) . '"/>';
+			$html .= '<input type="submit" class="button-secondary" name="' . $args['id'] . '_deactivate" value="' . __( 'Deactivate License',  'iwp-txt' ) . '"/>';
 		}
 		$html .= '<label for="iwp_settings[' . $args['id'] . ']"> '  . $args['desc'] . '</label>';
 
