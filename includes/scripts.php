@@ -39,6 +39,7 @@ function iwp_admin_scripts( $hook ) {
         wp_enqueue_script( 'jquery' );
         wp_enqueue_script( 'jquery-ui-core' );
         wp_enqueue_script( 'jquery-ui-datepicker' );
+        wp_enqueue_script( 'jquery-ui-sortable' );
 
         wp_enqueue_style( 'thickbox' ); // call to media files in wp
         wp_enqueue_script( 'thickbox' );

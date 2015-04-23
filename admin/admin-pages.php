@@ -130,7 +130,7 @@ function iwp_get_settings() {
 		//$email_settings   	= is_array( get_option( 'iwp_settings_emails' ) )     ? get_option( 'iwp_settings_emails' )   	: array();
 		$ext_settings     	= is_array( get_option( 'iwp_settings_extensions' ) ) ? get_option( 'iwp_settings_extensions' )	: array();
 		$license_settings 	= is_array( get_option( 'iwp_settings_licenses' ) )   ? get_option( 'iwp_settings_licenses' )	: array();
-		$misc_settings    	= is_array( get_option( 'iwp_settings_misc' ) )       ? get_option( 'iwp_settings_misc' )		: array();
+		//$misc_settings    	= is_array( get_option( 'iwp_settings_misc' ) )       ? get_option( 'iwp_settings_misc' )		: array();
 
 		$settings = array_merge( $general_settings, $business_settings, $email_settings, $ext_settings, $license_settings, $misc_settings );
 
@@ -255,7 +255,7 @@ function iwp_get_registered_settings() {
 		'general' => apply_filters( 'iwp_settings_general',
 			array(
 
-				'partial_payments' => array(
+				/*'partial_payments' => array(
 					'id' => 'partial_payments',
 					'name' => __( 'Allow partial payments', 'iwp-txt' ),
 					'desc' => __( '', 'iwp-txt' ),
@@ -291,7 +291,7 @@ function iwp_get_registered_settings() {
 					'name' => '<strong>' . __( 'Currency Settings', 'iwp-txt' ) . '</strong>',
 					'desc' => __( 'Configure the currency options', 'iwp-txt' ),
 					'type' => 'header'
-				),
+				),*/
 				'currency' => array(
 					'id' => 'currency',
 					'name' => __( 'Currency', 'iwp-txt' ),
@@ -397,7 +397,7 @@ function iwp_get_registered_settings() {
 					'name' => __( 'Phone Number', 'iwp-txt' ),
 					'type' => 'text'
 				),
-				'registration_number' => array(
+				/*'registration_number' => array(
 					'id' => 'registration_number',
 					'name' => __( 'Registration Number', 'iwp-txt' ),
 					'type' => 'text',
@@ -406,7 +406,7 @@ function iwp_get_registered_settings() {
 					'id' => 'taxvat_number',
 					'name' => __( 'Tax/VAT Number', 'iwp-txt' ),
 					'type' => 'text',
-				),
+				),*/
 				'invoice_global_notice' => array(
 					'id' => 'invoice_global_notice',
 					'name' => __( 'Global notice on invoces', 'iwp-txt' ),
@@ -425,12 +425,12 @@ function iwp_get_registered_settings() {
 				),
 				'tax_rate' => array(
 					'id' => 'tax_rate',
-					'name' => __( 'Fallback Tax Rate', 'iwp-txt' ),
+					'name' => __( 'Tax Rate', 'iwp-txt' ),
 					'desc' => __( 'Enter a percentage, such as 6.5. This is the default rate charged.', 'iwp-txt' ),
 					'type' => 'text',
 					'size' => 'small'
 				),
-				'change_tax_on_invoice' => array(
+				/*'change_tax_on_invoice' => array(
 					'id' => 'change_tax_on_invoice',
 					'name' => __( 'Change Tax Rate on Invoice', 'iwp-txt' ),
 					'desc' => __( 'Default tax rate will be displayed on the invoice when invoice is created but site owner can modify it.', 'iwp-txt' ),
@@ -440,7 +440,7 @@ function iwp_get_registered_settings() {
 						'yes' => __( 'Yes, I want to adjust tax rate on invoice', 'iwp-txt' ),
 						'no'  => __( 'No, I will set a single tax rate for all invoices', 'iwp-txt' )
 					)
-				)
+				)*/
 			)
 		),
 		/** Email Settings */

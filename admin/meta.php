@@ -359,8 +359,13 @@ function iwp_client($post_id) {
 		<input title="" value="<?php echo isset( $iwp_invoice['state'] ) ? $iwp_invoice['state'] :  ''; ?>" placeholder="State" name="iwp_invoice[user_data][state]" class="input_field  iwp_state" type="text" id="" style="width: 100%;">
 		<input title="" value="<?php echo isset( $iwp_invoice['zip'] ) ? $iwp_invoice['zip'] :  ''; ?>" placeholder="ZIP" name="iwp_invoice[user_data][zip]" class="input_field  iwp_zip" type="text" id="" style="width: 100%;">
 		<div class="makeNewAccount" style="margin-top: 10px">
-			<input type="checkbox" name="makeAccount" id="makeAccount" value="<?php echo $iwp_invoice['makeAccount']; ?>" <?php checked( $iwp_invoice['makeAccount'], 1, false ); ?> /> <label for="makeAccount">Make Customer Account</label>
-	        
+			<?php 
+				$makeAccount = isset( $iwp_invoice['makeAccount'] ) ? $iwp_invoice['makeAccount'] : 0;
+				if( $makeAccount == 0 ) { ?>
+				<input type="checkbox" name="makeAccount" id="makeAccount" value="<?php echo isset( $iwp_invoice['makeAccount'] ) ? $iwp_invoice['makeAccount'] : ''; ?>" <?php checked( isset( $iwp_invoice['makeAccount'] ) ? $iwp_invoice['makeAccount'] : '' , 1, false ); ?> /> <label for="makeAccount">Make Customer Account</label>
+	        <?php } else { ?>
+	        	<input type="hidden" name="makeAccount" id="makeAccount" value="<?php echo isset( $iwp_invoice['makeAccount'] ) ? $iwp_invoice['makeAccount'] : ''; ?>"  />
+	        <?php } ?>
         </div>
 	</div>
 

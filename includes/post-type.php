@@ -42,6 +42,7 @@ function iwp_setup_init() {
 		'capability_type' 		=> 'page',
 		'has_archive' 			=> false,
 		'hierarchical' 			=> false,
+		'menu_icon'				=> dashicons-media-text,//IWP_URL . '/assets/img/invoice.png',
 		'menu_position' 		=> 20,
 		'rewrite' 				=> array('slug'=>'invoiced','with_front'=>false),
 		'supports' 				=> array( 'title', 'editor' )
@@ -132,7 +133,7 @@ function iwp_custom_columns( $cols ) {
 		'recipient'		=> __( 'Recipient', 'iwp-txt' ),
 		//'invoiceID'		=> __( 'Invoice ID', 'iwp-txt' ),
 		'dueDate'		=> __( 'Due Date', 'iwp-txt' ),
-		'date'		=> __( 'Creation Date', 'iwp-txt' ),
+		'date'			=> __( 'Creation Date', 'iwp-txt' ),
 
 	);
 	return $cols;
@@ -156,28 +157,30 @@ function iwp_display_custom_columns( $column ) {
 	
 	switch ( $column ) {
 		case "paid":
-			$displayTotal = $iwp['invoice_totals']["total"] + $iwp['invoice_totals']["payments"];
+			$payments 	= isset( $iwp['invoice_totals']["payments"] ) ? $iwp['invoice_totals']["payments"] : '0';
+			$total 		= isset( $iwp['invoice_totals']["total"] ) ? $iwp['invoice_totals']["total"] : '0';
 			if ( $curencyPos == "before" ) {
-				echo iwp_currency_symbol() . iwp_format_amount( $iwp['invoice_totals']["payments"] ) . ' / ' . iwp_currency_symbol() . iwp_format_amount( $displayTotal );
-				$unpaid = iwp_currency_symbol() . iwp_format_amount( $iwp['invoice_totals']["total"] );
+				echo iwp_currency_symbol() . iwp_format_amount( $payments ) . ' / ' . iwp_currency_symbol() . iwp_format_amount( $total );
+				
 			} else {
-				echo iwp_format_amount( $iwp['invoice_totals']["payments"] ) . iwp_currency_symbol() . ' / ' . iwp_format_amount( $displayTotal ) . iwp_currency_symbol();
-				$unpaid = iwp_format_amount( $iwp['invoice_totals']["total"] ) . iwp_currency_symbol();
+				echo iwp_format_amount( $payments ) . iwp_currency_symbol() . ' / ' . iwp_format_amount( $total ) . iwp_currency_symbol();
 			}
-			if( $iwp['invoice_totals']["total"] > 0 )
-				echo '<br />Unpaid: <strong>' . $unpaid . '</strong>';
+			$unpaid = $total - $payments;
+			if( $total > 0 )
+				echo '<br />Unpaid: <strong>' . iwp_currency_symbol() . iwp_format_amount( $unpaid ) . '</strong>';
 
 		break;
-
 		case "recipient":
-		 $name = $iwp["user_data"]["first_name"] . ' ' . $iwp["user_data"]["last_name"];
-			echo $name;
+			$firstName 	= isset( $iwp["user_data"]["first_name"] ) ? $iwp["user_data"]["first_name"] : '-';
+			$lastName 	= isset( $iwp["user_data"]["last_name"] ) ? $iwp["user_data"]["last_name"] : '-';
+
+			echo $firstName . ' ' . $lastName;
 		break;
 		case "invoiceID":
 			echo "-";
 		break;
 		case "dueDate":
-			$dueDate = $iwp["paymentDueDate"];
+			$dueDate = isset( $iwp["paymentDueDate"] ) ? $iwp["paymentDueDate"] : '-';
 			
 			if( $dueDate == 0 ) {
 				echo "-";

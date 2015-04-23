@@ -2,8 +2,8 @@
 /**
  * Plugin Name:     Invoiced WP
  * Plugin URI:      invoicedwp.com
- * Description:     Create invoices and pay for them
- * Version:         1.0.0
+ * Description:     The Most effective way to Get Paid by your clients.  Create it directly from your website.
+ * Version:         1.0.1
  * Author:          WP Ronin
  * Author URI:      wp-ronin.com
  * Text Domain:     iwp-txt
@@ -13,9 +13,6 @@
  * @copyright       Copyright (c) 2015
  *
  *
- * Setup manual payment
- * Setup paypal link payment
- * 
  */
 
 
@@ -70,7 +67,7 @@ if( !class_exists( 'IWP' ) ) {
         private function setup_constants() {
             define( 'IWP_PATH', plugin_dir_path( __FILE__ ) );
             define( 'IWP_DIR', plugin_dir_path( __FILE__ ) );
-            define( 'IWP_VERSION', '1.0.0' );
+            define( 'IWP_VERSION', '1.0.1' );
             define( 'IWP_FILE', plugin_basename( __FILE__ ) );
             define( 'IWP_URL', plugins_url( '', IWP_FILE ) );
 

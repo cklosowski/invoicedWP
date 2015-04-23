@@ -3,15 +3,15 @@ Author URI: http://inoicedwp.com
 Plugin URI: http://inoicedwp.com
 Contributors: rpletcher
 Donate link: http://ryanpletcher.com/support-the-site
-Tags: invoice, e-downloads, ecommerce, e commerce, e-commerce, billing, wp-ronin, wp ecommerce
+Tags: invoice, e-downloads, ecommerce, e commerce, e-commerce, invoicing, billing, wp-ronin, wp ecommerce, invoiced
 Requires at least: 3.7
 Tested up to: 4.1
 
-Stable Tag: 1.0
+Stable Tag: 1.0.1
 
 License: GNU Version 2 or Any Later Version
 
-The Most effective way to Get Paid by your clients.
+The Most effective way to Get Paid by your clients.  Create it directly from your website.
 
 == Description ==
 
@@ -27,8 +27,10 @@ Features of the plugin include:
 * Customize Invoices
 * Create discount
 * Line Item or Invoice templates
-* Extensible with many [add-ons](https://inoicedwp.com/extensions/) Coming Soon.
-* Developer friendly with dozens of actions and filters. [View Codex](https://inoicedwp.com/codex/index.html)
+* Extensible with many [add-ons](http://invoicedwp.com/addons/) Coming Soon.
+* Developer friendly with dozens of actions and filters. [Support](http://invoicedwp.com/support)
+
+Automatic emailing coming soon
 
 More information at [Invoiced WP.com](https://inoicedwp.com/).
 
@@ -40,7 +42,7 @@ InvoicedWP is offered in the following lanquages:
 
 1. English
 
-Would you like to help translate the plugin into more languages? [Join our Mailing List](http://support.invoicedwp.com/translation).
+Would you like to help translate the plugin into more languages? Let us know.
 
 == Installation ==
 
@@ -51,16 +53,17 @@ Would you like to help translate the plugin into more languages? [Join our Maili
 
 == Frequently Asked Questions ==
 
-= How do I setup an invoice template? =
 
 
 
 == Screenshots ==
 
-1.
-2.
-3.
-4.
+1. Sample Invoice
+2. Create invoice
+3. Currencies offered
+4. Save data
+5. Extra Options
+6. Use templates
 
 == Changelog ==
 
