@@ -50,7 +50,7 @@
                                     <?php echo $invoiceContent['lineItems']['iwp_invoice_name'][$key]; ?><br />
                                     <span style="font-size: 0.8em;"><?php echo $invoiceContent['lineItems']['iwp_invoice_description'][$key]; ?></span>
                                 </td>
-                                <td class="unit"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['lineItems']['iwp_invoice_price'][$key] ); ?></td>
+                                <td class="price"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['lineItems']['iwp_invoice_price'][$key] ); ?></td>
                                 <td class="qty"><?php echo $invoiceContent['lineItems']['iwp_invoice_qty'][$key]; ?></td>
                                 <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['lineItems']['iwp_invoice_total'][$key] ); ?></td>
                             </tr>
@@ -75,12 +75,6 @@
                         <tr>
                             <td style="text-align: right;" colspan="3"><?php _e( 'Discount', 'iwp-txt' ); ?></td>
                             <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['discount'] ); ?></td>
-                        </tr>
-                        <?php } ?>
-                        <?php if( $invoiceContent['invoice_totals']["payments"] > 0 ) { ?>
-                        <tr>
-                            <td style="text-align: right;" colspan="3"><?php _e( 'Payments', 'iwp-txt' ); ?></td>
-                            <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['payments'] ); ?></td>
                         </tr>
                         <?php } ?>
                         <tr>

@@ -168,9 +168,11 @@ function save_myInvoiceSettings($post_id) {
           
     }
 
-    foreach ($iwp["iwp_invoice_payment"]["amount"] as $key => $value)
-        $payment += $value;  
-    
+    if( isset( $iwp["iwp_invoice_payment"]["amount"] ) ) {
+        foreach ($iwp["iwp_invoice_payment"]["amount"] as $key => $value)
+            $payment += $value;  
+    }
+
     $iwp['invoice_totals']["payments"]  = $payment;
 
     update_post_meta( $post_id, '_invoicedwp', $iwp ); // Saves if the invoice is only a quote

@@ -417,8 +417,8 @@ function iwp_get_registered_settings() {
 		/** Taxes Settings */
 		'taxes' => apply_filters('iwp_settings_taxes',
 			array(
-				'enable_taxes' => array(
-					'id' => 'enable_taxes',
+				'iwp_enable_taxes' => array(
+					'id' => 'iwp_enable_taxes',
 					'name' => __( 'Enable Taxes', 'iwp-txt' ),
 					'desc' => __( 'Check this to enable taxes on purchases.', 'iwp-txt' ),
 					'type' => 'checkbox',
@@ -430,7 +430,7 @@ function iwp_get_registered_settings() {
 					'type' => 'text',
 					'size' => 'small'
 				),
-				/*'change_tax_on_invoice' => array(
+				'change_tax_on_invoice' => array(
 					'id' => 'change_tax_on_invoice',
 					'name' => __( 'Change Tax Rate on Invoice', 'iwp-txt' ),
 					'desc' => __( 'Default tax rate will be displayed on the invoice when invoice is created but site owner can modify it.', 'iwp-txt' ),
@@ -440,7 +440,7 @@ function iwp_get_registered_settings() {
 						'yes' => __( 'Yes, I want to adjust tax rate on invoice', 'iwp-txt' ),
 						'no'  => __( 'No, I will set a single tax rate for all invoices', 'iwp-txt' )
 					)
-				)*/
+				)
 			)
 		),
 		/** Email Settings */

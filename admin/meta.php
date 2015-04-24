@@ -110,7 +110,7 @@ function iwp_details($post_id) {
 												<td style="background: none; border: 0px;" ><?php _e( 'Subtotal', 'iwp-txt'); ?>:</td>
 												<td style="background: none; border: 0px;" ><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[subtotal]" value=""  class="calculate_invoice_subtotal iwp_flatten_input" style="float: right; width: 90%;" ></td>
 											</tr>
-											<?php if( $iwp_options["enable_taxes"] == 1 ) { ?>
+											<?php if( isset($iwp_options["iwp_enable_taxes"] ) && ( $iwp_options["iwp_enable_taxes"] == 1 ) ) { ?>
 												<tr>
 													<td style="background: none; border: 0px;" class="column-invoice-details-tax"><?php _e( 'Sales Tax', 'iwp-txt'); ?>:</td>
 													<td style="background: none; border: 0px;"  class="column-invoice-details-tax"><div style="float: left;"><?php echo $iwp_currency; ?></div><input name="iwp_totals[tax]" value="<?php _e( '0.00', 'iwp-txt'); ?>"  class="calculate_invoice_tax iwp_flatten_input" style="float: right; width: 90%;" ><input type="hidden" id="iwp_tax_rate" value='<?php echo $iwp_options["tax_rate"]; ?>' ></td>

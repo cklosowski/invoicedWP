@@ -42,7 +42,7 @@ function iwp_setup_init() {
 		'capability_type' 		=> 'page',
 		'has_archive' 			=> false,
 		'hierarchical' 			=> false,
-		'menu_icon'				=> dashicons-media-text,//IWP_URL . '/assets/img/invoice.png',
+		'menu_icon'				=> 'dashicons-media-text',//IWP_URL . '/assets/img/invoice.png',
 		'menu_position' 		=> 20,
 		'rewrite' 				=> array('slug'=>'invoiced','with_front'=>false),
 		'supports' 				=> array( 'title', 'editor' )

@@ -194,10 +194,11 @@ if( !class_exists( 'IWP' ) ) {
                     if ( $iwp['isQuote'] != 1 ) 
                         add_meta_box( 'iwp_payment', __( 'Payment Information', 'iwp-txt' ), 'iwp_payment', 'invoicedwp', 'side' );
                 
-                add_meta_box( 'iwp_notice', __( 'Invoice Notice', 'iwp-txt' ), 'iwp_notice', 'invoicedwp', 'normal', 'low' );
+                
                 add_meta_box( 'iwp_client', __( 'Client Information', 'iwp-txt' ), 'iwp_client', 'invoicedwp', 'side', 'low' );
-                add_meta_box( 'iwp_details', __( 'Billing Details', 'iwp-txt' ), 'iwp_details', 'invoicedwp', 'normal', 'low' );
 
+                add_meta_box( 'iwp_details', __( 'Billing Details', 'iwp-txt' ), 'iwp_details', 'invoicedwp', 'normal', 'high' );
+                add_meta_box( 'iwp_notice', __( 'Invoice Notice', 'iwp-txt' ), 'iwp_notice', 'invoicedwp', 'normal', 'high' );
                 // Meta Boxes for the Line Item Page
                 add_meta_box( 'iwp_line_details', __( 'Line Item Details', 'iwp-txt' ), 'iwp_details', 'invoicedwp_template', 'normal', 'low' );                
 
