@@ -47,9 +47,10 @@ Would you like to help translate the plugin into more languages? Let us know.
 == Installation ==
 
 1. Activate the Plugin
-2. Start Creating invoices by accessing the InvoicedWP menu on the left
-3. Access the options to configure the invoice the way that you want
-4. Start creating invoices
+2. Go to the permalink settings and hit the save button with no changes
+3. Start Creating invoices by accessing the InvoicedWP menu on the left
+4. Access the options to configure the invoice the way that you want
+5. Start creating invoices
 
 == Frequently Asked Questions ==
 
