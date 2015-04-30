@@ -12,7 +12,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 
 function invoicedwp_translation_mangler($translation, $text, $domain) {
         global $post;
-        
+
 
 
     if( isset( $post->post_type ) ) {
@@ -46,7 +46,7 @@ function invoicedwp_translation_mangler($translation, $text, $domain) {
 
     return $translation;
 }
- 
+
 //add_filter('gettext', 'invoicedwp_translation_mangler', 10, 4);'
 //
 
@@ -91,5 +91,41 @@ function iwp_format_amount( $amount, $decimals = true ) {
     $formatted = number_format( $amount, $decimals, $decimal_sep, $thousands_sep );
 
     return apply_filters( 'iwp_format_amount', $formatted, $amount, $decimals, $decimal_sep, $thousands_sep );
+}
+
+function iwp_get_business_information() {
+	$defaults = array(
+		'business_logo'         => '',
+		'business_name'         => '',
+		'business_address1'     => '',
+		'business_address2'     => '',
+		'business_city'         => '',
+		'business_state'        => '',
+		'business_phone_number' => '',
+		'business_email'        => '',
+		'business_zip_code'     => '',
+		'business_country'      => '',
+	);
+
+	$options = get_option( 'iwp_settings' );
+
+	if ( empty( $options ) || $options == '' ) {
+		$options = array();
+	}
+
+	$return = array();
+	foreach ( $defaults as $key => $value ) {
+
+		if ( ! empty( $options[ $key ] ) ) {
+			$return_value = $options[ $key ];
+		} else {
+			$return_value = $defaults[ $key ];
+		}
+
+		$return[ $key ] = $return_value;
+
+	}
+
+	return apply_filters( 'iwp_get_business_information', $return );
 }
 

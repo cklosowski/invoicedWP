@@ -1,17 +1,28 @@
         <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
             <header class="entry-content">
+
                 <div id="logo">
-                    <img src="<?php echo $iwp_options['business_logo']; ?>">
+                    <?php $business_info = iwp_get_business_information(); ?>
+
+                    <?php if ( ! empty( $business_info['business_logo'] ) ) : ?>
+                        <img src="<?php echo $business_info['business_logo']; ?>">
+                    <?php endif; ?>
                 </div>
+
                 <h1><?php if ( $invoiceContent['isQuote'] == 1 ) { _e( 'Quote', 'iwp-txt' ); } else { _e( 'Invoice', 'iwp-txt' ); } ?></h1>
-                <div id="company" style="width: 49%; float: left;">
-                    <div><?php echo $iwp_options['business_name']; ?></div>
-                    <div><?php echo $iwp_options['business_address1']; ?><br> 
-                    <?php if( ! empty( $iwp_options['business_address2'] ) ) { echo $iwp_options['business_address2'] . "<br>"; } ?>
-                    <?php echo $iwp_options['business_city']; ?> <?php echo $iwp_options['business_state']; ?>, <?php echo $iwp_options['business_zip_code']; ?><br><?php echo $iwp_options['business_country']; ?></div>
-                    <div><?php echo $iwp_options['business_phone_number']; ?></div>
-                    <div><a href="mailto:<?php echo $iwp_options['business_email']; ?>"><?php echo $iwp_options['business_email']; ?></a></div>
+                <div id="company" style="width: 49%; float: left; min-width: 49%;">
+                    <div><?php echo $business_info['business_name']; ?></div>
+                    <div><?php echo $business_info['business_address1']; ?><br>
+                    <?php if( ! empty( $business_info['business_address2'] ) ) { echo $business_info['business_address2'] . "<br>"; } ?>
+                    <?php echo $business_info['business_city']; ?> <?php echo $business_info['business_state']; ?>
+                    <?php if ( ! empty( $business_info['business_zip_code'] || ! empty( $business_info['business_country'] ) ) ) : ?>
+                        , <?php echo $business_info['business_zip_code']; ?><br><?php echo $business_info['business_country']; ?></div>
+                    <?php endif; ?>
+
+                    <div><?php echo $business_info['business_phone_number']; ?></div>
+                    <div><a href="mailto:<?php echo $business_info['business_email']; ?>"><?php echo $business_info['business_email']; ?></a></div>
                 </div>
+
                 <div id="project" style="width: 50%; float: right;">
                     <div><span><?php _e( 'Project:', 'iwp-txt' ); ?></span> <?php echo get_the_title(); ?></div>
                     <?php if( ! empty( $invoiceContent['user_data']['company_name'] ) ) { ?><div><span><?php _e( 'Client:', 'iwp-txt' ); ?></span> <?php echo $invoiceContent['user_data']['company_name']; ?></div><?php } ?>
@@ -28,8 +39,9 @@
                     <?php } ?>
 
                 </div>
+
             </header>
- 
+
 
             <div class="entry-content" style="clear:both;" ><?php the_content(); ?></div>
 
@@ -55,13 +67,13 @@
                                 <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['lineItems']['iwp_invoice_total'][$key] ); ?></td>
                             </tr>
                         <?php } ?>
-                        
-                        
+
+
                         <tr>
                             <td style="text-align: right;" colspan="3"><?php _e( 'Subtotal', 'iwp-txt' ); ?></td>
                             <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['subtotal'] ); ?></td>
                         </tr>
-                        <?php if( $invoiceContent['invoice_totals']['tax'] > 0 ) { ?>
+                        <?php if( ! empty( $invoiceContent['invoice_totals']['tax'] ) ) { ?>
                         <tr>
                             <td style="text-align: right;" colspan="3"><?php _e( 'Tax', 'iwp-txt' ); ?></td>
                             <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['tax'] ); ?></td>
@@ -95,10 +107,19 @@
                     </tbody>
                 </table>
                 <div id="notices" class="entry-content">
-                    <div class="notice"><?php _e( 'Notices', 'iwp-txt' ); ?>: <?php echo $invoiceContent['invoice_notice']; ?></div>
+                    <div class="notice"><?php _e( 'Notices', 'iwp-txt' ); ?>:
+                        <?php if ( ! empty( $invoiceContent['invoice_notice'] ) ) : ?>
+                            <?php echo $invoiceContent['invoice_notice']; ?>
+                        <?php else: ?>
+                            <p><em><?php _e( 'No notices for this Invoice', 'iwp-txt' ); ?></em></p>
+                        <?php endif; ?>
+
+                    </div>
                 </div>
             </main>
             <footer class="entry-footer">
-                <?php echo $iwp_options['invoice_global_notice']; ?>
+                <?php if ( ! empty( $iwp_options['invoice_global_notice'] ) ) : ?>
+                    <?php echo $iwp_options['invoice_global_notice']; ?>
+                <?php endif; ?>
             </footer>
         </article>
