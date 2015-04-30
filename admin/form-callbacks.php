@@ -71,7 +71,7 @@ function iwp_settings_sanitize( $input = array() ) {
 	}
 
 	// Merge our new settings with the existing
-	// 
+	//
 	if( is_array( $iwp_options ) ) {
 		$output = array_merge( $iwp_options, $input );
 	} else {
@@ -199,17 +199,17 @@ function iwp_payment_icons_callback( $args ) {
 
 	if ( ! empty( $args['options'] ) ) {
 		foreach( $args['options'] as $key => $option ) {
-			
-			if( isset( $iwp_options[$args['id']][$key] ) ) { 
+
+			if( isset( $iwp_options[$args['id']][$key] ) ) {
 				$enabled = $option;
 			} else {
-				$enabled = NULL; 
+				$enabled = NULL;
 			}
-			
-			echo '<label for="iwp_settings[' . $args['id'] . '][' . $key . ']" style="margin-right:10px;line-height:16px;height:16px;display:inline-block;">'; 
-			
+
+			echo '<label for="iwp_settings[' . $args['id'] . '][' . $key . ']" style="margin-right:10px;line-height:16px;height:16px;display:inline-block;">';
+
 				echo '<input name="iwp_settings[' . $args['id'] . '][' . $key . ']" id="iwp_settings[' . $args['id'] . '][' . $key . ']" type="checkbox" value="' . esc_attr( $option ) . '" ' . checked( $option, $enabled, false ) . '/>&nbsp;';
-				
+
 				if( iwp_string_is_image_url( $key ) ) {
 
 					echo '<img class="payment-icon" src="' . esc_url( $key ) . '" style="width:32px;height:24px;position:relative;top:6px;margin-right:5px;"/>';
@@ -244,7 +244,7 @@ function iwp_payment_icons_callback( $args ) {
 
 
 			echo $option . '</label>';
-		
+
 		}
 		echo '<p class="description" style="margin-top:16px;">' . $args['desc'] . '</p>';
 	}
@@ -363,7 +363,7 @@ function iwp_text_callback( $args ) {
  */
 function iwp_number_callback( $args ) {
 	$iwp_options = get_option( 'iwp_settings' );
-    
+
     if ( isset( $iwp_options[ $args['id'] ] ) )
 		$value = $iwp_options[ $args['id'] ];
 	else

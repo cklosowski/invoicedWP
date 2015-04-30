@@ -34,7 +34,7 @@ class IWP_Ajax {
     global $wpdb, $blog_id;
 
     $theRequest = iwp_sanitize( $_REQUEST['s'] );
-    
+
     $users_found = $wpdb->get_results( "SELECT `u`.`ID` as `id`, CONCAT(`u`.`display_name`, ' (', `u`.`user_email`, ')') as `title`
           FROM `{$wpdb->users}` as `u` INNER JOIN `{$wpdb->usermeta}` as `m`
           ON `u`.`ID` = `m`.`user_id`

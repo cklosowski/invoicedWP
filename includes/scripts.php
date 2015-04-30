@@ -24,12 +24,12 @@ function iwp_admin_scripts( $hook ) {
 
     // Use minified libraries if SCRIPT_DEBUG is turned off
 	//$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-    
+
     /**
      * @todo		This block loads styles or scripts explicitly on the
      *				iwp settings page.
      */
-    
+
     $possibleHooks = apply_filters( 'iwp_hooks', array( 'post.php', 'post-new.php' ) );
     $possiblePostType = apply_filters( 'iwp_posttypes', array( 'invoicedwp', 'invoicedwp_template') );
 
@@ -43,7 +43,7 @@ function iwp_admin_scripts( $hook ) {
 
         wp_enqueue_style( 'thickbox' ); // call to media files in wp
         wp_enqueue_script( 'thickbox' );
-        wp_enqueue_script( 'media-upload' ); 
+        wp_enqueue_script( 'media-upload' );
 
         wp_enqueue_script( 'iwp_admin_js', IWP_URL . '/assets/js/admin.js', array( 'jquery' ) );
         wp_enqueue_style( 'iwp_admin_css', IWP_URL . '/assets/css/admin.css' );
@@ -261,7 +261,7 @@ function iwp_get_email_tags() {
     // Apply edd_email_tags filter
     return apply_filters( 'edd_email_tags', $email_tags );
 
-    
+
 }
 
 function prevent_searches() {

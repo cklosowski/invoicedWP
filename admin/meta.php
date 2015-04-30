@@ -19,7 +19,7 @@ function iwp_details($post_id) {
 	$iwp_options 	= get_option( 'iwp_settings' );
 
 	$values 		= isset( $iwp['lineItems'] ) ? $iwp['lineItems'] : NULL;
-	
+
 	$iwp_currency 	= iwp_currency_symbol();
 	$count 			= count( $values["iwp_invoice_total"] );
 
@@ -74,7 +74,7 @@ function iwp_details($post_id) {
 							</tr>
 						</thead>
 
-						<?php 
+						<?php
 						if( isset( $post_id->post_type )  ) {
 							//if( $post_id->post_type <> 'invoicedwp_template' ) { ?>
 							<tfoot>
@@ -88,7 +88,7 @@ function iwp_details($post_id) {
 										<select id="discountType" name="iwp_invoice_discountType" >
 											<option value="amount" <?php selected( $iwp["iwp_invoice_discount"]["type"], "amount" ); ?>><?php _e('Amount Discount', 'iwp-txt'); ?></option>
 											<option value="percent" <?php selected( $iwp["iwp_invoice_discount"]["type"], "percent" ); ?>><?php _e('Percent Discount', 'iwp-txt'); ?></option>
-										</select> 
+										</select>
 									</td>
 									<td class="discount_row" style="background-color: #fdfdfd;"> <?php // price ?>
 										<div class="currencySymbol"><?php echo $iwp_currency; ?></div><div class="hidden percentSymbol" style="float:right; margin-left: 10px;">%</div><input type="number" id="discountAmount" class="item_name input_field changesNo" value="<?php echo $iwp["iwp_invoice_discount"]["discount"]; ?>" name="iwp_invoice_discount" style="width: 74%; float: right;"  step="0.01">
@@ -96,7 +96,7 @@ function iwp_details($post_id) {
 									<td class="remove_discount remove">&nbsp;</td>
 								</tr>
 								<script>
-								
+
 									jQuery(document).ready(function( $ ) {
 										$( '.column-invoice-details-discounts').show();
 									});
@@ -151,9 +151,9 @@ function iwp_details($post_id) {
 										</select>
 									</th>
 								</tr>
-								
+
 							</tfoot>
-						<?php 	//} 
+						<?php 	//}
 						} ?>
 
 
@@ -227,7 +227,7 @@ function iwp_payment( $invoice_id ) {
 	<?php if( isset ( $iwp["iwp_invoice_payment"] ) ) { ?>
 	<table width="100%" class="widefat striped" id="paymentDisplay">
 	<?php
-	
+
 		$amount = $iwp["iwp_invoice_payment"]["amount"];
 
 		foreach( $amount as $key => $payment) {
@@ -240,10 +240,10 @@ function iwp_payment( $invoice_id ) {
 
 			//$myPayments += $iwp["iwp_invoice_payment"]["amount"][$key];
 		}
-		
+
 	?>
 	</table>
-	<?php } 
+	<?php }
 
 	$remainingBalance = (float) $iwp["invoice_totals"]["total"] - (float) $iwp["invoice_totals"]["payments"];
 	?>
@@ -276,7 +276,7 @@ function iwp_notice($post_id) {
 function iwp_client($post_id) {
 	$user_email = '';
 	$iwp = get_post_meta($post_id->ID, '_invoicedwp', true );
-	
+
 	$userEmail = 'Select User';
 
 	if( isset( $iwp['user_data'] )) {
@@ -293,8 +293,8 @@ function iwp_client($post_id) {
 	$format = 'MM dd, yy';
 
 	?>
-            
-            
+
+
 	<script type="text/javascript">
 		jQuery( document ).ready(function( $ ){
 			$(".iwp_email_selection").select2({
@@ -312,31 +312,31 @@ function iwp_client($post_id) {
 							s: term
 						};
 					},
-					
+
 					results: function (data, page) {
 						return {results: data};
 					}
 				},
-				
+
 				initSelection: function(element, callback) {
 					callback(<?php echo json_encode(array('id'=>$user_email, 'title'=>$user_email)); ?>);
 				},
-				
+
 				formatResult: function(o) {
 					return o.title;
 				},
-				
+
 				formatSelection: function(o) {
 					return o.title;
 				},
-				
+
 				escapeMarkup: function (m) { return m; }
 
 			});
 
 			$( '.iwp-date-picker' ).datepicker({
 				dateFormat: '<?php echo $format; ?>',
-				numberOfMonths: 1, 
+				numberOfMonths: 1,
 				buttonImageOnly: true
 			});
 
@@ -359,7 +359,7 @@ function iwp_client($post_id) {
 		<input title="" value="<?php echo isset( $iwp_invoice['state'] ) ? $iwp_invoice['state'] :  ''; ?>" placeholder="State" name="iwp_invoice[user_data][state]" class="input_field  iwp_state" type="text" id="" style="width: 100%;">
 		<input title="" value="<?php echo isset( $iwp_invoice['zip'] ) ? $iwp_invoice['zip'] :  ''; ?>" placeholder="ZIP" name="iwp_invoice[user_data][zip]" class="input_field  iwp_zip" type="text" id="" style="width: 100%;">
 		<div class="makeNewAccount" style="margin-top: 10px">
-			<?php 
+			<?php
 				$makeAccount = isset( $iwp_invoice['makeAccount'] ) ? $iwp_invoice['makeAccount'] : 0;
 				if( $makeAccount == 0 ) { ?>
 				<input type="checkbox" name="makeAccount" id="makeAccount" value="<?php echo isset( $iwp_invoice['makeAccount'] ) ? $iwp_invoice['makeAccount'] : ''; ?>" <?php checked( isset( $iwp_invoice['makeAccount'] ) ? $iwp_invoice['makeAccount'] : '' , 1, false ); ?> /> <label for="makeAccount">Make Customer Account</label>

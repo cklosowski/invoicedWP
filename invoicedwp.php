@@ -26,7 +26,7 @@ if( !class_exists( 'IWP' ) ) {
      *
      * @since       1.0.0
      */
-    class IWP { 
+    class IWP {
 
 
         /**
@@ -96,12 +96,12 @@ if( !class_exists( 'IWP' ) ) {
 
             require_once IWP_PATH . 'admin/functions.php';
 
-            
+
             require_once IWP_PATH . 'admin/admin-pages.php';
             require_once IWP_PATH . 'admin/form-callbacks.php';
             require_once IWP_PATH . 'admin/meta.php';
 
-            
+
 
             /**
              * @todo        The following files are not included in the boilerplate, but
@@ -142,11 +142,11 @@ if( !class_exists( 'IWP' ) ) {
 
             add_action( 'init', 'iwp_setup_init' );
             add_filter( 'template_include', 'include_invoice_template_function', 1 );
-            
-            if( is_admin() ) {    
+
+            if( is_admin() ) {
                 add_action( 'admin_menu', array( $this, 'iwp_setup_admin_menu' ), 1000, 0 );
                 add_action( 'add_meta_boxes', array( $this, 'iwp_setup_admin_meta' ) );
-                
+
                 add_filter( 'manage_invoicedwp_posts_columns', 'iwp_custom_columns' );
                 add_action( 'manage_invoicedwp_posts_custom_column', 'iwp_display_custom_columns' );
 
@@ -161,7 +161,7 @@ if( !class_exists( 'IWP' ) ) {
                 add_action( 'wp_ajax_iwp_get_user_data', create_function( '', ' die(IWP_Ajax::get_user_data( iwp_sanitize( $_REQUEST["user_email"] ) ) );' ) );
             }
 
-            
+
         }
 
 
@@ -188,24 +188,24 @@ if( !class_exists( 'IWP' ) ) {
             public function iwp_setup_admin_meta() {
                 global $post;
                 // Meta Boxes for the Invoice Page
-                
+
                 $iwp = get_post_meta( $post->ID, '_invoicedwp', true );
-                if ( isset( $iwp['isQuote'] ) ) 
-                    if ( $iwp['isQuote'] != 1 ) 
+                if ( isset( $iwp['isQuote'] ) )
+                    if ( $iwp['isQuote'] != 1 )
                         add_meta_box( 'iwp_payment', __( 'Payment Information', 'iwp-txt' ), 'iwp_payment', 'invoicedwp', 'side' );
-                
-                
+
+
                 add_meta_box( 'iwp_client', __( 'Client Information', 'iwp-txt' ), 'iwp_client', 'invoicedwp', 'side', 'low' );
 
                 add_meta_box( 'iwp_details', __( 'Billing Details', 'iwp-txt' ), 'iwp_details', 'invoicedwp', 'normal', 'high' );
                 add_meta_box( 'iwp_notice', __( 'Invoice Notice', 'iwp-txt' ), 'iwp_notice', 'invoicedwp', 'normal', 'high' );
                 // Meta Boxes for the Line Item Page
-                add_meta_box( 'iwp_line_details', __( 'Line Item Details', 'iwp-txt' ), 'iwp_details', 'invoicedwp_template', 'normal', 'low' );                
+                add_meta_box( 'iwp_line_details', __( 'Line Item Details', 'iwp-txt' ), 'iwp_details', 'invoicedwp_template', 'normal', 'low' );
 
                 remove_meta_box( 'commentstatusdiv', 'invoicedwp_template' , 'normal' );
                 remove_meta_box( 'commentsdiv', 'invoicedwp_template' , 'normal' );
                 remove_meta_box( 'slugdiv', 'invoicedwp_template' , 'normal' );
-                
+
             }
 
         /**
@@ -250,15 +250,15 @@ if( !class_exists( 'IWP' ) ) {
          * @return      array The modified EDD settings array
          */
         public function settings( $settings ) {
-           
+
         }
-        
-        
+
+
         /*
     	 * Activation function fires when the plugin is activated.
     	 *
     	 * This function is fired when the activation hook is called by WordPress,
-    	 * 
+    	 *
     	 */
     	public static function activation() {
         /*Activation functions here*/
@@ -271,7 +271,7 @@ if( !class_exists( 'IWP' ) ) {
      * @access public
      */
     public function iwp_register_settings() {
-        register_setting( 'iwp-options', 'iwp_options' ); 
+        register_setting( 'iwp-options', 'iwp_options' );
 
         do_action( 'iwp_register_additional_settings' );
     }

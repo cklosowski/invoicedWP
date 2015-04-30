@@ -8,11 +8,11 @@ $values = $values['lineItems'];
 $count = count( $values["iwp_invoice_name"] );
 
 for( $i = 0; $i < $count; $i++ ) { ?>
-	
+
 	<script>
-	
+
 	 		var rowNumber = jQuery('#invoicedDisplay tbody tr').length;
-	 	
+
 			lastTR = jQuery( '#invoicedDisplay tbody#invoiced_rows' ).find("tr:last"),
 			trNew = lastTR.clone()
 						  .find("input:text").val("").end();

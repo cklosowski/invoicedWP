@@ -12,7 +12,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 
 function invoicedwp_translation_mangler($translation, $text, $domain) {
         global $post;
-        
+
 
 
     if( isset( $post->post_type ) ) {
@@ -46,7 +46,7 @@ function invoicedwp_translation_mangler($translation, $text, $domain) {
 
     return $translation;
 }
- 
+
 //add_filter('gettext', 'invoicedwp_translation_mangler', 10, 4);'
 //
 

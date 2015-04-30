@@ -34,21 +34,21 @@ function wpse26869_shortlink_redirect()
 	// bail if this isn't a short link
 	if( ! get_query_var( 'invoice' ) ) return;
 	global $wp_query;
-	
+
 	$id = absint( get_query_var( 'invoice' ) );
 	if( ! $id )
 	{
 		$wp_query->is_404 = true;
 		return;
 	}
-	
+
 	$link = get_permalink( $id );
 	if( ! $link )
 	{
 		$wp_query->is_404 = true;
 		return;
 	}
-	
+
 	wp_redirect( esc_url( $link ), 301 );
 	exit();
 }

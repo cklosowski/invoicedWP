@@ -121,7 +121,7 @@ function iwp_display_options() {
 function iwp_get_settings() {
 
 	$iwp_options = get_option( 'iwp_settings' );
-	
+
 	if( empty( $settings ) ) {
 		// Update old settings with new single option
 
@@ -554,7 +554,7 @@ function iwp_get_registered_settings() {
 					'type' => 'rich_editor',
 					'std' => iwp_get_default_sale_notification_email()
 				),
-				
+
 				'disable_admin_notices' => array(
 					'id' => 'disable_admin_notices',
 					'name' => __( 'Disable Admin Notifications', 'iwp-txt' ),
@@ -562,7 +562,7 @@ function iwp_get_registered_settings() {
 					'type' => 'checkbox'
 				)
 			)
-		),		
+		),
 		/** Extension Settings */
 		'extensions' => apply_filters('iwp_settings_extensions',
 			array()

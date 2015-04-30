@@ -6,7 +6,7 @@
                 <h1><?php if ( $invoiceContent['isQuote'] == 1 ) { _e( 'Quote', 'iwp-txt' ); } else { _e( 'Invoice', 'iwp-txt' ); } ?></h1>
                 <div id="company" style="width: 49%; float: left;">
                     <div><?php echo $iwp_options['business_name']; ?></div>
-                    <div><?php echo $iwp_options['business_address1']; ?><br> 
+                    <div><?php echo $iwp_options['business_address1']; ?><br>
                     <?php if( ! empty( $iwp_options['business_address2'] ) ) { echo $iwp_options['business_address2'] . "<br>"; } ?>
                     <?php echo $iwp_options['business_city']; ?> <?php echo $iwp_options['business_state']; ?>, <?php echo $iwp_options['business_zip_code']; ?><br><?php echo $iwp_options['business_country']; ?></div>
                     <div><?php echo $iwp_options['business_phone_number']; ?></div>
@@ -29,7 +29,7 @@
 
                 </div>
             </header>
- 
+
 
             <div class="entry-content" style="clear:both;" ><?php the_content(); ?></div>
 
@@ -55,8 +55,8 @@
                                 <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['lineItems']['iwp_invoice_total'][$key] ); ?></td>
                             </tr>
                         <?php } ?>
-                        
-                        
+
+
                         <tr>
                             <td style="text-align: right;" colspan="3"><?php _e( 'Subtotal', 'iwp-txt' ); ?></td>
                             <td class="total" style="text-align: right;"><?php echo $iwp_currency . ' ' . iwp_format_amount( $invoiceContent['invoice_totals']['subtotal'] ); ?></td>

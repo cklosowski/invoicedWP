@@ -154,14 +154,14 @@ function iwp_display_custom_columns( $column ) {
 	//$iwp_columns = unserialize( $custom['_invoicedwp'][0] );
 
 	//$_staff_title 	= $iwp_columns[""];
-	
+
 	switch ( $column ) {
 		case "paid":
 			$payments 	= isset( $iwp['invoice_totals']["payments"] ) ? $iwp['invoice_totals']["payments"] : '0';
 			$total 		= isset( $iwp['invoice_totals']["total"] ) ? $iwp['invoice_totals']["total"] : '0';
 			if ( $curencyPos == "before" ) {
 				echo iwp_currency_symbol() . iwp_format_amount( $payments ) . ' / ' . iwp_currency_symbol() . iwp_format_amount( $total );
-				
+
 			} else {
 				echo iwp_format_amount( $payments ) . iwp_currency_symbol() . ' / ' . iwp_format_amount( $total ) . iwp_currency_symbol();
 			}
@@ -181,7 +181,7 @@ function iwp_display_custom_columns( $column ) {
 		break;
 		case "dueDate":
 			$dueDate = isset( $iwp["paymentDueDate"] ) ? $iwp["paymentDueDate"] : '-';
-			
+
 			if( $dueDate == 0 ) {
 				echo "-";
 			} else {

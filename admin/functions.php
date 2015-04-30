@@ -18,7 +18,7 @@ function myInvoiceSettings() {
 
     if ( ( get_post_type($post) == 'invoicedwp' ) || ( get_post_type($post) == 'invoicedwp_template' ) ) {
     	$custom = get_post_custom();
-    	
+
         $iwp = array( 'isQuote' => 0, 'reoccuringPayment' => 0, 'minPayment' => 0, 'minPaymentText' => '' );
 
     	if( ! empty($custom['_invoicedwp']) ){
@@ -33,33 +33,33 @@ function myInvoiceSettings() {
     		$display .= '<input style="display: none;" type="checkbox" name="reoccuringPayment" id="reoccuringPayment" value="' . $iwp['reoccuringPayment'] . '" ' . checked( $iwp['reoccuringPayment'], 1, false ) .' /> <label for="reoccuringPayment" class="" style="display: none;">' . __( 'Reoccuring Bill', 'iwp-txt') . '</label>';
             $reoccuringPaymentText = isset( $iwp['reoccuringPaymentText'] ) ? $iwp['reoccuringPaymentText'] : '';
             $display .= '<input type="text" name="reoccuringPaymentText" id="reoccuringPaymentText" value="' . $reoccuringPaymentText . '" placeholder="' . __( 'Number of Days to Next Payment', 'iwp-txt') . '"  style="width: 100%; display: none;" /><br />'; // Need to add jQuery to update the place holder to be the invoice total.
-            // Need to add jQuery to update this section to slide open when the box is checked.    	
-        	
+            // Need to add jQuery to update this section to slide open when the box is checked.
+
             $minPayment = 0;
             $displayMinPayment = 'display: none;';
             if( isset( $iwp['minPayment'] ) ) {
                 if( $iwp['minPayment'] == 1 ){
-                    //!  && ( 
+                    //!  && (
                     $minPayment = $iwp['minPayment'];
                     $displayMinPayment = '';
                 }
             }
 
-            $display .= '<input type="checkbox" name="minPayment" id="minPayment" value="' . $minPayment . '" ' . checked( $minPayment, 1, false ) .' /> <label for="minPayment" class="">' . __( 'Minimum Payment', 'iwp-txt') . '</label>';    
+            $display .= '<input type="checkbox" name="minPayment" id="minPayment" value="' . $minPayment . '" ' . checked( $minPayment, 1, false ) .' /> <label for="minPayment" class="">' . __( 'Minimum Payment', 'iwp-txt') . '</label>';
             $minPaymentText = isset( $iwp['minPaymentText'] ) ? $iwp['minPaymentText'] : '';
         	$display .= '<input type="text" name="minPaymentText" id="minPaymentText" value="' . $minPaymentText . '" placeholder="' . __( 'Minimum Payment', 'iwp-txt') . '"  style="width: 100%; ' . $displayMinPayment . '" /><br />'; // Need to add jQuery to update the place holder to be the invoice total.
-        	
+
             $paymentDueDate = '';
             $displayDueDate = 'display: none;';
             if( isset( $iwp['paymentDueDate'] ) ) {
                 if( $iwp['paymentDueDate'] == 1 ) {
-                    //isset( $iwp['paymentDueDate'] ) && ( 
+                    //isset( $iwp['paymentDueDate'] ) && (
                     $paymentDueDate = $iwp['paymentDueDate'];
                     $displayDueDate = '';
                 }
             }
 
-            $display .= '<input type="checkbox" name="paymentDueDate" id="dueDate" value="' . $paymentDueDate . '" ' . checked( $paymentDueDate, 1, false ) .' /> <label for="paymentDueDate" class="">' . __( 'Set Due Date', 'iwp-txt') . '</label>';    
+            $display .= '<input type="checkbox" name="paymentDueDate" id="dueDate" value="' . $paymentDueDate . '" ' . checked( $paymentDueDate, 1, false ) .' /> <label for="paymentDueDate" class="">' . __( 'Set Due Date', 'iwp-txt') . '</label>';
             $paymentDueDateText = isset ( $iwp['paymentDueDateText'] ) ? $iwp['paymentDueDateText'] : '';
             $display .= '<input type="text" name="paymentDueDateText" id="dueDateText" value="' . $paymentDueDateText . '" placeholder="' . __( 'Due Date', 'iwp-txt') . '"  style="width: 100%; ' . $displayDueDate . ' " class="iwp-date-picker" /><br />'; // Need to add jQuery to update the place holder to be the invoice total.
 
@@ -76,11 +76,11 @@ add_action( 'post_submitbox_misc_actions', 'myInvoiceSettings' );
 
 
 function save_myInvoiceSettings($post_id) {
-	
+
     if (!isset( $_POST['post_type'] ) )
         return;
 
-    if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE ) 
+    if ( defined('DOING_AUTOSAVE') && DOING_AUTOSAVE )
         return;
 
     if ( ('invoicedwp' == iwp_sanitize( $_POST['post_type'] ) || 'invoicedwp_template' == iwp_sanitize( $_POST['post_type'] ) ) && !current_user_can( 'edit_post', $post_id ) )
@@ -90,7 +90,7 @@ function save_myInvoiceSettings($post_id) {
         return;
 
     $iwp = get_post_meta( $post_id, '_invoicedwp', true );
-    
+
     if ( 'invoicedwp' == iwp_sanitize( $_POST['post_type'] ) ) {
         if (isset( $_POST['isQuote'] ) ) {
             $iwp['isQuote'] = 1;
@@ -103,7 +103,7 @@ function save_myInvoiceSettings($post_id) {
         } else {
             $iwp['makeAccount'] = 0;
         }
-        
+
 
         if (isset( $_POST['reoccuringPayment'] ) ) {
             $iwp['reoccuringPayment'] = 1;
@@ -112,15 +112,15 @@ function save_myInvoiceSettings($post_id) {
             $iwp['reoccuringPayment'] = 0;
             $iwp['reoccuringPaymentText'] = '';
         }
-        
+
         if (isset( $_POST['minPayment'] ) ) {
             $iwp['minPayment'] = 1;
             $iwp['minPaymentText'] = iwp_sanitize( $_POST['minPaymentText'] );
         } else {
             $iwp['minPayment'] = 0;
             $iwp['minPaymentText'] = '';
-        }   
-        
+        }
+
         if (isset( $_POST['paymentDueDate'] ) ) {
             $iwp['paymentDueDate'] = 1;
             $iwp['paymentDueDateText'] = iwp_sanitize( $_POST['paymentDueDateText'] );
@@ -128,7 +128,7 @@ function save_myInvoiceSettings($post_id) {
             $iwp['paymentDueDate'] = 0;
             $iwp['paymentDueDateText'] = '';
         }
-        
+
     }
 
     $count = 0;
@@ -164,13 +164,13 @@ function save_myInvoiceSettings($post_id) {
     if( ! empty( $_POST["iwp_payment_amount"] ) ) {
         $iwp["iwp_invoice_payment"]["amount"][] = iwp_sanitize( $_POST["iwp_payment_amount"] );
         $iwp["iwp_invoice_payment"]["method"][] = iwp_sanitize( $_POST["iwp_payment_method"] );
-    
-          
+
+
     }
 
     if( isset( $iwp["iwp_invoice_payment"]["amount"] ) ) {
         foreach ($iwp["iwp_invoice_payment"]["amount"] as $key => $value)
-            $payment += $value;  
+            $payment += $value;
     }
 
     $iwp['invoice_totals']["payments"]  = $payment;
@@ -186,12 +186,12 @@ function save_myInvoiceSettings($post_id) {
 
         $user_id = username_exists( $user_name );
         if ( !$user_id and email_exists( $iwp['user_data']['user_email'] ) == false ) {
-            
+
             $user_email = $iwp['user_data']['user_email'];
             $random_password = wp_generate_password( $length=12, $include_standard_special_chars=true );
             $user_id = wp_create_user( $user_name, $random_password, $user_email );
 
-            // Send email with password information 
+            // Send email with password information
         }
 
         add_user_meta( $user_id, 'iwp_first_name', $iwp['user_data']['first_name'] );
@@ -230,7 +230,7 @@ function iwp_sanitize( $items ) {
     if( ! is_array( $items ) )
         return sanitize_text_field( $items );
 
-    $newItem = array(); 
+    $newItem = array();
     foreach( $items as $key => $item )
         $newItem[$key] = sanitize_text_field( $item );
 

@@ -20,7 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 function iwp_get_shop_country() {
 	$iwp_options = get_option( 'iwp_settings' );
-	
+
 	$country = isset( $iwp_options['business_country'] ) ? $iwp_options['business_country'] : 'US';
 	return apply_filters( 'iwp_shop_country', $country );
 }
